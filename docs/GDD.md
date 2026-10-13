@@ -34,7 +34,7 @@
 | **Titre de travail** | *As Long as We're Here* (VF : *Tant qu'on est là*) |
 | **Genre** | Survie narrative et gestion familiale, en personnage incarné |
 | **Point de vue** | 2D de profil : la maison vue **en coupe** (comme une maison de poupée) et la vallée en défilement latéral |
-| **On incarne** | Eli Caudill, 14 ans, troisième de cinq enfants |
+| **On incarne** | Henry Caudill, 14 ans, troisième de cinq enfants |
 | **Cadre** | Hollis, ville-compagnie fictive de l'est du Kentucky (Appalaches), d'octobre 1932 à septembre 1933 |
 | **Durée** | 8 à 12 h par partie, rejouable (événements et issues variables) |
 | **Plateformes** | PC (Steam) d'abord, puis Switch et consoles |
@@ -46,13 +46,13 @@
 
 ## 1. Le pitch
 
-**Été 1932.** L'usine Hollis Lumber & Stave, une scierie qui fabriquait aussi des douelles de tonneaux, ferme ses grilles. Amos Caudill y sciait depuis vingt ans, et ses deux fils aînés l'y avaient rejoint. Eli devait y entrer l'année suivante.
+**Été 1932.** L'usine Hollis Lumber & Stave, une scierie qui fabriquait aussi des douelles de tonneaux, ferme ses grilles. Kenneth Caudill y sciait depuis vingt ans, et ses deux fils aînés l'y avaient rejoint. Henry devait y entrer l'année suivante.
 
 **Octobre.** Les dernières économies sont parties. La famille vit dans une maison qui appartient à la compagnie et achète à crédit au magasin de la compagnie, en bons de la compagnie. Il n'y a plus de compagnie, il ne reste que ses dettes.
 
-**Le joueur incarne Eli.** Le jour, il parcourt la vallée pour rapporter quelque chose : du poisson, du charbon tombé des wagons, quelques cents gagnés à écorcer le tabac, une cruche de moonshine livrée pour le distillateur du coin. Le soir, il rentre et pose ce qu'il a trouvé sur la table. Il y a huit bols.
+**Le joueur incarne Henry.** Le jour, il parcourt la vallée pour rapporter quelque chose : du poisson, du charbon tombé des wagons, quelques cents gagnés à écorcer le tabac, une cruche de moonshine livrée pour le distillateur du coin. Le soir, il rentre et pose ce qu'il a trouvé sur la table. Il y a huit bols.
 
-Au début, c'est Papa qui sert. Au fil des mois, à mesure que le père s'effondre, c'est vers Eli qu'on se tourne quand la marmite n'est pas assez pleine. Le jeu raconte comment on devient « l'homme de la maison » à quatorze ans, et ce que ça coûte.
+Au début, c'est Papa qui sert. Au fil des mois, à mesure que le père s'effondre, c'est vers Henry qu'on se tourne quand la marmite n'est pas assez pleine. Le jeu raconte comment on devient « l'homme de la maison » à quatorze ans, et ce que ça coûte.
 
 ---
 
@@ -75,7 +75,7 @@ Chaque mécanique, chaque écran et chaque dialogue doit servir au moins un de c
 
 Dans *This War of Mine*, on dirige un groupe depuis l'extérieur. Ici, on **est** l'un des enfants de la famille, pas son gestionnaire. Le jeu superpose donc deux couches :
 
-- **Le jour, l'aventure.** On contrôle directement Eli dans la vallée : exploration, petits boulots, glanage, infiltration légère.
+- **Le jour, l'aventure.** On contrôle directement Henry dans la vallée : exploration, petits boulots, glanage, infiltration légère.
 - **Le soir, la gestion.** On rentre, on partage, on décide, mais seulement dans la limite de ce qu'un garçon de 14 ans a le droit de décider (voir [*Grandir trop vite*](#65-grandir-trop-vite--la-voix-et-lenfance-mécanique-signature)).
 
 Ce mélange découle du sujet : la gestion n'est pas une interface neutre, c'est une place à table qu'on gagne et qu'on paie.
@@ -108,7 +108,7 @@ La caméra se tient **à hauteur d'enfant** : les têtes des adultes sortent sou
 
 ### Les lieux de la vallée
 
-On les trouve sur la carte qu'Eli dessine dans son cahier d'écolier ; un lieu y apparaît dès qu'il l'a découvert.
+On les trouve sur la carte qu'Henry dessine dans son cahier d'écolier ; un lieu y apparaît dès qu'il l'a découvert.
 
 | Lieu | Ce qu'on y fait | Marche depuis la maison |
 |---|---|---|
@@ -119,7 +119,7 @@ On les trouve sur la carte qu'Eli dessine dans son cahier d'écolier ; un lieu y
 | **La voie ferrée** | Charbon tombé des wagons, le train de 6 h 12, le campement des hobos, le « bull » (la police de la compagnie ferroviaire) | 30 min |
 | **La montagne** | Chasse, collets, cueillette, ginseng, l'alambic de Dow Slone | 45 min |
 | **La mine n° 4** | Embauche, grève, piquets | 1 h |
-| **La vieille ferme** | Le domaine abandonné de Papaw, en haut du vallon, à restaurer pour la route « remonter » | 2 h |
+| **La vieille ferme** | Le domaine abandonné du grand-père, en haut du vallon, à restaurer pour la route « remonter » | 2 h |
 | **Le chef-lieu** | Croix-Rouge, médecin, prêteur sur gages, banque fermée, gare | Une demi-journée (ou le camion du laitier) |
 
 ### Les gens de la vallée
@@ -127,7 +127,7 @@ On les trouve sur la carte qu'Eli dessine dans son cahier d'écolier ; un lieu y
 | Personnage | Rôle |
 |---|---|
 | **Les Sizemore** | Voisins de palier : six enfants et une vache. Encore plus pauvres que les Caudill, et pourtant prêteurs de lait. |
-| **Otis Hairston** | 14 ans, fils d'un mineur noir de la n° 4 venu d'Alabama. Il pêche avec Eli depuis toujours, ce que la vallée voit d'un mauvais œil. |
+| **Otis Hairston** | 14 ans, fils d'un mineur noir de la n° 4 venu d'Alabama. Il pêche avec Henry depuis toujours, ce que la vallée voit d'un mauvais œil. |
 | **Mr. Pruitt** | Gérant du magasin de la compagnie, il tient l'ardoise. Ni bon ni méchant : il a des ordres. |
 | **Miss Adair** | L'institutrice. Elle prête des livres, sert la soupe de midi et peut écrire une lettre de recommandation. |
 | **Dow Slone** | Distillateur clandestin. Il paie bien et ne pose pas de questions. |
@@ -160,16 +160,16 @@ Huit personnes, huit bols. Chacun a un **trait** qui modifie ses réactions dans
 
 | | Âge | Trait (effet en jeu) | Tâches | Ce qui peut lui arriver |
 |---|---|---|---|---|
-| **Amos** (Papa) | 48 | **Fier** : la charité lui coûte du Moral, et il refuse de signer pour l'assistance | Chercher du travail, couper du bois, réparer | S'effondrer (silence, boisson), partir au Nord, rejoindre le syndicat, se relever |
-| **Ida** (M'man) | 43 | **Pilier** : elle se prive en secret quand la marmite manque | Lessive pour le bourg, conserves, couture | Tomber malade d'épuisement, devenir l'alliée d'Eli |
-| **Mamaw Dell** | 76 | **Enracinée** : elle refusera de quitter la montagne. **Guérisseuse** : remèdes de plantes | Remèdes, histoires (Espoir), garder Pearl, apprendre le ginseng à Eli | Refuser de manger pour les petits, « remonter » seule à la vieille ferme |
+| **Kenneth** (Papa) | 48 | **Fier** : la charité lui coûte du Moral, et il refuse de signer pour l'assistance | Chercher du travail, couper du bois, réparer | S'effondrer (silence, boisson), partir au Nord, rejoindre le syndicat, se relever |
+| **Ida** (M'man) | 43 | **Pilier** : elle se prive en secret quand la marmite manque | Lessive pour le bourg, conserves, couture | Tomber malade d'épuisement, devenir l'alliée d'Henry |
+| **Granny Hattie** | 76 | **Enracinée** : elle refusera de quitter la montagne. **Guérisseuse** : remèdes de plantes | Remèdes, histoires (Espoir), garder Pearl, apprendre le ginseng à Henry | Refuser de manger pour les petits, « remonter » seule à la vieille ferme |
 | **Clay** | 20 | **Colérique** | Mine, travaux de force | Briseur de grève ou syndicaliste, partir en train de marchandises, prison |
 | **Wes** | 17 | **Musicien** : son violon soutient l'Espoir de toute la maison | Bois, petits boulots | Le CCC (en mentant sur son âge), vendre son violon |
-| **Eli** | 14 | Le joueur | Tout ce qui se fait dans la vallée | Grandir |
+| **Henry** | 14 | Le joueur | Tout ce qui se fait dans la vallée | Grandir |
 | **Ruth** | 11 | **Studieuse** : l'école est son espoir | Garder Pearl, couture, école | Partir chez une tante à Lexington, obtenir une bourse pour une école de mission (inspirée de la Hindman Settlement School, Knott County) |
 | **Pearl** | 4 | **Fragile** : a besoin de lait, tombe malade vite | Rire (fait monter l'Espoir) | Fièvre, pellagre. En plein hiver, le comté propose l'orphelinat |
 
-**Silhouettes** (chaque membre doit se reconnaître en ombre chinoise) : Papa, grand et voûté sous un chapeau mou. M'man, tablier et châle. Mamaw, petite, bonnet et pipe en épi de maïs. Clay, casquette et manches retroussées. Wes, long et maigre, le violon sous le bras. Eli, dans une salopette trop grande héritée de Wes. Ruth, des nattes et un livre. Pearl, une robe taillée dans un sac de farine imprimé.
+**Silhouettes** (chaque membre doit se reconnaître en ombre chinoise) : Papa, grand et voûté sous un chapeau mou. M'man, tablier et châle. Granny, petite, bonnet et pipe en épi de maïs. Clay, casquette et manches retroussées. Wes, long et maigre, le violon sous le bras. Henry, dans une salopette trop grande héritée de Wes. Ruth, des nattes et un livre. Pearl, une robe taillée dans un sac de farine imprimé.
 
 ---
 
@@ -202,9 +202,9 @@ flowchart LR
 
 | Phase | Durée | Ce qui s'y passe |
 |---|---|---|
-| **Aube** | ~1 min | On voit l'état de la maison d'un coup d'œil. Eli choisit ce qu'il emporte (sac, ligne, lance-pierre, la carabine .22 de Papa si on la lui confie). |
+| **Aube** | ~1 min | On voit l'état de la maison d'un coup d'œil. Henry choisit ce qu'il emporte (sac, ligne, lance-pierre, la carabine .22 de Papa si on la lui confie). |
 | **Jour** | 8 à 12 min | Exploration libre de la vallée. La lumière du jour est la ressource principale. |
-| **Soir : la Table** | 2 à 3 min | Ce qu'Eli rapporte est posé sur la table, chacun raconte sa journée, et on partage. |
+| **Soir : la Table** | 2 à 3 min | Ce qu'Henry rapporte est posé sur la table, chacun raconte sa journée, et on partage. |
 | **Veillée** | 1 à 2 min | Une seule conversation par soir, avec la personne de son choix. |
 | **Nuit** | Résolution | Faim, froid, maladie, puis les événements (on frappe à la porte…). |
 
@@ -217,18 +217,18 @@ flowchart LR
 - Le joueur verse les louches dans les bols en les faisant glisser. Un bol vide reste posé sur la table, et il se voit.
 - La **Faim** de chacun suit cinq crans : *Rassasié → Faim → Affamé → Épuisé → Mourant*. Un bol plein la fait descendre d'un cran, un demi-bol la laisse stable, un bol vide la fait monter d'un cran.
 - **La variété et la pellagre.** Chaque aliment porte une étiquette : *Grain*, *Gras*, *Haricots*, *Verdure*, *Viande et poisson*, *Lait et œufs*. Quelqu'un qui ne mange que du Grain et du Gras pendant plus de six jours accumule un risque de pellagre : fatigue, peau brûlée, confusion. C'était une vraie maladie des régimes à base de maïs dans le Sud des années 1930. La levure de bière, le lait, la viande et la verdure la font reculer. Rapporter de l'argent pour acheter du maïs ne suffit donc pas : il faut aussi pêcher, chasser et cueillir.
-- **Ce qu'on ne dit pas.** Quand la marmite est trop petite, Ida se prive en secret (« je me servirai après »), et Mamaw refuse son bol « pour la petite ». Le jeu ne l'affiche nulle part. Il faut le remarquer : une silhouette qui maigrit, une remarque de Ruth, une question posée à la veillée. Une fois qu'il l'a découvert, Eli peut agir, si sa Voix le lui permet.
-- **Qui sert ?** Selon la Voix d'Eli (6.5), c'est Papa, M'man ou Eli qui remplit les bols. Tant que ce n'est pas lui, Eli ne contrôle que son propre bol, mais il peut toujours le partager.
+- **Ce qu'on ne dit pas.** Quand la marmite est trop petite, Ida se prive en secret (« je me servirai après »), et Granny refuse son bol « pour la petite ». Le jeu ne l'affiche nulle part. Il faut le remarquer : une silhouette qui maigrit, une remarque de Ruth, une question posée à la veillée. Une fois qu'il l'a découvert, Henry peut agir, si sa Voix le lui permet.
+- **Qui sert ?** Selon la Voix d'Henry (6.5), c'est Papa, M'man ou Henry qui remplit les bols. Tant que ce n'est pas lui, Henry ne contrôle que son propre bol, mais il peut toujours le partager.
 
 **Ce que ça fait ressentir :** compter. Chaque soir, le joueur compte les bols à voix basse, comme Ida.
 
 ### 6.2 La Journée : la lumière comme ressource
 
-**Principe.** Eli a une journée de lumière à dépenser. Chaque trajet et chaque activité en consomme.
+**Principe.** Henry a une journée de lumière à dépenser. Chaque trajet et chaque activité en consomme.
 
 **Règles**
 - **La durée du jour suit les saisons** : environ 9 h 30 de lumière en décembre et 14 h 30 en juin, calculées pour la latitude de l'est du Kentucky. L'hiver cumule tout : moins d'heures, plus de froid, plus de besoins.
-- **Ce qu'Eli mange compte.** S'il s'est couché affamé, il perd des heures utiles le lendemain (1 h s'il a faim, 2 h s'il est affamé, 4 h s'il est épuisé), et les gestes deviennent plus difficiles. Donner son bol à Pearl, c'est raccourcir sa propre journée.
+- **Ce qu'Henry mange compte.** S'il s'est couché affamé, il perd des heures utiles le lendemain (1 h s'il a faim, 2 h s'il est affamé, 4 h s'il est épuisé), et les gestes deviennent plus difficiles. Donner son bol à Pearl, c'est raccourcir sa propre journée.
 - **Rentrer après la nuit tombée** reste possible, mais M'man s'inquiète (son Moral baisse), et la nuit, la montagne et la voie ferrée sont dangereuses.
 - **L'école**, du lundi au vendredi, prend toute la matinée. Elle apporte une soupe à midi, qui n'est pas prise sur la marmite (inspirée des cantines organisées par les Quakers dans les bassins houillers en 1931-1932). Elle fait aussi monter l'Enfance et l'Instruction et donne accès à Miss Adair. Sécher l'école libère des heures, mais un jour, l'institutrice vient frapper à la porte.
 
@@ -245,7 +245,7 @@ flowchart LR
 **Les gestes** (chacun dure moins de deux minutes et se résout automatiquement, avec un rendement moyen, une fois qu'on l'a fait une première fois) :
 - **Pêcher** : lire le courant, attendre. Un geste de patience.
 - **Le charbon des wagons** : le train ralentit dans la côte. Il faut grimper au bon moment, faire tomber les blocs et sauter avant le pont, pendant que le bull fait sa ronde (infiltration légère, champs de vision).
-- **Le ginseng** : observer le sous-bois et repérer les feuilles à cinq folioles et les baies rouges d'automne. Mamaw apprend à Eli à les reconnaître.
+- **Le ginseng** : observer le sous-bois et repérer les feuilles à cinq folioles et les baies rouges d'automne. Granny apprend à Henry à les reconnaître.
 - **Le moonshine** : choisir un itinéraire dans la montagne pour éviter l'agent fédéral et l'adjoint du shérif. Une cruche cassée, c'est une dette envers Dow.
 - **Le magasin** : marchander, troquer, demander du crédit, en dialogue.
 
@@ -253,9 +253,9 @@ flowchart LR
 
 **Trois états par personne** : la **Faim**, la **Santé** (*Bien portant → Malade → Gravement malade → Mourant*, plus des affections : rhume, pneumonie, pellagre, dysenterie, blessure) et le **Moral** (*Serein → Triste → Abattu → Brisé*).
 
-**Une lecture diégétique.** On ne lit pas des chiffres, on regarde la maison : les silhouettes maigrissent (trois stades par personnage), les postures s'affaissent, on entend une toux dans la nuit, et un jour Papa ne rentre plus du perron. Le cahier d'Eli donne la version écrite de tout cela pour qui en a besoin (accessibilité).
+**Une lecture diégétique.** On ne lit pas des chiffres, on regarde la maison : les silhouettes maigrissent (trois stades par personnage), les postures s'affaissent, on entend une toux dans la nuit, et un jour Papa ne rentre plus du perron. Le cahier d'Henry donne la version écrite de tout cela pour qui en a besoin (accessibilité).
 
-**Les tâches.** Chaque soir, dans la limite de la Voix d'Eli, on décide de ce que chacun fera le lendemain : chercher du travail, couper du bois, faire la lessive pour le bourg, garder Pearl, aller à l'école, s'occuper du potager (au printemps), préparer des remèdes, se reposer.
+**Les tâches.** Chaque soir, dans la limite de la Voix d'Henry, on décide de ce que chacun fera le lendemain : chercher du travail, couper du bois, faire la lessive pour le bourg, garder Pearl, aller à l'école, s'occuper du potager (au printemps), préparer des remèdes, se reposer.
 
 **L'autonomie.** Un membre au Moral bas peut refuser une tâche, ou agir de lui-même : Clay file à la réunion syndicale, Papa boit les derniers cents.
 
@@ -267,12 +267,12 @@ flowchart LR
 
 | Option | Coût | Efficacité |
 |---|---|---|
-| Les remèdes de Mamaw | Gratuits | Incertaine |
+| Les remèdes de Granny | Gratuits | Incertaine |
 | L'infirmière à cheval | Gratuite | Bonne, mais elle passe dans 2 ou 3 jours |
 | Le médecin du chef-lieu | 2 $ comptant et une demi-journée de marche | Bonne, et immédiate |
 | La levure de bière (contre la pellagre) | Quelques cents, ou la Croix-Rouge | Bonne |
 
-**Les départs.** On peut perdre quelqu'un sans qu'il meure : Clay saute dans un train de marchandises, Wes part au CCC, Ruth est envoyée chez une tante, Pearl à l'orphelinat du comté, Papa au Nord, Mamaw remonte à la vieille ferme. Chaque départ soulage la marmite et laisse une place vide à table. Ceux qui sont partis peuvent écrire (un mandat, des nouvelles)… ou se taire.
+**Les départs.** On peut perdre quelqu'un sans qu'il meure : Clay saute dans un train de marchandises, Wes part au CCC, Ruth est envoyée chez une tante, Pearl à l'orphelinat du comté, Papa au Nord, Granny remonte à la vieille ferme. Chaque départ soulage la marmite et laisse une place vide à table. Ceux qui sont partis peuvent écrire (un mandat, des nouvelles)… ou se taire.
 
 **La mort.** Elle existe, mais n'arrive jamais hors champ. Une maladie mortelle se voit venir pendant plusieurs jours, et la mort survient toujours au cours d'une journée jouée. Puis la partie continue.
 
@@ -294,40 +294,40 @@ flowchart LR
 | La montre de Papa | — | Papa (beaucoup) |
 | Le violon de Wes | Soirées de musique (Espoir) | Wes, et toute la maison se tait |
 | L'alliance d'Ida | — | Ida, en silence |
-| Le quilt de Mamaw | De la chaleur l'hiver | Mamaw |
+| Le quilt de Granny | De la chaleur l'hiver | Granny |
 | La carabine .22 | La chasse | Personne, mais plus de viande |
 | La Bible familiale | Les naissances y sont inscrites | Invendable : personne ne l'achèterait |
 
 ### 6.5 Grandir trop vite : la Voix et l'Enfance (mécanique signature)
 
-Deux valeurs propres à Eli, qui tirent en sens contraire.
+Deux valeurs propres à Henry, qui tirent en sens contraire.
 
 #### La Voix : sa place à table, au sens propre
 
-Le siège d'Eli se rapproche de celui de Papa à mesure que sa Voix grandit.
+Le siège d'Henry se rapproche de celui de Papa à mesure que sa Voix grandit.
 
-| Niveau | Nom | Ce qu'Eli contrôle |
+| Niveau | Nom | Ce qu'Henry contrôle |
 |---|---|---|
 | 0 | *Le gamin* | Son propre bol et ce qu'il rapporte. Papa sert, Papa décide. |
-| 1 | *On t'écoute* | Une proposition par soir (« Donne ma part à Pearl », « Clay devrait aller à la mine »), acceptée ou non selon l'humeur des parents et ce qu'Eli a rapporté. |
+| 1 | *On t'écoute* | Une proposition par soir (« Donne ma part à Pearl », « Clay devrait aller à la mine »), acceptée ou non selon l'humeur des parents et ce qu'Henry a rapporté. |
 | 2 | *Ton avis compte* | Il partage la marmite avec M'man, assigne les tâches de Ruth et de Pearl, propose celles des grands. |
 | 3 | *L'homme de la maison* | Tout : partage, tâches, ventes, grandes décisions. Le siège de Papa. |
 
-La Voix monte avec ce qu'Eli rapporte (et que la famille voit), avec les bonnes décisions et avec l'arc du père (le jour où Papa ne se lève plus, le jour où il part). Elle peut aussi redescendre, si Papa se relève ou revient.
+La Voix monte avec ce qu'Henry rapporte (et que la famille voit), avec les bonnes décisions et avec l'arc du père (le jour où Papa ne se lève plus, le jour où il part). Elle peut aussi redescendre, si Papa se relève ou revient.
 
 **Effet de bord voulu : la progression sert de tutoriel.** Au début, le joueur n'a que la vallée à apprendre. La gestion familiale s'ouvre à lui au moment où l'histoire la lui impose.
 
 #### L'Enfance : ce qui reste de ses quatorze ans
 
-- **Elle baisse** quand Eli sèche l'école, fait un travail d'homme, vole, voit ou commet des violences, se couche affamé, et à chaque niveau de Voix gagné.
+- **Elle baisse** quand Henry sèche l'école, fait un travail d'homme, vole, voit ou commet des violences, se couche affamé, et à chaque niveau de Voix gagné.
 - **Elle remonte lentement** quand il joue avec Pearl, se baigne, va à l'école, lit, écoute Wes jouer ou pêche avec Otis.
 - **Elle ne revient jamais entièrement :** elle ne peut pas remonter au-dessus de son niveau du début du chapitre.
 
 **Ses effets en jeu**
-- **Enfance haute :** Eli a accès aux *moments d'enfant* (une partie de billes avec Ruth, une chanson apprise à Pearl, un concours de ricochets). Ils prennent du temps, mais font remonter le Moral de toute la famille. Les rires d'enfant sont une ressource.
-- **Enfance basse :** ces options s'éteignent dans l'interface : « Tu n'en as plus envie. » En contrepartie, Eli est **endurci** : voler ou mentir ne lui coûte plus de Moral, les adultes le prennent au sérieux (meilleures négociations) et il a accès aux travaux d'homme (la mine, le piquet de grève).
+- **Enfance haute :** Henry a accès aux *moments d'enfant* (une partie de billes avec Ruth, une chanson apprise à Pearl, un concours de ricochets). Ils prennent du temps, mais font remonter le Moral de toute la famille. Les rires d'enfant sont une ressource.
+- **Enfance basse :** ces options s'éteignent dans l'interface : « Tu n'en as plus envie. » En contrepartie, Henry est **endurci** : voler ou mentir ne lui coûte plus de Moral, les adultes le prennent au sérieux (meilleures négociations) et il a accès aux travaux d'homme (la mine, le piquet de grève).
 
-**On ne peut pas avoir les deux.** Le joueur qui veut tout contrôler et tout optimiser fabrique, mécaniquement, un enfant qui n'en est plus un. Le joueur qui protège l'enfance d'Eli laisse M'man décider, avec prudence, et parfois mal.
+**On ne peut pas avoir les deux.** Le joueur qui veut tout contrôler et tout optimiser fabrique, mécaniquement, un enfant qui n'en est plus un. Le joueur qui protège l'enfance d'Henry laisse M'man décider, avec prudence, et parfois mal.
 
 ### 6.6 L'Espoir : la vallée qui perd ses couleurs
 
@@ -344,7 +344,7 @@ La Voix monte avec ce qu'Eli rapporte (et que la famille voit), avec les bonnes 
 > — d'après Ma Joad, *Les Raisins de la colère*
 
 - Chaque foyer du camp garde une **mémoire des services** : ce que les Caudill lui ont donné, et ce qu'ils lui ont pris.
-- **Donner quand on n'a presque rien** coûte cher tout de suite et rapporte plus tard, au moment où on en a le plus besoin : les Sizemore apportent du lait pendant la fièvre de Pearl, les voisins se massent devant la maison le jour où l'adjoint vient expulser, les hobos préviennent Eli que le bull a changé d'horaire.
+- **Donner quand on n'a presque rien** coûte cher tout de suite et rapporte plus tard, au moment où on en a le plus besoin : les Sizemore apportent du lait pendant la fièvre de Pearl, les voisins se massent devant la maison le jour où l'adjoint vient expulser, les hobos préviennent Henry que le bull a changé d'horaire.
 - **La trahison laisse des traces** : briser la grève, dénoncer un voleur, voler un voisin.
 
 ---
@@ -355,7 +355,7 @@ La Voix monte avec ce qu'Eli rapporte (et que la famille voit), avec les bonnes 
 
 | | Période | Jours joués | Ce qui pèse | Moments forts |
 |---|---|---|---|---|
-| **Prologue** | Août 1932 | 1 | — | Eli porte les gamelles à l'usine, le dernier coup de sifflet, les chaînes sur les grilles |
+| **Prologue** | Août 1932 | 1 | — | Henry porte les gamelles à l'usine, le dernier coup de sifflet, les chaînes sur les grilles |
 | **I. Les noix et le ginseng** | Octobre 1932 | ~12 | L'argent, la dette | Le photographe et la photo de famille, la fin de la saison du ginseng, le beurre de pommes qu'on touille toute la nuit chez les Sizemore, le premier refus de Papa |
 | *Intersaison* | Novembre | — | — | L'élection. Papa part-il chercher du travail au Nord ? |
 | **II. Le charbon des voies** | Décembre 1932 | ~12 | Le froid, la faim, la maladie | Les jours les plus courts de l'année, un Noël sans oranges, l'enquêtrice, le retour d'Oncle Hiram |
@@ -369,7 +369,7 @@ La Voix monte avec ce qu'Eli rapporte (et que la famille voit), avec les bonnes 
 
 - Une journée jouée dure de 10 à 15 minutes.
 - Entre deux journées jouées, 0 à 2 jours « ordinaires » peuvent passer. Ils sont résolus par la **routine** : les dernières tâches assignées et le niveau de rationnement (*plein*, *serré* ou *maigre*).
-- Entre deux chapitres, une **intersaison** : un montage narré (photographies, voix du vieil Eli) résout plusieurs semaines à partir de deux ou trois grandes décisions familiales. Par exemple : « Papa part-il au Nord ? », « Vend-on le violon pour passer janvier ? », « Rationnement serré ou maigre ? »
+- Entre deux chapitres, une **intersaison** : un montage narré (photographies, voix du vieil Henry) résout plusieurs semaines à partir de deux ou trois grandes décisions familiales. Par exemple : « Papa part-il au Nord ? », « Vend-on le violon pour passer janvier ? », « Rationnement serré ou maigre ? »
 - **Règle : personne ne meurt pendant une intersaison.** Elle peut aggraver un état, mais la conséquence se joue toujours au chapitre suivant.
 
 ### Les trois routes
@@ -377,8 +377,8 @@ La Voix monte avec ce qu'Eli rapporte (et que la famille voit), avec les bonnes 
 Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 
 - **Rester à Hollis.** Garder la maison (l'ardoise sous contrôle) et trouver un revenu : la mine sous contrat syndical, l'assistance, le mandat du CCC. *Qu'elle était verte ma vallée* : la communauté, la mine, la mémoire.
-- **Remonter à la vieille ferme.** Restaurer le domaine de Papaw, à deux heures de marche en haut du vallon : le toit, la clôture, les semences, le potager, peut-être une vache. C'est un chantier long, qui vole des journées à la survie immédiate. L'autarcie, l'isolement, la terre. Mamaw ne veut que ça.
-- **Partir vers le Nord.** Detroit, Akron ou Dayton. Il faut de l'argent pour le voyage (ou les trains de marchandises), une adresse, et accepter que Mamaw ne viendra pas. Oncle Hiram, revenu de Detroit les mains vides, rappelle que la route ne promet rien. *Les Raisins de la colère*.
+- **Remonter à la vieille ferme.** Restaurer le domaine du grand-père, à deux heures de marche en haut du vallon : le toit, la clôture, les semences, le potager, peut-être une vache. C'est un chantier long, qui vole des journées à la survie immédiate. L'autarcie, l'isolement, la terre. Granny ne veut que ça.
+- **Partir vers le Nord.** Detroit, Akron ou Dayton. Il faut de l'argent pour le voyage (ou les trains de marchandises), une adresse, et accepter que Granny ne viendra pas. Oncle Hiram, revenu de Detroit les mains vides, rappelle que la route ne promet rien. *Les Raisins de la colère*.
 
 ### La photo finale
 
@@ -387,28 +387,28 @@ Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 **À l'épilogue**, il revient en septembre 1933 et reprend le même cadrage. Le jeu se termine sur cette deuxième photo, composée par la simulation :
 - **Le lieu** : le perron de Hollis, la vieille ferme ou un trottoir de Detroit.
 - **Les présents** : ceux qui sont encore là. Les absents vivants sont représentés par une lettre dans la main d'Ida ; les morts, par une place que personne n'a comblée.
-- **Eli** : au milieu des enfants (Enfance préservée), ou debout à côté d'Ida, là où se tenait Papa (Voix 3).
-- Puis le vieil Eli dit, en quelques lignes, ce que chacun est devenu.
+- **Henry** : au milieu des enfants (Enfance préservée), ou debout à côté d'Ida, là où se tenait Papa (Voix 3).
+- Puis le vieil Henry dit, en quelques lignes, ce que chacun est devenu.
 
 **Trois exemples de fins**
-- **Le perron de Hollis.** Sept sur la photo, Mamaw est morte en février. Eli se tient à côté d'Ida ; la lettre de Papa, partie de Detroit, est dans sa main. *« J'ai pris la place de mon père à la n° 4 en 1934. J'y suis resté trente et un ans. Ruth, elle, est devenue institutrice. »*
-- **La vieille ferme.** Huit sur la photo, Eli pieds nus au milieu des petits. *« On a eu faim encore longtemps. Mais on a eu faim ensemble. »*
-- **Un trottoir de Detroit.** Cinq sur la photo : Mamaw est restée sur sa montagne, Clay est en prison à Harlan, Pearl repose au cimetière de Hollis. *« Je n'ai jamais revu la vallée verte. Je ne suis pas sûr qu'elle l'ait jamais été. »*
+- **Le perron de Hollis.** Sept sur la photo, Granny est morte en février. Henry se tient à côté d'Ida ; la lettre de Papa, partie de Detroit, est dans sa main. *« J'ai pris la place de mon père à la n° 4 en 1934. J'y suis resté trente et un ans. Ruth, elle, est devenue institutrice. »*
+- **La vieille ferme.** Huit sur la photo, Henry pieds nus au milieu des petits. *« On a eu faim encore longtemps. Mais on a eu faim ensemble. »*
+- **Un trottoir de Detroit.** Cinq sur la photo : Granny est restée sur sa montagne, Clay est en prison à Harlan, Pearl repose au cimetière de Hollis. *« Je n'ai jamais revu la vallée verte. Je ne suis pas sûr qu'elle l'ait jamais été. »*
 
-**Philosophie de difficulté : la partie ne se gagne pas, elle se traverse.** La fin parfaite (huit sur la photo, Eli encore un enfant) existe, mais elle doit rester rare. Un **mode récit**, moins exigeant, est proposé à ceux qui viennent surtout pour l'histoire.
+**Philosophie de difficulté : la partie ne se gagne pas, elle se traverse.** La fin parfaite (huit sur la photo, Henry encore un enfant) existe, mais elle doit rester rare. Un **mode récit**, moins exigeant, est proposé à ceux qui viennent surtout pour l'histoire.
 
 ---
 
 ## 8. Écriture et dialogues
 
 - **Peu de texte, beaucoup de gestes.** Des dialogues courts et secs, avec un humour pudique. Personne ne fait de discours sur la crise : on parle de bols, de charbon et de chaussures.
-- **Un narrateur : le vieil Eli**, des décennies plus tard, comme dans *Qu'elle était verte ma vallée*. Il n'intervient qu'à l'ouverture des chapitres, pendant les intersaisons et à la fin.
-- **Le registre** : un français oral et rural, sans caricature (« Pap' », « M'man », « Mamaw »). Pas de patois inventé, pas d'orthographe phonétique. En anglais, le parler appalachien sera documenté et relu par des locuteurs.
+- **Un narrateur : le vieil Henry**, des décennies plus tard, comme dans *Qu'elle était verte ma vallée*. Il n'intervient qu'à l'ouverture des chapitres, pendant les intersaisons et à la fin.
+- **Le registre** : un français oral et rural, sans caricature (« Pap' », « M'man », « Granny »). Pas de patois inventé, pas d'orthographe phonétique. En anglais, le parler appalachien sera documenté et relu par des locuteurs.
 - **Les choix de dialogue ont des conséquences mécaniques** (Voix, Moral, Entraide), suggérées par le ton plutôt que par des icônes.
 
 ### Extraits
 
-**Ouverture du chapitre I (le vieil Eli)**
+**Ouverture du chapitre I (le vieil Henry)**
 > On était huit, cet automne-là. Je le sais parce que M'man comptait les bols tous les soirs, à voix basse, comme on compte ses enfants sur un quai de gare. Huit. Elle disait : tant qu'on est là, tous les huit, il peut rien nous arriver.
 > Elle se trompait, bien sûr. Mais pas sur tout.
 
@@ -421,12 +421,12 @@ Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 > → *Donner la moitié de ton bol à Pearl* · *Manger* · « Moi non plus, j'ai pas travaillé. »
 
 **La veillée avec M'man**
-> **ELI** — M'man, t'as mangé ?
+> **HENRY** — M'man, t'as mangé ?
 > **IDA** — J'ai goûté en cuisinant. Va te coucher, t'as l'école demain.
 >
-> *(Si Eli l'a observée pendant le repas)* → « Je t'ai regardée. T'as rien goûté du tout. »
-> **IDA** — … Les petits d'abord, Eli. Ça a toujours été comme ça.
-> *(Eli peut désormais réserver le bol de M'man, s'il a la Voix pour le faire.)*
+> *(Si Henry l'a observée pendant le repas)* → « Je t'ai regardée. T'as rien goûté du tout. »
+> **IDA** — … Les petits d'abord, Henry. Ça a toujours été comme ça.
+> *(Henry peut désormais réserver le bol de M'man, s'il a la Voix pour le faire.)*
 
 **Clay et Papa**
 > **CLAY** — La Black Mountain embauche. Un dollar cinquante la journée, payé comptant.
@@ -436,12 +436,12 @@ Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 > → *Soutenir Clay* · *Soutenir Papa* · *Se taire*
 
 **Wes et le CCC**
-> **WES** — Trente dollars par mois, Eli. Vingt-cinq qu'ils envoient direct à M'man. Faut juste avoir dix-huit ans… et que Pap' signe les papiers de l'assistance.
-> **ELI** — T'as dix-sept ans.
+> **WES** — Trente dollars par mois, Henry. Vingt-cinq qu'ils envoient direct à M'man. Faut juste avoir dix-huit ans… et que Pap' signe les papiers de l'assistance.
+> **HENRY** — T'as dix-sept ans.
 > **WES** — J'en aurai dix-huit le jour où je l'écrirai.
 
 **Oncle Hiram, revenu de Detroit**
-> **HIRAM** — Ford a fermé la moitié de son usine. Là-haut, les gens font la queue pour la soupe en costume-cravate. Y a rien là-bas, Amos. Rien que du froid qui coûte plus cher qu'ici.
+> **HIRAM** — Ford a fermé la moitié de son usine. Là-haut, les gens font la queue pour la soupe en costume-cravate. Y a rien là-bas, Kenneth. Rien que du froid qui coûte plus cher qu'ici.
 
 ---
 
@@ -451,33 +451,33 @@ Les événements sont écrits en données (conditions, poids, effets) et en Ink 
 
 **L'orange de Noël** *(hiver)*
 Chaque année, la compagnie offrait une orange et un sachet de bonbons à chaque enfant du camp. Pas cette année. Pearl a quatre ans, et elle s'en souvient quand même.
-- Échanger le couteau d'Eli au magasin contre une orange : Enfance en baisse, Pearl et l'Espoir en hausse.
+- Échanger le couteau d'Henry au magasin contre une orange : Enfance en baisse, Pearl et l'Espoir en hausse.
 - Voler une orange dans la caisse livrée chez le directeur : risqué, Enfance en baisse, l'Espoir monte fortement si ça marche.
 - Sculpter un jouet en bois : deux heures de lumière en moins le 24 décembre, Enfance et Espoir en hausse.
 - Ne rien faire. Pearl ne demande rien, et c'est pire.
 
 **L'enquêtrice** *(hiver)*
 Avant de distribuer la farine, la Croix-Rouge envoie une enquêtrice. Le violon de Wes est accroché au mur et la montre de Papa posée sur la cheminée. « Vous avez des biens à vendre, madame Caudill. »
-- Cacher le violon et la montre avant sa visite (possible si les voisins ont prévenu Eli) : farine obtenue, mais le mensonge coûte à Papa.
+- Cacher le violon et la montre avant sa visite (possible si les voisins ont prévenu Henry) : farine obtenue, mais le mensonge coûte à Papa.
 - Les vendre d'abord : de l'argent, moins d'Espoir.
 - Montrer la maison telle qu'elle est : la farine peut être refusée, mais Papa garde sa fierté.
 - Papa refuse de la laisser entrer : pas de farine.
 
 **Le train de 6 h 12** *(hiver)*
 Le train de charbon ralentit dans la côte de Lick Branch. Il y a un nouveau bull, et on dit qu'il cogne.
-- Grimper sur le wagon (geste d'infiltration) : trois jours de charbon. Si Eli est pris : des coups, la Santé et l'Enfance baissent.
+- Grimper sur le wagon (geste d'infiltration) : trois jours de charbon. Si Henry est pris : des coups, la Santé et l'Enfance baissent.
 - Ramasser le long des voies : une demi-journée de charbon, sans risque.
 - Demander aux hobos l'horaire de ronde du bull (si l'Entraide le permet).
 
 **La fièvre de Pearl** *(toute saison)*
 Pearl brûle depuis la nuit.
-- Le médecin du chef-lieu : 2 $ comptant et une demi-journée de marche (le laitier peut emmener Eli contre un service).
+- Le médecin du chef-lieu : 2 $ comptant et une demi-journée de marche (le laitier peut emmener Henry contre un service).
 - L'infirmière à cheval : gratuite, elle passera « dans deux ou trois jours ».
-- Le remède de Mamaw (tisane d'eupatoire perfoliée, cataplasme d'oignon) : gratuit, résultat incertain.
+- Le remède de Granny (tisane d'eupatoire perfoliée, cataplasme d'oignon) : gratuit, résultat incertain.
 - Prier au culte avec M'man : l'Espoir monte, rien de plus.
 
 **Les poules** *(automne)*
-Deux poules ont disparu. Au matin, Eli trouve des plumes devant la porte des Sizemore, dont les six enfants n'ont pas mangé depuis deux jours.
+Deux poules ont disparu. Au matin, Henry trouve des plumes devant la porte des Sizemore, dont les six enfants n'ont pas mangé depuis deux jours.
 - Aller réclamer : l'Entraide avec les Sizemore s'effondre, une poule peut-être récupérée.
 - Le dire à Papa : il ira, et ça finira mal.
 - Ne rien dire : les Sizemore savent que tu sais.
@@ -486,9 +486,9 @@ Deux poules ont disparu. Au matin, Eli trouve des plumes devant la porte des Siz
 **Un dollar cinquante la journée** *(été)*
 La n° 4 est en grève. La Black Mountain embauche des remplaçants, payés comptant et pas en scrip. Clay tient le piquet de grève.
 - Wes y va : beaucoup d'argent, mais le camp ne pardonne pas, et Clay et Wes ne se parlent plus.
-- Eli y va. Il a 14 ans, c'est interdit, mais pendant une grève personne ne vérifie : de l'argent, l'Enfance s'effondre, c'est dangereux.
+- Henry y va. Il a 14 ans, c'est interdit, mais pendant une grève personne ne vérifie : de l'argent, l'Enfance s'effondre, c'est dangereux.
 - Personne n'y va : le Moral de Clay monte, la marmite attend.
-- Eli porte à manger au piquet : l'Entraide monte, et la confiance de Clay aussi.
+- Henry porte à manger au piquet : l'Entraide monte, et la confiance de Clay aussi.
 
 ---
 
@@ -517,7 +517,7 @@ La n° 4 est en grève. La Black Mountain embauche des remplaçants, payés comp
 
 ### Une interface diégétique
 
-- **Le cahier d'écolier d'Eli** sert de menu, de journal et de carte : des plans dessinés au crayon, des listes rayées, les dates.
+- **Le cahier d'écolier d'Henry** sert de menu, de journal et de carte : des plans dessinés au crayon, des listes rayées, les dates.
 - **Les ressources se voient dans la maison** : l'étagère du garde-manger (bocaux, sacs), le tas de bois et le seau à charbon, la boîte à café où dort l'argent, l'ardoise tenue par Mr. Pruitt.
 - **Les typographies** : du crayon pour le cahier, de la machine à écrire pour les courriers officiels (avis d'expulsion, lettre du CCC), les lettrages des affiches et des journaux de 1932 pour les titres.
 
@@ -527,7 +527,7 @@ La n° 4 est en grève. La Black Mountain embauche des remplaçants, payés comp
 
 - **La musique traditionnelle des Appalaches** : banjo *clawhammer*, violon, dulcimer des Appalaches, chant a cappella. On puise dans le répertoire traditionnel du domaine public (les ballades anglo-écossaises conservées dans les montagnes, *Barbara Allen*, *Wayfaring Stranger*, *Shady Grove*, *Man of Constant Sorrow*), complété par des compositions originales.
 - **Une musique dynamique** réglée par l'Espoir (voir 6.6).
-- **La musique dans le monde du jeu** : Wes au violon (s'il le vend, la maison se tait), Mamaw qui chante en cousant, les cantiques « lignés » des Old Regular Baptists à l'église (le prédicateur dit la ligne, l'assemblée la reprend lentement), les chants syndicaux à la mine. *Which Side Are You On?* a été écrite en 1931 dans le comté de Harlan ; ses droits sont à vérifier, et on écrira une chanson originale si nécessaire.
+- **La musique dans le monde du jeu** : Wes au violon (s'il le vend, la maison se tait), Granny qui chante en cousant, les cantiques « lignés » des Old Regular Baptists à l'église (le prédicateur dit la ligne, l'assemblée la reprend lentement), les chants syndicaux à la mine. *Which Side Are You On?* a été écrite en 1931 dans le comté de Harlan ; ses droits sont à vérifier, et on écrira une chanson originale si nécessaire.
 - **Le son du silence.** Pendant vingt ans, le sifflet de l'usine a rythmé la vallée. Le premier matin du chapitre I, à l'heure où il sonnait, on n'entend rien. Le joueur ne le remarque peut-être pas. Papa, si : il est debout sur le perron, à l'heure.
 - **Les ambiances** : le ruisseau, les trains de charbon, l'engoulevent bois-pourri la nuit, la toux dans la chambre d'à côté, le poêle qui craque.
 

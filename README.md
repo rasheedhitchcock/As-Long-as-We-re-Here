@@ -2,7 +2,7 @@
 
 > « Huit bols sur la table. De quoi en remplir cinq. Tu as quatorze ans. »
 
-Est du Kentucky, 1932. L'usine a fermé. Eli Caudill, 14 ans, parcourt la vallée le jour pour rapporter de quoi nourrir sa famille de huit personnes. Le soir, il partage la marmite. Plus le père s'effondre, plus Eli prend sa place à table, et moins il lui reste d'enfance.
+Est du Kentucky, 1932. L'usine a fermé. Henry Caudill, 14 ans, parcourt la vallée le jour pour rapporter de quoi nourrir sa famille de huit personnes. Le soir, il partage la marmite. Plus le père s'effondre, plus Henry prend sa place à table, et moins il lui reste d'enfance.
 
 **Survie narrative et gestion familiale en 2D de profil**, inspirée des *Raisins de la colère* et de *Qu'elle était verte ma vallée*.
 
