@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="570" viewBox="0 0 1280 570">
+<title>Palettes par saison</title>
+<rect x="0.0" y="0.0" width="1280.0" height="570.0" fill="#E8DFCC" />
+<text x="40" y="64" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#1F1A17">Automne</text>
+<text x="40" y="86" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-style="italic" fill="#4A3F35">octobre 1932</text>
+<rect x="250.0" y="30.0" width="184.0" height="58.0" fill="#7A2E1A" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="250" y="106" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">rouille</text>
+<text x="434" y="106" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#7A2E1A</text>
+<rect x="450.0" y="30.0" width="184.0" height="58.0" fill="#B8732A" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="450" y="106" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">ocre</text>
+<text x="634" y="106" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#B8732A</text>
+<rect x="650.0" y="30.0" width="184.0" height="58.0" fill="#D9A441" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="650" y="106" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">hickory doré</text>
+<text x="834" y="106" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#D9A441</text>
+<rect x="850.0" y="30.0" width="184.0" height="58.0" fill="#5C4A33" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="850" y="106" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">tabac</text>
+<text x="1034" y="106" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#5C4A33</text>
+<rect x="1050.0" y="30.0" width="184.0" height="58.0" fill="#9AA5A0" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="1050" y="106" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">ciel d'octobre</text>
+<text x="1234" y="106" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#9AA5A0</text>
+<text x="40" y="168" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#1F1A17">Hiver</text>
+<text x="40" y="190" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-style="italic" fill="#4A3F35">décembre 1932</text>
+<rect x="250.0" y="134.0" width="184.0" height="58.0" fill="#1C1D21" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="250" y="210" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">charbon</text>
+<text x="434" y="210" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#1C1D21</text>
+<rect x="450.0" y="134.0" width="184.0" height="58.0" fill="#3B4654" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="450" y="210" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">ardoise</text>
+<text x="634" y="210" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#3B4654</text>
+<rect x="650.0" y="134.0" width="184.0" height="58.0" fill="#7D8A96" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="650" y="210" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">brume froide</text>
+<text x="834" y="210" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#7D8A96</text>
+<rect x="850.0" y="134.0" width="184.0" height="58.0" fill="#D8D4C8" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="850" y="210" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">neige sale</text>
+<text x="1034" y="210" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#D8D4C8</text>
+<rect x="1050.0" y="134.0" width="184.0" height="58.0" fill="#E37A2C" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="1050" y="210" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">braise du poêle</text>
+<text x="1234" y="210" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#E37A2C</text>
+<text x="40" y="272" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#1F1A17">Printemps</text>
+<text x="40" y="294" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-style="italic" fill="#4A3F35">mars-avril 1933</text>
+<rect x="250.0" y="238.0" width="184.0" height="58.0" fill="#5E7A3A" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="250" y="314" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">mousse</text>
+<text x="434" y="314" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#5E7A3A</text>
+<rect x="450.0" y="238.0" width="184.0" height="58.0" fill="#A3BE6E" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="450" y="314" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">pousse</text>
+<text x="634" y="314" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#A3BE6E</text>
+<rect x="650.0" y="238.0" width="184.0" height="58.0" fill="#B4527A" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="650" y="314" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">gainier</text>
+<text x="834" y="314" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#B4527A</text>
+<rect x="850.0" y="238.0" width="184.0" height="58.0" fill="#EEEADB" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="850" y="314" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">cornouiller</text>
+<text x="1034" y="314" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#EEEADB</text>
+<rect x="1050.0" y="238.0" width="184.0" height="58.0" fill="#6E5843" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="1050" y="314" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">boue</text>
+<text x="1234" y="314" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#6E5843</text>
+<text x="40" y="376" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#1F1A17">Été</text>
+<text x="40" y="398" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-style="italic" fill="#4A3F35">juillet-août 1933</text>
+<rect x="250.0" y="342.0" width="184.0" height="58.0" fill="#2F4A26" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="250" y="418" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">vert lourd</text>
+<text x="434" y="418" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#2F4A26</text>
+<rect x="450.0" y="342.0" width="184.0" height="58.0" fill="#6F8F3F" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="450" y="418" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">feuillage</text>
+<text x="634" y="418" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#6F8F3F</text>
+<rect x="650.0" y="342.0" width="184.0" height="58.0" fill="#CFC9A0" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="650" y="418" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">brume de chaleur</text>
+<text x="834" y="418" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#CFC9A0</text>
+<rect x="850.0" y="342.0" width="184.0" height="58.0" fill="#E9E27A" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="850" y="418" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">luciole</text>
+<text x="1034" y="418" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#E9E27A</text>
+<rect x="1050.0" y="342.0" width="184.0" height="58.0" fill="#4F5864" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="1050" y="418" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">ciel d'orage</text>
+<text x="1234" y="418" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#4F5864</text>
+<line x1="40.0" y1="436.0" x2="1240.0" y2="436.0" stroke="#B3A38A" stroke-width="1.0" stroke-linecap="round"/>
+<text x="40" y="480" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#1F1A17">Sépia</text>
+<text x="40" y="502" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-style="italic" fill="#4A3F35">Espoir à zéro</text>
+<rect x="250.0" y="446.0" width="184.0" height="58.0" fill="#1F1A17" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="250" y="522" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">encre</text>
+<text x="434" y="522" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#1F1A17</text>
+<rect x="450.0" y="446.0" width="184.0" height="58.0" fill="#4A3F35" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="450" y="522" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">terre d'ombre</text>
+<text x="634" y="522" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#4A3F35</text>
+<rect x="650.0" y="446.0" width="184.0" height="58.0" fill="#7A6A58" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="650" y="522" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">bistre</text>
+<text x="834" y="522" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#7A6A58</text>
+<rect x="850.0" y="446.0" width="184.0" height="58.0" fill="#B3A38A" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="850" y="522" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">sépia clair</text>
+<text x="1034" y="522" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#B3A38A</text>
+<rect x="1050.0" y="446.0" width="184.0" height="58.0" fill="#E8DFCC" stroke="#1F1A17" stroke-opacity="0.25" stroke-width="1"/>
+<text x="1050" y="522" font-family="Georgia, 'Times New Roman', serif" font-size="14" fill="#1F1A17">papier</text>
+<text x="1234" y="522" text-anchor="end" font-family="DejaVu Sans Mono, Menlo, monospace" font-size="12" fill="#4A3F35">#E8DFCC</text>
+</svg>
