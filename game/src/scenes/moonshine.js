@@ -992,7 +992,7 @@
   // ================================================================== la scène
   G.Scenes.moonshine = (opts = {}) => G.makeScene({
     enter() {
-      layers();
+      const __t0 = performance.now(); layers(); console.log('LAYERS_MS', Math.round(performance.now() - __t0));
       G.audio.amb(['night', 'wind']);
       if (G.audio.stopSong) G.audio.stopSong(1.2);
       this.state = 'intro';
@@ -1313,7 +1313,7 @@
         d.alert = 1;
         G.audio.sfx('bark');
         G.audio.sfx('bark', 0.75);
-        this.startSweep(true, 1.0);
+        this.startSweep(true, 1.1);
       }
     },
 
@@ -1827,6 +1827,8 @@
       if (this.state !== 'play' || this.qte) return null;
       const a = this.agent;
       if (this.creek) return 'Saute quand la pierre suivante ne bouge plus.';
+      const inFerns = FERNS.some(([f0, f1]) => this.hx >= f0 + 8 && this.hx <= f1 - 8);
+      if ((a.mode === 'raise' || a.mode === 'sweep') && !this.leaving && inFerns && !this.crouch) return 'Baisse-toi dans les fougères !';
       if (a.mode === 'raise') {
         return this.sweeps <= 1 ? 'Il lève sa lanterne… Vite, derrière un tronc ou dans les fougères !' : 'Il lève sa lanterne… Cache-toi !';
       }

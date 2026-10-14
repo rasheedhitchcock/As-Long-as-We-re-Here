@@ -326,10 +326,12 @@
     });
 
     const res = await G.play(G.Scenes.ginseng({
-      onRoot: async (e) => { const s = T.d2Root[e.index]; if (s) await G.run(s); },
+      outro: false,
+      onRoot: async (e) => { await G.run(T.d2RootQuality(e.quality)); const s = T.d2Root[e.index]; if (s) await G.run(s); },
       onMistake: async (e) => { const s = T.d2Mistake[e.kind]; if (s) await G.run(s); },
     }));
     let roots = (res && res.roots) || [];
+    if (roots.length > 0 && roots.length < 3) await G.run(T.d2Dusk);
     if (!roots.length) {
       await G.run([['hattie', 'Rien ? Bon. Regarde.'], 'Granny se pencha, écarta trois feuilles mortes et sortit une racine du premier coup, comme on sort un mouchoir de sa poche.', ['hattie', 'Ça vient avec les années. Ou jamais.']]);
       roots = [{ quality: 0.7 }];

@@ -779,13 +779,14 @@
   };
   // Grain animé plein écran + vignettage, à appeler en fin de draw().
   A.finish = (ctx, opts = {}) => {
-    const g = A.grainTile();
+    // Motif de grain mis en cache par contexte (évite de le recréer à chaque image).
+    if (!ctx.__grain) ctx.__grain = ctx.createPattern(A.grainTile(), 'repeat');
     ctx.save();
     ctx.globalAlpha = opts.grain != null ? opts.grain : 0.045;
     ctx.globalCompositeOperation = 'overlay';
     const ox = (G.frame * 37) % 256, oy = (G.frame * 91) % 256;
     ctx.translate(-ox, -oy);
-    ctx.fillStyle = ctx.createPattern(g, 'repeat');
+    ctx.fillStyle = ctx.__grain;
     ctx.fillRect(0, 0, G.W + 256, G.H + 256);
     ctx.restore();
     const v = A.cached('vignette', G.W, G.H, (cx, w, h) => {
@@ -5642,7 +5643,7 @@
   const PENALTY = 12;                              // secondes de jour perdues par leurre
   const TOOLS = {
     stick: { r: 26, a: 0.8, gap: 9, rate: 6 },
-    fingers: { r: 14, a: 0.15, gap: 7, rate: 1.6 },
+    fingers: { r: 14, a: 0.2, gap: 7, rate: 2 },
   };
   const TYPES = ['ginseng', 'ginseng', 'ginseng', 'ginseng', 'ginseng',
     'creeper', 'creeper', 'sarsaparilla', 'sarsaparilla', 'ivy', 'ivy', 'jack', 'jack'];
@@ -6272,11 +6273,11 @@
     const n2 = { x: cx + (rnd() - 0.5) * 8, y: top + 30 + rnd() * 14 };
     caps.push(cap(cx, top, n2.x, n2.y, 4.5, 6.5, 'neck', 'top'));
     const lean = (rnd() - 0.5) * 0.35;
-    const bodyL = 92 + rnd() * 30;
+    const bodyL = 86 + rnd() * 28;
     const b2 = { x: n2.x + Math.sin(lean) * bodyL, y: n2.y + Math.cos(lean) * bodyL };
     const bm = { x: (n2.x + b2.x) / 2 + (rnd() - 0.5) * 10, y: (n2.y + b2.y) / 2 };
-    const fat = 14 + rnd() * 4;
-    caps.push(cap(n2.x, n2.y, bm.x, bm.y, 8, fat, 'body', 'top'));
+    const fat = 16 + rnd() * 5;
+    caps.push(cap(n2.x, n2.y, bm.x, bm.y, 9, fat, 'body', 'top'));
     caps.push(cap(bm.x, bm.y, b2.x, b2.y, fat, fat * 0.8, 'body', 'top'));
     for (const side of [-1, 1]) {
       if (rnd() < 0.2) continue;
@@ -6957,9 +6958,9 @@
         for (const rl of R.rootlets) {
           if (rl.broken >= 0) continue;
           for (let k = 0; k < rl.pts.length - 1; k++) {
-            if (segDist(x, y, rl.pts[k][0], rl.pts[k][1], rl.pts[k + 1][0], rl.pts[k + 1][1]).d < 11) {
+            if (segDist(x, y, rl.pts[k][0], rl.pts[k][1], rl.pts[k + 1][0], rl.pts[k + 1][1]).d < 9) {
               rl.broken = Math.max(0, k);
-              d.q = Math.max(0.15, d.q - 0.03);
+              d.q = Math.max(0.15, d.q - 0.015);
               d.lost++;
               if (d.crunchCd <= 0) { G.audio.sfx('crunch'); d.crunchCd = 0.25; }
               break;
@@ -7039,9 +7040,10 @@
         }
       } else d.rub = Math.max(0, d.rub - dt * 2);
       if (d.scraping) {
-        let n = 0;
-        for (const i of d.zone) if (d.grid[i] < 0.2) n++;
-        d.cleared = d.zone.length ? n / d.zone.length : 1;
+        // part de terre ôtée autour de la racine (moyenne : chaque passage compte)
+        let sum = 0;
+        for (const i of d.zone) sum += Math.min(1, d.grid[i] * 1.15);
+        d.cleared = d.zone.length ? 1 - sum / d.zone.length : 1;
         if (!d.ready && d.cleared >= PULL_AT) {
           d.ready = true;
           G.audio.sfx('good');
@@ -7057,16 +7059,18 @@
     pull() {
       const d = this.dig;
       if (d.pull) return;
-      const broken = d.cleared < PULL_AT;
+      const early = d.cleared < PULL_AT;
       let lostNow = 0;
-      if (!broken) {
+      if (!early) {
         for (const rl of d.root.rootlets) {
           if (rl.broken < 0 && this.buried(rl) > 0.5) { rl.broken = Math.max(1, Math.floor(rl.pts.length / 2)); lostNow++; }
         }
       }
-      d.q = Math.max(0.15, d.q - lostNow * 0.02);
+      d.q = Math.max(0.15, d.q - lostNow * 0.015);
       d.lost += lostNow;
-      if (broken) d.q *= 0.5;
+      if (early) d.q *= 0.5;
+      // tirée trop tôt, ou trop de coups de bâton : elle casse
+      const broken = early || d.q < 0.45;
       d.pull = { t: 0, broken };
       d.ptr = false; d.scraping = false;
       G.audio.sfx(broken ? 'crunch' : 'dig');
@@ -7076,7 +7080,8 @@
         const q = Math.round(d.q * 100) / 100;
         const label = broken ? 'Cassée' : q >= 0.86 ? 'Racine entière' : 'Un peu abîmée';
         let sub;
-        if (broken) sub = 'Tirée trop tôt : les jambes sont restées dans la terre.';
+        if (early) sub = 'Tirée trop tôt : les jambes sont restées dans la terre.';
+        else if (broken) sub = 'Trop de coups de bâton : elle s\'est cassée en tirant.';
         else if (q >= 0.86) sub = d.lost ? 'Quelques radicelles en moins, mais elle est belle.' : 'Pas une marque, et toutes ses radicelles.';
         else if (d.hits) sub = d.hits > 1 ? 'Le bâton l\'a marquée plusieurs fois.' : 'Le bâton l\'a marquée.';
         else if (d.rubbed > 0.5) sub = 'Tu l\'as trop frottée avec les doigts.';
@@ -7470,7 +7475,7 @@
       ui.bar(uctx, bx + 18, by + 66, 264, 10, d.cleared, { color: d.ready ? P.gold : '#A88A5A' });
       uctx.fillStyle = P.paper;
       uctx.fillRect(bx + 18 + 264 * PULL_AT - 1, by + 62, 2, 18);
-      const st = d.q >= 0.97 ? 'La racine est intacte.' : d.q >= 0.86 ? 'Une petite marque.' : d.q >= 0.6 ? 'La racine est abîmée.' : 'La racine est bien abîmée.';
+      const st = d.q >= 0.97 ? 'La racine est intacte.' : d.q >= 0.86 ? 'Presque intacte.' : d.q >= 0.6 ? 'La racine est abîmée.' : 'La racine est bien abîmée.';
       ui.text(uctx, st, bx + 18, by + 100, { size: 18, italic: true, color: d.q >= 0.86 ? '#CFE0A8' : '#E9A27A' });
       if (!d.result && !d.pull) {
         // outils
@@ -9814,7 +9819,7 @@
   // ================================================================== la scène
   G.Scenes.moonshine = (opts = {}) => G.makeScene({
     enter() {
-      layers();
+      const __t0 = performance.now(); layers(); console.log('LAYERS_MS', Math.round(performance.now() - __t0));
       G.audio.amb(['night', 'wind']);
       if (G.audio.stopSong) G.audio.stopSong(1.2);
       this.state = 'intro';
@@ -10135,7 +10140,7 @@
         d.alert = 1;
         G.audio.sfx('bark');
         G.audio.sfx('bark', 0.75);
-        this.startSweep(true, 1.0);
+        this.startSweep(true, 1.1);
       }
     },
 
@@ -10649,6 +10654,8 @@
       if (this.state !== 'play' || this.qte) return null;
       const a = this.agent;
       if (this.creek) return 'Saute quand la pierre suivante ne bouge plus.';
+      const inFerns = FERNS.some(([f0, f1]) => this.hx >= f0 + 8 && this.hx <= f1 - 8);
+      if ((a.mode === 'raise' || a.mode === 'sweep') && !this.leaving && inFerns && !this.crouch) return 'Baisse-toi dans les fougères !';
       if (a.mode === 'raise') {
         return this.sweeps <= 1 ? 'Il lève sa lanterne… Vite, derrière un tronc ou dans les fougères !' : 'Il lève sa lanterne… Cache-toi !';
       }
@@ -11483,7 +11490,7 @@
         if (m.moving) {
           m.dir = Math.sign(dx) || m.dir;
           const before = m.phase;
-          m.phase = (m.phase + (sp * k * d / Math.max(sp, 1e-6)) / 150) % 1;
+          m.phase = (m.phase + (k * d) / 150) % 1;
           if (Math.floor(before * 2) !== Math.floor(m.phase * 2)) G.audio.sfx('step');
         } else m.dir = t.dir;
       },
@@ -11517,7 +11524,7 @@
         const ida = this.byId.ida;
         if (m.id === 'hattie' && (m.slot === 5 || m.slot === 6)) this.say('Parfait, la grand-mère au milieu.', 'granny', true);
         else if (m.id === 'pearl' && this.inArms) this.say(`Gardez-la contre vous, madame. Elle bougera moins.`, 'arms', true);
-        else if (m.id === 'pearl' && m.slot >= 0 && ida) this.say('La petite ne tiendra jamais trois secondes sans bouger.', 'pearl', true);
+        else if (m.id === 'pearl' && m.slot >= 0 && ida) this.say('La petite ne tiendra jamais trois secondes sans bouger. Sa mère pourrait la prendre.', 'pearl', true);
         else if (m.slot >= 0 && SLOTS[m.slot].row === 1 && SLOTS[m.slot].pose === 'stand' && m.h >= 146 && this.members.some((o) => o.slot >= 0 && o.slot < 4 && o.h < 120)) {
           this.say('Les grands derrière, les petits devant, plutôt.', 'rows', true);
         }
@@ -11891,7 +11898,7 @@
       startPose() {
         this.phase = 'pose';
         this.pt = 0;
-        this.pz = { stage: 'ready', t: 0, n: -1, readyDur: 1.9, fly: null };
+        this.pz = { stage: 'ready', t: 0, n: -1, readyDur: 1.9 };
         this.say('Bien. Maintenant, ne bougez plus.', null, true);
       },
       toPrint() {
@@ -12106,20 +12113,21 @@
           return;
         }
         A.char(ctx, m.id, s.x, s.foot - lift, o);
-        if (c) c.ghostBox = this.boxOf(m, s.x, s.foot - lift, s.pose, s.dir);
       },
       drawDragged(ctx) {
         const d = this.drag, m = d.m;
         const tilt = U.clamp(-d.vx * 0.0006, -0.3, 0.3);
         const gx = m.x + d.gx, gy = m.y + d.gy;
+        // ombre au sol, détachée : on le soulève
+        ctx.fillStyle = 'rgba(30,20,12,0.22)';
+        ctx.beginPath(); ctx.ellipse(m.x + 6, m.y + 14, m.h * 0.2, 5, 0, 0, Math.PI * 2); ctx.fill();
         ctx.save();
         ctx.translate(gx, gy);
         ctx.rotate(tilt);
         ctx.translate(-gx, -gy);
-        const pose = m.id === 'ida' && this.inArms ? 'stand' : 'stand';
-        const extra = { arms: m.id === 'ida' && this.inArms ? undefined : [-0.32, 0.42], rim: m.id === 'henry' };
-        if (extra.arms === undefined) delete extra.arms;
-        this.drawAt(ctx, m, m.x, m.y, pose, m.dir || 1, extra);
+        const extra = { rim: m.id === 'henry' ? P.rim : 'rgba(250,242,222,0.92)' };
+        if (!(m.id === 'ida' && this.inArms)) extra.arms = [-0.32, 0.42];
+        this.drawAt(ctx, m, m.x, m.y, 'stand', m.dir || 1, extra);
         ctx.restore();
         m.box = this.boxOf(m, m.x, m.y, 'stand', 1);
       },
@@ -12204,11 +12212,8 @@
         ctx.beginPath();
         ctx.rect(g.x, g.y, g.w, g.h);
         ctx.clip();
-        ctx.save();
-        ctx.globalCompositeOperation = 'soft-light';
-        ctx.fillStyle = 'rgba(150,180,170,0.35)';
+        ctx.fillStyle = 'rgba(70,92,88,0.12)';
         ctx.fillRect(g.x, g.y, g.w, g.h);
-        ctx.restore();
         A.texture(ctx, G.W, G.H, 0.3);
         A.glow(ctx, g.x + g.w / 2, g.y + g.h / 2, g.w * 0.42, 'rgba(255,240,205,1)', 0.16);
         const hs = ctx.createRadialGradient(g.x + g.w / 2, g.y + g.h / 2, 120, g.x + g.w / 2, g.y + g.h / 2, g.w * 0.62);
@@ -12355,8 +12360,10 @@
         const c = this.carry;
         ui.hint(uctx, c ? `Où va ${name(c.m.id)}${NB}?` : 'Fais glisser chacun à sa place sur le perron');
         const sub = c
-          ? (c.src === 'kb' ? 'Flèches pour choisir la place, Espace pour poser, Échap pour annuler' : 'Touche une place, ou M\'man pour lui confier Pearl')
-          : this.kb ? 'Tab ou flèches pour choisir quelqu\'un, Espace pour le prendre' : 'Au clavier : Tab ou flèches pour choisir, Espace pour prendre et poser';
+          ? (c.src === 'kb' ? 'Flèches pour choisir la place, Espace pour poser, Échap pour annuler'
+            : c.m.id === 'pearl' ? 'Touche une place, ou M\'man pour qu\'elle la prenne dans ses bras' : 'Touche une place libre, ou quelqu\'un pour échanger')
+          : this.kb && this.focus === 'btn' ? 'Espace pour valider, ou Tab pour changer encore quelqu\'un de place'
+            : this.kb ? 'Tab ou flèches pour choisir quelqu\'un, Espace pour le prendre' : 'Au clavier : Tab ou flèches pour choisir, Espace pour prendre et poser';
         this.subHint(uctx, sub);
         // étiquettes
         const d = this.drag;
@@ -12504,7 +12511,7 @@
       drawBubble(uctx) {
         const b = this.bub;
         if (!b || !this.whitHead) return;
-        const a = Math.min(1, b.t * 5) * clamp01((b.life - b.t) * 3);
+        const a = Math.min(1, b.t * 5) * clamp01((b.life - b.t) * 3) * (1 - clamp01(this.cloth * 2.5));
         if (a <= 0) return;
         uctx.save();
         uctx.globalAlpha = a;
@@ -13040,16 +13047,22 @@
   };
   T.d2Root = [
     [
-      ['hattie', 'Ah. Regarde-la. Elle a des jambes, des bras… Les Chinois disent que ça ressemble à un homme. C\'est pour ça qu\'ils la paient si cher.'],
+      ['hattie', 'Elle a des jambes, des bras… Les Chinois disent que ça ressemble à un homme. C\'est pour ça qu\'ils la paient si cher.'],
       ['hattie', 'Et maintenant, les baies.'],
       { c: [
         { t: 'Replanter les baies là où tu as creusé', set: { plantedBerries: true }, log: 'plantedBerries', mood: { hattie: 0.4 }, then: ['J\'enfonçai les baies une à une avec le pouce, comme elle m\'avait montré. Granny hocha la tête.', ['hattie', 'Dans dix ans, tu reviendras ici. Avec tes enfants, peut-être.']] },
         { t: 'Les laisser tomber pour aller plus vite', mood: { hattie: -0.3 }, then: [['hattie', '…'], ['hattie', 'Ton grand-père aurait pas fait ça. Mais ton grand-père avait pas faim comme toi.']] },
       ] },
     ],
-    [['hattie', 'Une belle. Celle-là, elle a vu passer la guerre de Sécession.']],
+    [['hattie', 'Celle-là, elle a vu passer la guerre de Sécession. Respecte ses cheveux blancs.']],
     [['hattie', 'Trois. On rentre avant que mes genoux décident pour moi.']],
   ];
+  T.d2RootQuality = (q) => q >= 0.86
+    ? [['hattie', 'Ça, c\'est du beau sang. Entière, de la tête aux pieds.']]
+    : q >= 0.45 ? [['hattie', 'Un peu abîmée. Thornbury fera la grimace, mais il la prendra.']]
+      : [['hattie', 'Cassée. Il en donnera moitié. Doucement, la prochaine : c\'est une racine, pas une souche.']];
+  T.d2Dusk = [['hattie', 'Le jour tombe. On rentre.']];
+
   T.d2Dow = [
     ['dow', 'Tiens donc. La veuve Caudill et le petit dernier des garçons.'],
     ['hattie', 'Dow Slone. Ta mère serait pas fière de toi.'],
@@ -13661,10 +13674,12 @@
     });
 
     const res = await G.play(G.Scenes.ginseng({
-      onRoot: async (e) => { const s = T.d2Root[e.index]; if (s) await G.run(s); },
+      outro: false,
+      onRoot: async (e) => { await G.run(T.d2RootQuality(e.quality)); const s = T.d2Root[e.index]; if (s) await G.run(s); },
       onMistake: async (e) => { const s = T.d2Mistake[e.kind]; if (s) await G.run(s); },
     }));
     let roots = (res && res.roots) || [];
+    if (roots.length > 0 && roots.length < 3) await G.run(T.d2Dusk);
     if (!roots.length) {
       await G.run([['hattie', 'Rien ? Bon. Regarde.'], 'Granny se pencha, écarta trois feuilles mortes et sortit une racine du premier coup, comme on sort un mouchoir de sa poche.', ['hattie', 'Ça vient avec les années. Ou jamais.']]);
       roots = [{ quality: 0.7 }];

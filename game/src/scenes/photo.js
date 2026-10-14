@@ -618,7 +618,7 @@
         if (m.moving) {
           m.dir = Math.sign(dx) || m.dir;
           const before = m.phase;
-          m.phase = (m.phase + (sp * k * d / Math.max(sp, 1e-6)) / 150) % 1;
+          m.phase = (m.phase + (k * d) / 150) % 1;
           if (Math.floor(before * 2) !== Math.floor(m.phase * 2)) G.audio.sfx('step');
         } else m.dir = t.dir;
       },
@@ -652,7 +652,7 @@
         const ida = this.byId.ida;
         if (m.id === 'hattie' && (m.slot === 5 || m.slot === 6)) this.say('Parfait, la grand-mère au milieu.', 'granny', true);
         else if (m.id === 'pearl' && this.inArms) this.say(`Gardez-la contre vous, madame. Elle bougera moins.`, 'arms', true);
-        else if (m.id === 'pearl' && m.slot >= 0 && ida) this.say('La petite ne tiendra jamais trois secondes sans bouger.', 'pearl', true);
+        else if (m.id === 'pearl' && m.slot >= 0 && ida) this.say('La petite ne tiendra jamais trois secondes sans bouger. Sa mère pourrait la prendre.', 'pearl', true);
         else if (m.slot >= 0 && SLOTS[m.slot].row === 1 && SLOTS[m.slot].pose === 'stand' && m.h >= 146 && this.members.some((o) => o.slot >= 0 && o.slot < 4 && o.h < 120)) {
           this.say('Les grands derrière, les petits devant, plutôt.', 'rows', true);
         }
@@ -1026,7 +1026,7 @@
       startPose() {
         this.phase = 'pose';
         this.pt = 0;
-        this.pz = { stage: 'ready', t: 0, n: -1, readyDur: 1.9, fly: null };
+        this.pz = { stage: 'ready', t: 0, n: -1, readyDur: 1.9 };
         this.say('Bien. Maintenant, ne bougez plus.', null, true);
       },
       toPrint() {
@@ -1241,20 +1241,21 @@
           return;
         }
         A.char(ctx, m.id, s.x, s.foot - lift, o);
-        if (c) c.ghostBox = this.boxOf(m, s.x, s.foot - lift, s.pose, s.dir);
       },
       drawDragged(ctx) {
         const d = this.drag, m = d.m;
         const tilt = U.clamp(-d.vx * 0.0006, -0.3, 0.3);
         const gx = m.x + d.gx, gy = m.y + d.gy;
+        // ombre au sol, détachée : on le soulève
+        ctx.fillStyle = 'rgba(30,20,12,0.22)';
+        ctx.beginPath(); ctx.ellipse(m.x + 6, m.y + 14, m.h * 0.2, 5, 0, 0, Math.PI * 2); ctx.fill();
         ctx.save();
         ctx.translate(gx, gy);
         ctx.rotate(tilt);
         ctx.translate(-gx, -gy);
-        const pose = m.id === 'ida' && this.inArms ? 'stand' : 'stand';
-        const extra = { arms: m.id === 'ida' && this.inArms ? undefined : [-0.32, 0.42], rim: m.id === 'henry' };
-        if (extra.arms === undefined) delete extra.arms;
-        this.drawAt(ctx, m, m.x, m.y, pose, m.dir || 1, extra);
+        const extra = { rim: m.id === 'henry' ? P.rim : 'rgba(250,242,222,0.92)' };
+        if (!(m.id === 'ida' && this.inArms)) extra.arms = [-0.32, 0.42];
+        this.drawAt(ctx, m, m.x, m.y, 'stand', m.dir || 1, extra);
         ctx.restore();
         m.box = this.boxOf(m, m.x, m.y, 'stand', 1);
       },
@@ -1339,11 +1340,8 @@
         ctx.beginPath();
         ctx.rect(g.x, g.y, g.w, g.h);
         ctx.clip();
-        ctx.save();
-        ctx.globalCompositeOperation = 'soft-light';
-        ctx.fillStyle = 'rgba(150,180,170,0.35)';
+        ctx.fillStyle = 'rgba(70,92,88,0.12)';
         ctx.fillRect(g.x, g.y, g.w, g.h);
-        ctx.restore();
         A.texture(ctx, G.W, G.H, 0.3);
         A.glow(ctx, g.x + g.w / 2, g.y + g.h / 2, g.w * 0.42, 'rgba(255,240,205,1)', 0.16);
         const hs = ctx.createRadialGradient(g.x + g.w / 2, g.y + g.h / 2, 120, g.x + g.w / 2, g.y + g.h / 2, g.w * 0.62);
@@ -1490,8 +1488,10 @@
         const c = this.carry;
         ui.hint(uctx, c ? `Où va ${name(c.m.id)}${NB}?` : 'Fais glisser chacun à sa place sur le perron');
         const sub = c
-          ? (c.src === 'kb' ? 'Flèches pour choisir la place, Espace pour poser, Échap pour annuler' : 'Touche une place, ou M\'man pour lui confier Pearl')
-          : this.kb ? 'Tab ou flèches pour choisir quelqu\'un, Espace pour le prendre' : 'Au clavier : Tab ou flèches pour choisir, Espace pour prendre et poser';
+          ? (c.src === 'kb' ? 'Flèches pour choisir la place, Espace pour poser, Échap pour annuler'
+            : c.m.id === 'pearl' ? 'Touche une place, ou M\'man pour qu\'elle la prenne dans ses bras' : 'Touche une place libre, ou quelqu\'un pour échanger')
+          : this.kb && this.focus === 'btn' ? 'Espace pour valider, ou Tab pour changer encore quelqu\'un de place'
+            : this.kb ? 'Tab ou flèches pour choisir quelqu\'un, Espace pour le prendre' : 'Au clavier : Tab ou flèches pour choisir, Espace pour prendre et poser';
         this.subHint(uctx, sub);
         // étiquettes
         const d = this.drag;
@@ -1639,7 +1639,7 @@
       drawBubble(uctx) {
         const b = this.bub;
         if (!b || !this.whitHead) return;
-        const a = Math.min(1, b.t * 5) * clamp01((b.life - b.t) * 3);
+        const a = Math.min(1, b.t * 5) * clamp01((b.life - b.t) * 3) * (1 - clamp01(this.cloth * 2.5));
         if (a <= 0) return;
         uctx.save();
         uctx.globalAlpha = a;

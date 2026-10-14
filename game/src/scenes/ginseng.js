@@ -27,7 +27,7 @@
   const PENALTY = 12;                              // secondes de jour perdues par leurre
   const TOOLS = {
     stick: { r: 26, a: 0.8, gap: 9, rate: 6 },
-    fingers: { r: 14, a: 0.15, gap: 7, rate: 1.6 },
+    fingers: { r: 14, a: 0.2, gap: 7, rate: 2 },
   };
   const TYPES = ['ginseng', 'ginseng', 'ginseng', 'ginseng', 'ginseng',
     'creeper', 'creeper', 'sarsaparilla', 'sarsaparilla', 'ivy', 'ivy', 'jack', 'jack'];
@@ -657,11 +657,11 @@
     const n2 = { x: cx + (rnd() - 0.5) * 8, y: top + 30 + rnd() * 14 };
     caps.push(cap(cx, top, n2.x, n2.y, 4.5, 6.5, 'neck', 'top'));
     const lean = (rnd() - 0.5) * 0.35;
-    const bodyL = 92 + rnd() * 30;
+    const bodyL = 86 + rnd() * 28;
     const b2 = { x: n2.x + Math.sin(lean) * bodyL, y: n2.y + Math.cos(lean) * bodyL };
     const bm = { x: (n2.x + b2.x) / 2 + (rnd() - 0.5) * 10, y: (n2.y + b2.y) / 2 };
-    const fat = 14 + rnd() * 4;
-    caps.push(cap(n2.x, n2.y, bm.x, bm.y, 8, fat, 'body', 'top'));
+    const fat = 16 + rnd() * 5;
+    caps.push(cap(n2.x, n2.y, bm.x, bm.y, 9, fat, 'body', 'top'));
     caps.push(cap(bm.x, bm.y, b2.x, b2.y, fat, fat * 0.8, 'body', 'top'));
     for (const side of [-1, 1]) {
       if (rnd() < 0.2) continue;
@@ -1342,9 +1342,9 @@
         for (const rl of R.rootlets) {
           if (rl.broken >= 0) continue;
           for (let k = 0; k < rl.pts.length - 1; k++) {
-            if (segDist(x, y, rl.pts[k][0], rl.pts[k][1], rl.pts[k + 1][0], rl.pts[k + 1][1]).d < 11) {
+            if (segDist(x, y, rl.pts[k][0], rl.pts[k][1], rl.pts[k + 1][0], rl.pts[k + 1][1]).d < 9) {
               rl.broken = Math.max(0, k);
-              d.q = Math.max(0.15, d.q - 0.03);
+              d.q = Math.max(0.15, d.q - 0.015);
               d.lost++;
               if (d.crunchCd <= 0) { G.audio.sfx('crunch'); d.crunchCd = 0.25; }
               break;
@@ -1424,9 +1424,10 @@
         }
       } else d.rub = Math.max(0, d.rub - dt * 2);
       if (d.scraping) {
-        let n = 0;
-        for (const i of d.zone) if (d.grid[i] < 0.2) n++;
-        d.cleared = d.zone.length ? n / d.zone.length : 1;
+        // part de terre ôtée autour de la racine (moyenne : chaque passage compte)
+        let sum = 0;
+        for (const i of d.zone) sum += Math.min(1, d.grid[i] * 1.15);
+        d.cleared = d.zone.length ? 1 - sum / d.zone.length : 1;
         if (!d.ready && d.cleared >= PULL_AT) {
           d.ready = true;
           G.audio.sfx('good');
@@ -1442,16 +1443,18 @@
     pull() {
       const d = this.dig;
       if (d.pull) return;
-      const broken = d.cleared < PULL_AT;
+      const early = d.cleared < PULL_AT;
       let lostNow = 0;
-      if (!broken) {
+      if (!early) {
         for (const rl of d.root.rootlets) {
           if (rl.broken < 0 && this.buried(rl) > 0.5) { rl.broken = Math.max(1, Math.floor(rl.pts.length / 2)); lostNow++; }
         }
       }
-      d.q = Math.max(0.15, d.q - lostNow * 0.02);
+      d.q = Math.max(0.15, d.q - lostNow * 0.015);
       d.lost += lostNow;
-      if (broken) d.q *= 0.5;
+      if (early) d.q *= 0.5;
+      // tirée trop tôt, ou trop de coups de bâton : elle casse
+      const broken = early || d.q < 0.45;
       d.pull = { t: 0, broken };
       d.ptr = false; d.scraping = false;
       G.audio.sfx(broken ? 'crunch' : 'dig');
@@ -1461,7 +1464,8 @@
         const q = Math.round(d.q * 100) / 100;
         const label = broken ? 'Cassée' : q >= 0.86 ? 'Racine entière' : 'Un peu abîmée';
         let sub;
-        if (broken) sub = 'Tirée trop tôt : les jambes sont restées dans la terre.';
+        if (early) sub = 'Tirée trop tôt : les jambes sont restées dans la terre.';
+        else if (broken) sub = 'Trop de coups de bâton : elle s\'est cassée en tirant.';
         else if (q >= 0.86) sub = d.lost ? 'Quelques radicelles en moins, mais elle est belle.' : 'Pas une marque, et toutes ses radicelles.';
         else if (d.hits) sub = d.hits > 1 ? 'Le bâton l\'a marquée plusieurs fois.' : 'Le bâton l\'a marquée.';
         else if (d.rubbed > 0.5) sub = 'Tu l\'as trop frottée avec les doigts.';
@@ -1855,7 +1859,7 @@
       ui.bar(uctx, bx + 18, by + 66, 264, 10, d.cleared, { color: d.ready ? P.gold : '#A88A5A' });
       uctx.fillStyle = P.paper;
       uctx.fillRect(bx + 18 + 264 * PULL_AT - 1, by + 62, 2, 18);
-      const st = d.q >= 0.97 ? 'La racine est intacte.' : d.q >= 0.86 ? 'Une petite marque.' : d.q >= 0.6 ? 'La racine est abîmée.' : 'La racine est bien abîmée.';
+      const st = d.q >= 0.97 ? 'La racine est intacte.' : d.q >= 0.86 ? 'Presque intacte.' : d.q >= 0.6 ? 'La racine est abîmée.' : 'La racine est bien abîmée.';
       ui.text(uctx, st, bx + 18, by + 100, { size: 18, italic: true, color: d.q >= 0.86 ? '#CFE0A8' : '#E9A27A' });
       if (!d.result && !d.pull) {
         // outils

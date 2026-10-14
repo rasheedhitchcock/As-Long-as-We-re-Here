@@ -374,13 +374,14 @@
   };
   // Grain animé plein écran + vignettage, à appeler en fin de draw().
   A.finish = (ctx, opts = {}) => {
-    const g = A.grainTile();
+    // Motif de grain mis en cache par contexte (évite de le recréer à chaque image).
+    if (!ctx.__grain) ctx.__grain = ctx.createPattern(A.grainTile(), 'repeat');
     ctx.save();
     ctx.globalAlpha = opts.grain != null ? opts.grain : 0.045;
     ctx.globalCompositeOperation = 'overlay';
     const ox = (G.frame * 37) % 256, oy = (G.frame * 91) % 256;
     ctx.translate(-ox, -oy);
-    ctx.fillStyle = ctx.createPattern(g, 'repeat');
+    ctx.fillStyle = ctx.__grain;
     ctx.fillRect(0, 0, G.W + 256, G.H + 256);
     ctx.restore();
     const v = A.cached('vignette', G.W, G.H, (cx, w, h) => {

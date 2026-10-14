@@ -423,16 +423,22 @@
   };
   T.d2Root = [
     [
-      ['hattie', 'Ah. Regarde-la. Elle a des jambes, des bras… Les Chinois disent que ça ressemble à un homme. C\'est pour ça qu\'ils la paient si cher.'],
+      ['hattie', 'Elle a des jambes, des bras… Les Chinois disent que ça ressemble à un homme. C\'est pour ça qu\'ils la paient si cher.'],
       ['hattie', 'Et maintenant, les baies.'],
       { c: [
         { t: 'Replanter les baies là où tu as creusé', set: { plantedBerries: true }, log: 'plantedBerries', mood: { hattie: 0.4 }, then: ['J\'enfonçai les baies une à une avec le pouce, comme elle m\'avait montré. Granny hocha la tête.', ['hattie', 'Dans dix ans, tu reviendras ici. Avec tes enfants, peut-être.']] },
         { t: 'Les laisser tomber pour aller plus vite', mood: { hattie: -0.3 }, then: [['hattie', '…'], ['hattie', 'Ton grand-père aurait pas fait ça. Mais ton grand-père avait pas faim comme toi.']] },
       ] },
     ],
-    [['hattie', 'Une belle. Celle-là, elle a vu passer la guerre de Sécession.']],
+    [['hattie', 'Celle-là, elle a vu passer la guerre de Sécession. Respecte ses cheveux blancs.']],
     [['hattie', 'Trois. On rentre avant que mes genoux décident pour moi.']],
   ];
+  T.d2RootQuality = (q) => q >= 0.86
+    ? [['hattie', 'Ça, c\'est du beau sang. Entière, de la tête aux pieds.']]
+    : q >= 0.45 ? [['hattie', 'Un peu abîmée. Thornbury fera la grimace, mais il la prendra.']]
+      : [['hattie', 'Cassée. Il en donnera moitié. Doucement, la prochaine : c\'est une racine, pas une souche.']];
+  T.d2Dusk = [['hattie', 'Le jour tombe. On rentre.']];
+
   T.d2Dow = [
     ['dow', 'Tiens donc. La veuve Caudill et le petit dernier des garçons.'],
     ['hattie', 'Dow Slone. Ta mère serait pas fière de toi.'],
