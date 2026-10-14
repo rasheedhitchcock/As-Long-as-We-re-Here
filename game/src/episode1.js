@@ -582,12 +582,13 @@
     G.pushOverlay(menu);
     async function openMenu() {
       open = true;
-      const opts = [{ t: 'Reprendre' }, { t: G.audio.muted ? 'Activer le son' : 'Couper le son' }, { t: 'Revenir au dernier point de sauvegarde' }, { t: 'Recommencer l\'épisode depuis le début' }];
+      const opts = [{ t: 'Reprendre' }, { t: G.isFullscreen() ? 'Quitter le plein écran' : 'Plein écran' }, { t: G.audio.muted ? 'Activer le son' : 'Couper le son' }, { t: 'Revenir au dernier point de sauvegarde' }, { t: 'Recommencer l\'épisode depuis le début' }];
       const i = await G.choose(opts, { prompt: 'Pause' });
       open = false;
-      if (i === 1) G.audio.toggleMute();
-      if (i === 2) { G.save(); location.reload(); }
-      if (i === 3) { G.clearSave(); location.reload(); }
+      if (i === 1) G.toggleFullscreen();
+      if (i === 2) G.audio.toggleMute();
+      if (i === 3) { G.save(); location.reload(); }
+      if (i === 4) { G.clearSave(); location.reload(); }
     }
   }
 

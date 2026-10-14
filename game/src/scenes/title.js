@@ -60,7 +60,9 @@
       if (this.hasSave) list.push({ id: 'continue', t: 'Reprendre' });
       list.push({ id: 'new', t: this.hasSave ? 'Recommencer l\'épisode' : 'Commencer' });
       list.push({ id: 'sound', t: G.audio.muted ? 'Son : coupé' : 'Son : activé' });
-      return list.map((b, i) => Object.assign(b, { r: { x: G.W / 2 - 160, y: 452 + i * 62, w: 320, h: 50 } }));
+      list.push({ id: 'full', t: G.isFullscreen() ? 'Quitter le plein écran' : 'Plein écran (F)' });
+      const y0 = list.length > 3 ? 392 : 430;
+      return list.map((b, i) => Object.assign(b, { r: { x: G.W / 2 - 160, y: y0 + i * 60, w: 320, h: 48 } }));
     },
     update(dt) {
       this.k = Math.min(1, this.k + dt * 0.5);
@@ -84,6 +86,7 @@
       if (!pick) return;
       G.audio.sfx('click');
       if (pick.id === 'sound') { G.audio.toggleMute(); return; }
+      if (pick.id === 'full') { G.toggleFullscreen(); return; }
       this.finish({ action: pick.id });
     },
     draw(ctx) {
@@ -106,7 +109,7 @@
       ui.text(c, 'Épisode 1 · Le dernier sifflet', G.W / 2, 322, { size: 30, italic: true, align: 'center', color: '#E2CFA8', shadow: true });
       const bs = this.buttons();
       bs.forEach((b, i) => ui.button(c, b.r, b.t, { hover: this.focus === i && (I.mouse ? ui.hover(b.r) || !bs.some((o) => ui.hover(o.r)) : true), size: 24 }));
-      ui.text(c, 'Souris, clavier ou toucher. Échap pour le menu en cours de partie.', G.W / 2, G.H - 34, { size: 16, italic: true, align: 'center', color: 'rgba(232,223,204,0.45)' });
+      ui.text(c, 'Souris, clavier ou toucher. F : plein écran. Échap : menu en cours de partie.', G.W / 2, G.H - 34, { size: 16, italic: true, align: 'center', color: 'rgba(232,223,204,0.45)' });
       c.globalAlpha = 1;
     },
   });

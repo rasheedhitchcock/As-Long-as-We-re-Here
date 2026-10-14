@@ -210,3 +210,27 @@
     return Promise.race([Promise.all(loads), new Promise((r) => setTimeout(r, 2500))]);
   };
 })();
+
+// Plein écran : bouton du titre, menu pause et touche F.
+(function () {
+  const G = window.G;
+  const el = document.documentElement;
+  G.isFullscreen = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  G.toggleFullscreen = () => {
+    try {
+      if (G.isFullscreen()) {
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        return;
+      }
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (!req) throw new Error('indisponible');
+      const p = req.call(el);
+      if (p && p.catch) p.catch(() => G.ui.toast('Plein écran refusé ici : appuie sur F11.'));
+    } catch (_) {
+      G.ui.toast('Plein écran indisponible ici : appuie sur F11.');
+    }
+  };
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'KeyF' && !e.repeat && !e.ctrlKey && !e.metaKey && !e.altKey) G.toggleFullscreen();
+  });
+})();

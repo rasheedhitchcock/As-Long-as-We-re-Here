@@ -1160,6 +1160,30 @@
   };
 })();
 
+// Plein écran : bouton du titre, menu pause et touche F.
+(function () {
+  const G = window.G;
+  const el = document.documentElement;
+  G.isFullscreen = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  G.toggleFullscreen = () => {
+    try {
+      if (G.isFullscreen()) {
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        return;
+      }
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (!req) throw new Error('indisponible');
+      const p = req.call(el);
+      if (p && p.catch) p.catch(() => G.ui.toast('Plein écran refusé ici : appuie sur F11.'));
+    } catch (_) {
+      G.ui.toast('Plein écran indisponible ici : appuie sur F11.');
+    }
+  };
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'KeyF' && !e.repeat && !e.ctrlKey && !e.metaKey && !e.altKey) G.toggleFullscreen();
+  });
+})();
+
 // ---- src/dialog.js
 'use strict';
 // Dialogues : répliques, narration, cartons, choix (éventuellement minutés), scripts.
@@ -2815,7 +2839,9 @@
       if (this.hasSave) list.push({ id: 'continue', t: 'Reprendre' });
       list.push({ id: 'new', t: this.hasSave ? 'Recommencer l\'épisode' : 'Commencer' });
       list.push({ id: 'sound', t: G.audio.muted ? 'Son : coupé' : 'Son : activé' });
-      return list.map((b, i) => Object.assign(b, { r: { x: G.W / 2 - 160, y: 452 + i * 62, w: 320, h: 50 } }));
+      list.push({ id: 'full', t: G.isFullscreen() ? 'Quitter le plein écran' : 'Plein écran (F)' });
+      const y0 = list.length > 3 ? 392 : 430;
+      return list.map((b, i) => Object.assign(b, { r: { x: G.W / 2 - 160, y: y0 + i * 60, w: 320, h: 48 } }));
     },
     update(dt) {
       this.k = Math.min(1, this.k + dt * 0.5);
@@ -2839,6 +2865,7 @@
       if (!pick) return;
       G.audio.sfx('click');
       if (pick.id === 'sound') { G.audio.toggleMute(); return; }
+      if (pick.id === 'full') { G.toggleFullscreen(); return; }
       this.finish({ action: pick.id });
     },
     draw(ctx) {
@@ -2861,7 +2888,7 @@
       ui.text(c, 'Épisode 1 · Le dernier sifflet', G.W / 2, 322, { size: 30, italic: true, align: 'center', color: '#E2CFA8', shadow: true });
       const bs = this.buttons();
       bs.forEach((b, i) => ui.button(c, b.r, b.t, { hover: this.focus === i && (I.mouse ? ui.hover(b.r) || !bs.some((o) => ui.hover(o.r)) : true), size: 24 }));
-      ui.text(c, 'Souris, clavier ou toucher. Échap pour le menu en cours de partie.', G.W / 2, G.H - 34, { size: 16, italic: true, align: 'center', color: 'rgba(232,223,204,0.45)' });
+      ui.text(c, 'Souris, clavier ou toucher. F : plein écran. Échap : menu en cours de partie.', G.W / 2, G.H - 34, { size: 16, italic: true, align: 'center', color: 'rgba(232,223,204,0.45)' });
       c.globalAlpha = 1;
     },
   });
@@ -13929,12 +13956,13 @@
     G.pushOverlay(menu);
     async function openMenu() {
       open = true;
-      const opts = [{ t: 'Reprendre' }, { t: G.audio.muted ? 'Activer le son' : 'Couper le son' }, { t: 'Revenir au dernier point de sauvegarde' }, { t: 'Recommencer l\'épisode depuis le début' }];
+      const opts = [{ t: 'Reprendre' }, { t: G.isFullscreen() ? 'Quitter le plein écran' : 'Plein écran' }, { t: G.audio.muted ? 'Activer le son' : 'Couper le son' }, { t: 'Revenir au dernier point de sauvegarde' }, { t: 'Recommencer l\'épisode depuis le début' }];
       const i = await G.choose(opts, { prompt: 'Pause' });
       open = false;
-      if (i === 1) G.audio.toggleMute();
-      if (i === 2) { G.save(); location.reload(); }
-      if (i === 3) { G.clearSave(); location.reload(); }
+      if (i === 1) G.toggleFullscreen();
+      if (i === 2) G.audio.toggleMute();
+      if (i === 3) { G.save(); location.reload(); }
+      if (i === 4) { G.clearSave(); location.reload(); }
     }
   }
 
