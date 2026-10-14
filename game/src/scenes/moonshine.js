@@ -27,7 +27,7 @@
   const HENRY_STOP = 3420;
   const HANGAR_X = 3492;
   const LIGE_WALL = HANGAR_X + 104, LIGE_MEET = 3468; // Lige attend contre le mur, dans l'ombre
-  const SPEED = 60, CROUCH_SPEED = 33;
+  const SPEED = 54, CROUCH_SPEED = 30;
   const AG_H = (G.CHARS.revenuer && G.CHARS.revenuer.h) || 166;
   const BEAM_HW = 92;                // demi-largeur de la tache de lumière sur le sentier
   const PF = { far: 0.08, mid: 0.22, trees: 0.5 };
@@ -1019,7 +1019,7 @@
       this.prevCam = this.cam;
       this.viewX = this.hx;
       this.agent = { x: 820, dir: -1, phase: 0, mode: 'walk', t: 0, lift: 0, cur: 0, path: null, aimed: false, teleEnd: 1.2, turnT: 4 };
-      this.nextSweep = 8.5;
+      this.nextSweep = 8;
       this.sweeps = 0;
       this.leaving = false;
       this.logs = LOGS.map((x) => ({ x, done: false }));
@@ -1157,10 +1157,10 @@
 
       // --- le bruit des bocaux
       if (this.moving) {
-        let rate = leaves ? 0.42 : 0.065;
+        let rate = leaves ? 0.42 : 0.08;
         if (this.crouch) rate *= 0.3;
         this.noise += rate * dt;
-      } else this.noise -= (this.crouch ? 0.42 : 0.34) * dt;
+      } else this.noise -= (this.crouch ? 0.38 : 0.3) * dt;
       for (const sx of STICKS) {
         if ((prev - sx) * (this.hx - sx) < 0 || (prev !== this.hx && this.hx === sx)) {
           if (this.crouch) { this.noise += 0.08; G.audio.sfx('tick'); }
@@ -1296,7 +1296,7 @@
           a.lift = 0;
           a.t = 0;
           a.aimed = false;
-          this.nextSweep = U.rand(5.5, 8.5);
+          this.nextSweep = U.rand(5, 8);
         }
       }
     },

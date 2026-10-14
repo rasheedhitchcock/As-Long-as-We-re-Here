@@ -249,7 +249,7 @@
     hud('Lundi 17 octobre 1932', 'Pêcher avec Otis', true);
     const res = await playWith(G.Scenes.fishing({
       between: async (e) => { const s = T.d1FishTalk[e.index]; if (s) await G.run(s); },
-    }), T.d1FishIntro);
+    }), T.d1FishIntro());
     const fish = (res && res.fish) || [];
     await G.run(T.d1FishEnd(fish.length));
     let kept = fish.slice().sort((a, b) => b.halves - a.halves);

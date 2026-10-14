@@ -653,7 +653,7 @@
         if (m.id === 'hattie' && (m.slot === 5 || m.slot === 6)) this.say('Parfait, la grand-mère au milieu.', 'granny', true);
         else if (m.id === 'pearl' && this.inArms) this.say(`Gardez-la contre vous, madame. Elle bougera moins.`, 'arms', true);
         else if (m.id === 'pearl' && m.slot >= 0 && ida) this.say('La petite ne tiendra jamais trois secondes sans bouger.', 'pearl', true);
-        else if (m.slot >= 4 && m.h >= 146 && this.members.some((o) => o.slot >= 0 && o.slot < 4 && o.h < 120)) {
+        else if (m.slot >= 0 && SLOTS[m.slot].row === 1 && SLOTS[m.slot].pose === 'stand' && m.h >= 146 && this.members.some((o) => o.slot >= 0 && o.slot < 4 && o.h < 120)) {
           this.say('Les grands derrière, les petits devant, plutôt.', 'rows', true);
         }
         if (this.allPlaced()) this.say(`Très bien. Quand vous voulez.`, 'all');
@@ -701,7 +701,7 @@
         const pr = POSE[m.id] || {};
         if (pose === 'sit') { o.seatH = SEAT_H; if (pr.sit) o.arms = pr.sit; } else if (pose === 'stand' && pr.stand) o.arms = pr.stand;
         if (m.id === 'hattie') o.carry = 'pipe';
-        if (m.id === 'ida' && this.inArms) o.arms = pose === 'sit' ? [0.95, 1.45] : [0.55, 1.0];
+        if (m.id === 'ida' && this.inArms) o.arms = pose === 'sit' ? [0.7, 1.12] : [0.55, 1.0];
         if (m.id === 'henry') o.rim = true;
         return o;
       },
@@ -798,7 +798,7 @@
           }
           if (this.phase !== 'compose') extra.rim = m.id === 'henry';
           if (ghost > 0) {
-            for (const off of [-7, 6]) this.drawAt(ctx, m, m.x + off * ghost, m.y, pose, dir, Object.assign({}, extra, { alpha: 0.32, rim: false }));
+            for (const off of [-10, 9]) this.drawAt(ctx, m, m.x + off * ghost, m.y - Math.abs(off) * 0.2 * ghost, pose, dir, Object.assign({}, extra, { alpha: 0.42, rim: false, edge: false }));
           }
           const r = this.drawAt(ctx, m, m.x, m.y, pose, dir, extra);
           m.box = this.boxOf(m, m.x, m.y, pose, dir);
@@ -814,13 +814,16 @@
           const s = SLOTS[m.slot];
           const extra = { rim: false, still: !!o.still, color: '#2A221D' };
           if (m.id === 'pearl' && o.wiggle) extra.wiggle = o.wiggle;
+          // Bougé : un noyau net et un halo de part et d'autre.
           if (o.soft) {
-            for (const off of [-3.5, -1.5, 1.5, 3.5]) this.drawAt(ctx, m, s.x + off, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.3 }));
+            for (const off of [-5, 4.5]) this.drawAt(ctx, m, s.x + off, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.32, edge: false }));
+            this.drawAt(ctx, m, s.x, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.9 }));
             continue;
           }
+          // Pearl a gigoté, comme tous les enfants sur les photos de ce temps-là.
           if (m.id === 'pearl' && o.pearlSoft) {
-            this.drawAt(ctx, m, s.x - 1.8, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.6 }));
-            this.drawAt(ctx, m, s.x + 2.2, s.foot - 1, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.5, tilt: 0.06 }));
+            this.drawAt(ctx, m, s.x + 3, s.foot - 1, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.4, edge: false, tilt: 0.08 }));
+            this.drawAt(ctx, m, s.x, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.85 }));
             continue;
           }
           this.drawAt(ctx, m, s.x, s.foot, s.pose, s.dir, extra);
@@ -1409,11 +1412,11 @@
           cx.fillStyle = '#1A130F';
           cx.fillRect(0, 0, w, h);
           const rnd = U.rng(8);
-          cx.strokeStyle = 'rgba(96,68,44,0.2)';
-          for (let i = 0; i < 46; i++) {
-            cx.lineWidth = 1 + rnd() * 2.5;
-            const y = rnd() * h;
-            line(cx, 0, y, w, y + (rnd() - 0.5) * 30);
+          for (let i = 0; i < 70; i++) {
+            cx.strokeStyle = `rgba(${rnd() < 0.5 ? '96,68,44' : '40,26,18'},${0.08 + rnd() * 0.12})`;
+            cx.lineWidth = 1 + rnd() * 3;
+            const y = rnd() * h, bend = (rnd() - 0.5) * 24;
+            cx.beginPath(); cx.moveTo(0, y); cx.quadraticCurveTo(w / 2, y + bend, w, y + bend * 0.4); cx.stroke();
           }
           const g = cx.createRadialGradient(w / 2, h * 0.44, 40, w / 2, h * 0.44, 700);
           g.addColorStop(0, 'rgba(255,214,150,0.2)');
@@ -1471,12 +1474,12 @@
           const g = GLASS;
           ui.text(uctx, THOUGHT, G.W / 2, g.y + g.h + 76, { size: 29, italic: true, align: 'center', color: '#EADFC4', alpha: a * clamp01((this.pt - 0.5) / 0.8) });
           if (this.phase === 'glass' && this.pt > 1.4) {
-            ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 34, { size: 17, italic: true, align: 'center', color: 'rgba(232,223,204,0.42)' });
+            ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 34, { size: 18, italic: true, align: 'center', color: 'rgba(232,223,204,0.62)' });
           }
         }
         if (this.phase !== 'print' && this.phase !== 'glass') this.drawBubble(uctx);
         if (this.phase === 'print' && this.pr && this.pr.doneAt >= 0 && this.pr.t > this.pr.doneAt + 0.5) {
-          ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 30, { size: 17, italic: true, align: 'center', color: 'rgba(232,223,204,0.45)', alpha: clamp01((this.pr.t - this.pr.doneAt - 0.5) / 0.8) });
+          ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 30, { size: 18, italic: true, align: 'center', color: 'rgba(232,223,204,0.62)', alpha: clamp01((this.pr.t - this.pr.doneAt - 0.5) / 0.8) });
         }
         if (this.veil > 0) {
           uctx.fillStyle = `rgba(13,11,10,${this.veil})`;

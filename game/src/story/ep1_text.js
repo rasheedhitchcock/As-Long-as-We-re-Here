@@ -236,8 +236,8 @@
   ];
 
   // ================================================================ JOUR 1 : LA PÊCHE
-  T.d1FishIntro = [
-    'L\'après-midi, Otis m\'attendait au trou de la Barbue, comme promis. Il avait des vers dans une boîte de tabac.',
+  T.d1FishIntro = () => [
+    `L'après-midi, Otis m'attendait au trou de la Barbue${G.flag('otisPromise') ? ', comme promis' : ''}. Il avait des vers dans une boîte de tabac.`,
     ['otis', 'T\'es en retard. Les poissons ont faim, eux aussi.'],
   ];
   T.d1FishTalk = [

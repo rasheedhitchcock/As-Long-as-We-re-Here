@@ -864,6 +864,12 @@
   };
   const RES = { panel: { x: 330, y: 88, w: 620, h: 404 }, cont: { x: 696, y: 412, w: 226, h: 54 } };
 
+  // Ne copie que la tranche visible d'un grand décor en cache (x0 : décalage dans le décor).
+  function blitSlice(ctx, o, x0, y) {
+    const k = o.c.width / o.w;
+    const sx = U.clamp(x0, 0, o.w - G.W);
+    ctx.drawImage(o.c, sx * k, 0, G.W * k, o.c.height, 0, y, G.W, o.h);
+  }
   function panelBox(ctx, r, a = 0.82) {
     ctx.fillStyle = `rgba(20,16,13,${a})`;
     rrect(ctx, r, 10);
@@ -1067,7 +1073,8 @@
         if (Math.abs(dx) < 4) { g.target = null; g.moving = false; }
         else {
           g.moving = true; g.dir = Math.sign(dx);
-          const st = Math.sign(dx) * Math.min(Math.abs(dx), 130 * dt);
+          const seen = g.x > cam - 30 && g.x < cam + G.W + 30;
+          const st = Math.sign(dx) * Math.min(Math.abs(dx), (seen ? 130 : 700) * dt);
           g.x += st;
           g.phase = (g.phase + Math.abs(st) / 110) % 1;
         }
@@ -1486,9 +1493,9 @@
       const L = this.layers();
       const cam = Math.round(this.cam);
       A.blit(ctx, L.sky, 0, 0);
-      A.blit(ctx, L.far, -Math.round(cam * PF), 0);
-      A.blit(ctx, L.mid, -Math.round(cam * PM), 0);
-      A.blit(ctx, L.ground, -cam, 0);
+      blitSlice(ctx, L.far, Math.round(cam * PF), 0);
+      blitSlice(ctx, L.mid, Math.round(cam * PM), 0);
+      blitSlice(ctx, L.ground, cam, 0);
       const g = this.granny;
       const gr = A.char(ctx, 'hattie', g.x - cam, groundTop(g.x) + 11, {
         dir: g.dir, pose: g.moving ? 'walk' : g.crouch > 0 ? 'crouch' : 'stand', phase: g.phase, carry: 'pipe', h: 104, seed: 5,
@@ -1509,7 +1516,7 @@
         ell(ctx, f.x - cam, f.y, f.r, f.r * 0.8, 0, f.c);
       }
       ctx.globalAlpha = 1;
-      A.blit(ctx, L.fore, -Math.round(cam * PFG), FORE_Y);
+      blitSlice(ctx, L.fore, Math.round(cam * PFG), FORE_Y);
       this.drawForeTrunks(ctx, cam);
       this.drawShafts(ctx, cam);
       this.drawDusk(ctx, 1 - this.light);
@@ -1644,9 +1651,11 @@
       ctx.restore();
       // Henry à genoux, Granny debout
       const sc = d.scraping ? Math.sin(G.time * 13) : 0;
+      // l'herbe à puce : de temps en temps, Henry se gratte le bras
+      const itch = this.itchy && !d.scraping && G.time % 6 < 1.1;
       A.char(ctx, 'henry', 480, SY + 3, {
         pose: 'kneel', dir: 1, rim: true, seed: 2,
-        arms: [0.8 + sc * 0.12, 1.05 + sc * 0.22],
+        arms: itch ? [1.5 + Math.sin(G.time * 34) * 0.18, 1.05] : [0.8 + sc * 0.12, 1.05 + sc * 0.22],
       });
       const gr = A.char(ctx, 'hattie', 850, SY + 3, { dir: -1, carry: 'pipe', seed: 5 });
       this.gHead = gr.head;
@@ -1735,7 +1744,9 @@
       uctx.beginPath(); uctx.roundRect(tx + tw * this.cam / WW, ty, tw * G.W / WW, 5, 2.5); uctx.fill();
       // consigne
       if (!this.card && (!this.hintSeen || this.idle > 22) && !G.blocked && !this.ending) {
-        ui.hint(uctx, this.kbd ? 'Flèches : choisir une plante · Espace : l\'examiner' : 'Touche une plante pour l\'examiner · glisse pour avancer', { y: 16, size: 20 });
+        const h = this.kbd ? 'Flèches : choisir une plante · Espace : l\'examiner'
+          : I.mouse ? 'Clique sur une plante pour l\'examiner · glisse pour avancer' : 'Touche une plante pour l\'examiner · glisse pour avancer';
+        ui.hint(uctx, h, { y: 16, size: 20 });
       }
       this.drawCaption(uctx);
       if (this.card) this.drawCard(uctx);
@@ -1782,10 +1793,11 @@
       let x = side ? hx + 40 : hx - w / 2, y = side ? hy - h / 2 - 10 : hy - 40 - h;
       x = U.clamp(x, 14, G.W - w - 14);
       y = U.clamp(y, 8, G.H - h - 8);
+      const tail = hx > 20 && hx < G.W - 20;
       uctx.fillStyle = 'rgba(18,14,12,0.88)';
       uctx.beginPath(); uctx.roundRect(x, y, w, h, 8); uctx.fill();
       uctx.beginPath();
-      if (side) { uctx.moveTo(x, hy - 18); uctx.lineTo(x - 10, hy - 8); uctx.lineTo(x, hy - 2); }
+      if (!tail) { /* Granny hors champ : pas de pointe */ } else if (side) { uctx.moveTo(x, hy - 18); uctx.lineTo(x - 10, hy - 8); uctx.lineTo(x, hy - 2); }
       else { const px = U.clamp(hx, x + 16, x + w - 16); uctx.moveTo(px - 8, y + h); uctx.lineTo(px, y + h + 10); uctx.lineTo(px + 8, y + h); }
       uctx.fill();
       ui.caps(uctx, 'Granny', x + 16, y + 21, { size: 12, color: G.WHO.hattie.color });

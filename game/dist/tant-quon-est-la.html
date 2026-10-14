@@ -6486,6 +6486,12 @@
   };
   const RES = { panel: { x: 330, y: 88, w: 620, h: 404 }, cont: { x: 696, y: 412, w: 226, h: 54 } };
 
+  // Ne copie que la tranche visible d'un grand décor en cache (x0 : décalage dans le décor).
+  function blitSlice(ctx, o, x0, y) {
+    const k = o.c.width / o.w;
+    const sx = U.clamp(x0, 0, o.w - G.W);
+    ctx.drawImage(o.c, sx * k, 0, G.W * k, o.c.height, 0, y, G.W, o.h);
+  }
   function panelBox(ctx, r, a = 0.82) {
     ctx.fillStyle = `rgba(20,16,13,${a})`;
     rrect(ctx, r, 10);
@@ -6689,7 +6695,8 @@
         if (Math.abs(dx) < 4) { g.target = null; g.moving = false; }
         else {
           g.moving = true; g.dir = Math.sign(dx);
-          const st = Math.sign(dx) * Math.min(Math.abs(dx), 130 * dt);
+          const seen = g.x > cam - 30 && g.x < cam + G.W + 30;
+          const st = Math.sign(dx) * Math.min(Math.abs(dx), (seen ? 130 : 700) * dt);
           g.x += st;
           g.phase = (g.phase + Math.abs(st) / 110) % 1;
         }
@@ -7108,9 +7115,9 @@
       const L = this.layers();
       const cam = Math.round(this.cam);
       A.blit(ctx, L.sky, 0, 0);
-      A.blit(ctx, L.far, -Math.round(cam * PF), 0);
-      A.blit(ctx, L.mid, -Math.round(cam * PM), 0);
-      A.blit(ctx, L.ground, -cam, 0);
+      blitSlice(ctx, L.far, Math.round(cam * PF), 0);
+      blitSlice(ctx, L.mid, Math.round(cam * PM), 0);
+      blitSlice(ctx, L.ground, cam, 0);
       const g = this.granny;
       const gr = A.char(ctx, 'hattie', g.x - cam, groundTop(g.x) + 11, {
         dir: g.dir, pose: g.moving ? 'walk' : g.crouch > 0 ? 'crouch' : 'stand', phase: g.phase, carry: 'pipe', h: 104, seed: 5,
@@ -7131,7 +7138,7 @@
         ell(ctx, f.x - cam, f.y, f.r, f.r * 0.8, 0, f.c);
       }
       ctx.globalAlpha = 1;
-      A.blit(ctx, L.fore, -Math.round(cam * PFG), FORE_Y);
+      blitSlice(ctx, L.fore, Math.round(cam * PFG), FORE_Y);
       this.drawForeTrunks(ctx, cam);
       this.drawShafts(ctx, cam);
       this.drawDusk(ctx, 1 - this.light);
@@ -7266,9 +7273,11 @@
       ctx.restore();
       // Henry à genoux, Granny debout
       const sc = d.scraping ? Math.sin(G.time * 13) : 0;
+      // l'herbe à puce : de temps en temps, Henry se gratte le bras
+      const itch = this.itchy && !d.scraping && G.time % 6 < 1.1;
       A.char(ctx, 'henry', 480, SY + 3, {
         pose: 'kneel', dir: 1, rim: true, seed: 2,
-        arms: [0.8 + sc * 0.12, 1.05 + sc * 0.22],
+        arms: itch ? [1.5 + Math.sin(G.time * 34) * 0.18, 1.05] : [0.8 + sc * 0.12, 1.05 + sc * 0.22],
       });
       const gr = A.char(ctx, 'hattie', 850, SY + 3, { dir: -1, carry: 'pipe', seed: 5 });
       this.gHead = gr.head;
@@ -7357,7 +7366,9 @@
       uctx.beginPath(); uctx.roundRect(tx + tw * this.cam / WW, ty, tw * G.W / WW, 5, 2.5); uctx.fill();
       // consigne
       if (!this.card && (!this.hintSeen || this.idle > 22) && !G.blocked && !this.ending) {
-        ui.hint(uctx, this.kbd ? 'Flèches : choisir une plante · Espace : l\'examiner' : 'Touche une plante pour l\'examiner · glisse pour avancer', { y: 16, size: 20 });
+        const h = this.kbd ? 'Flèches : choisir une plante · Espace : l\'examiner'
+          : I.mouse ? 'Clique sur une plante pour l\'examiner · glisse pour avancer' : 'Touche une plante pour l\'examiner · glisse pour avancer';
+        ui.hint(uctx, h, { y: 16, size: 20 });
       }
       this.drawCaption(uctx);
       if (this.card) this.drawCard(uctx);
@@ -7404,10 +7415,11 @@
       let x = side ? hx + 40 : hx - w / 2, y = side ? hy - h / 2 - 10 : hy - 40 - h;
       x = U.clamp(x, 14, G.W - w - 14);
       y = U.clamp(y, 8, G.H - h - 8);
+      const tail = hx > 20 && hx < G.W - 20;
       uctx.fillStyle = 'rgba(18,14,12,0.88)';
       uctx.beginPath(); uctx.roundRect(x, y, w, h, 8); uctx.fill();
       uctx.beginPath();
-      if (side) { uctx.moveTo(x, hy - 18); uctx.lineTo(x - 10, hy - 8); uctx.lineTo(x, hy - 2); }
+      if (!tail) { /* Granny hors champ : pas de pointe */ } else if (side) { uctx.moveTo(x, hy - 18); uctx.lineTo(x - 10, hy - 8); uctx.lineTo(x, hy - 2); }
       else { const px = U.clamp(hx, x + 16, x + w - 16); uctx.moveTo(px - 8, y + h); uctx.lineTo(px, y + h + 10); uctx.lineTo(px + 8, y + h); }
       uctx.fill();
       ui.caps(uctx, 'Granny', x + 16, y + 21, { size: 12, color: G.WHO.hattie.color });
@@ -8841,7 +8853,7 @@
   const HENRY_STOP = 3420;
   const HANGAR_X = 3492;
   const LIGE_WALL = HANGAR_X + 104, LIGE_MEET = 3468; // Lige attend contre le mur, dans l'ombre
-  const SPEED = 60, CROUCH_SPEED = 33;
+  const SPEED = 54, CROUCH_SPEED = 30;
   const AG_H = (G.CHARS.revenuer && G.CHARS.revenuer.h) || 166;
   const BEAM_HW = 92;                // demi-largeur de la tache de lumière sur le sentier
   const PF = { far: 0.08, mid: 0.22, trees: 0.5 };
@@ -9833,7 +9845,7 @@
       this.prevCam = this.cam;
       this.viewX = this.hx;
       this.agent = { x: 820, dir: -1, phase: 0, mode: 'walk', t: 0, lift: 0, cur: 0, path: null, aimed: false, teleEnd: 1.2, turnT: 4 };
-      this.nextSweep = 8.5;
+      this.nextSweep = 8;
       this.sweeps = 0;
       this.leaving = false;
       this.logs = LOGS.map((x) => ({ x, done: false }));
@@ -9971,10 +9983,10 @@
 
       // --- le bruit des bocaux
       if (this.moving) {
-        let rate = leaves ? 0.42 : 0.065;
+        let rate = leaves ? 0.42 : 0.08;
         if (this.crouch) rate *= 0.3;
         this.noise += rate * dt;
-      } else this.noise -= (this.crouch ? 0.42 : 0.34) * dt;
+      } else this.noise -= (this.crouch ? 0.38 : 0.3) * dt;
       for (const sx of STICKS) {
         if ((prev - sx) * (this.hx - sx) < 0 || (prev !== this.hx && this.hx === sx)) {
           if (this.crouch) { this.noise += 0.08; G.audio.sfx('tick'); }
@@ -10110,7 +10122,7 @@
           a.lift = 0;
           a.t = 0;
           a.aimed = false;
-          this.nextSweep = U.rand(5.5, 8.5);
+          this.nextSweep = U.rand(5, 8);
         }
       }
     },
@@ -11510,7 +11522,7 @@
         if (m.id === 'hattie' && (m.slot === 5 || m.slot === 6)) this.say('Parfait, la grand-mère au milieu.', 'granny', true);
         else if (m.id === 'pearl' && this.inArms) this.say(`Gardez-la contre vous, madame. Elle bougera moins.`, 'arms', true);
         else if (m.id === 'pearl' && m.slot >= 0 && ida) this.say('La petite ne tiendra jamais trois secondes sans bouger.', 'pearl', true);
-        else if (m.slot >= 4 && m.h >= 146 && this.members.some((o) => o.slot >= 0 && o.slot < 4 && o.h < 120)) {
+        else if (m.slot >= 0 && SLOTS[m.slot].row === 1 && SLOTS[m.slot].pose === 'stand' && m.h >= 146 && this.members.some((o) => o.slot >= 0 && o.slot < 4 && o.h < 120)) {
           this.say('Les grands derrière, les petits devant, plutôt.', 'rows', true);
         }
         if (this.allPlaced()) this.say(`Très bien. Quand vous voulez.`, 'all');
@@ -11558,7 +11570,7 @@
         const pr = POSE[m.id] || {};
         if (pose === 'sit') { o.seatH = SEAT_H; if (pr.sit) o.arms = pr.sit; } else if (pose === 'stand' && pr.stand) o.arms = pr.stand;
         if (m.id === 'hattie') o.carry = 'pipe';
-        if (m.id === 'ida' && this.inArms) o.arms = pose === 'sit' ? [0.95, 1.45] : [0.55, 1.0];
+        if (m.id === 'ida' && this.inArms) o.arms = pose === 'sit' ? [0.7, 1.12] : [0.55, 1.0];
         if (m.id === 'henry') o.rim = true;
         return o;
       },
@@ -11655,7 +11667,7 @@
           }
           if (this.phase !== 'compose') extra.rim = m.id === 'henry';
           if (ghost > 0) {
-            for (const off of [-7, 6]) this.drawAt(ctx, m, m.x + off * ghost, m.y, pose, dir, Object.assign({}, extra, { alpha: 0.32, rim: false }));
+            for (const off of [-10, 9]) this.drawAt(ctx, m, m.x + off * ghost, m.y - Math.abs(off) * 0.2 * ghost, pose, dir, Object.assign({}, extra, { alpha: 0.42, rim: false, edge: false }));
           }
           const r = this.drawAt(ctx, m, m.x, m.y, pose, dir, extra);
           m.box = this.boxOf(m, m.x, m.y, pose, dir);
@@ -11671,13 +11683,16 @@
           const s = SLOTS[m.slot];
           const extra = { rim: false, still: !!o.still, color: '#2A221D' };
           if (m.id === 'pearl' && o.wiggle) extra.wiggle = o.wiggle;
+          // Bougé : un noyau net et un halo de part et d'autre.
           if (o.soft) {
-            for (const off of [-3.5, -1.5, 1.5, 3.5]) this.drawAt(ctx, m, s.x + off, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.3 }));
+            for (const off of [-5, 4.5]) this.drawAt(ctx, m, s.x + off, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.32, edge: false }));
+            this.drawAt(ctx, m, s.x, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.9 }));
             continue;
           }
+          // Pearl a gigoté, comme tous les enfants sur les photos de ce temps-là.
           if (m.id === 'pearl' && o.pearlSoft) {
-            this.drawAt(ctx, m, s.x - 1.8, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.6 }));
-            this.drawAt(ctx, m, s.x + 2.2, s.foot - 1, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.5, tilt: 0.06 }));
+            this.drawAt(ctx, m, s.x + 3, s.foot - 1, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.4, edge: false, tilt: 0.08 }));
+            this.drawAt(ctx, m, s.x, s.foot, s.pose, s.dir, Object.assign({}, extra, { alpha: 0.85 }));
             continue;
           }
           this.drawAt(ctx, m, s.x, s.foot, s.pose, s.dir, extra);
@@ -12266,11 +12281,11 @@
           cx.fillStyle = '#1A130F';
           cx.fillRect(0, 0, w, h);
           const rnd = U.rng(8);
-          cx.strokeStyle = 'rgba(96,68,44,0.2)';
-          for (let i = 0; i < 46; i++) {
-            cx.lineWidth = 1 + rnd() * 2.5;
-            const y = rnd() * h;
-            line(cx, 0, y, w, y + (rnd() - 0.5) * 30);
+          for (let i = 0; i < 70; i++) {
+            cx.strokeStyle = `rgba(${rnd() < 0.5 ? '96,68,44' : '40,26,18'},${0.08 + rnd() * 0.12})`;
+            cx.lineWidth = 1 + rnd() * 3;
+            const y = rnd() * h, bend = (rnd() - 0.5) * 24;
+            cx.beginPath(); cx.moveTo(0, y); cx.quadraticCurveTo(w / 2, y + bend, w, y + bend * 0.4); cx.stroke();
           }
           const g = cx.createRadialGradient(w / 2, h * 0.44, 40, w / 2, h * 0.44, 700);
           g.addColorStop(0, 'rgba(255,214,150,0.2)');
@@ -12328,12 +12343,12 @@
           const g = GLASS;
           ui.text(uctx, THOUGHT, G.W / 2, g.y + g.h + 76, { size: 29, italic: true, align: 'center', color: '#EADFC4', alpha: a * clamp01((this.pt - 0.5) / 0.8) });
           if (this.phase === 'glass' && this.pt > 1.4) {
-            ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 34, { size: 17, italic: true, align: 'center', color: 'rgba(232,223,204,0.42)' });
+            ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 34, { size: 18, italic: true, align: 'center', color: 'rgba(232,223,204,0.62)' });
           }
         }
         if (this.phase !== 'print' && this.phase !== 'glass') this.drawBubble(uctx);
         if (this.phase === 'print' && this.pr && this.pr.doneAt >= 0 && this.pr.t > this.pr.doneAt + 0.5) {
-          ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 30, { size: 17, italic: true, align: 'center', color: 'rgba(232,223,204,0.45)', alpha: clamp01((this.pr.t - this.pr.doneAt - 0.5) / 0.8) });
+          ui.text(uctx, 'Appuie pour continuer', G.W / 2, G.H - 30, { size: 18, italic: true, align: 'center', color: 'rgba(232,223,204,0.62)', alpha: clamp01((this.pr.t - this.pr.doneAt - 0.5) / 0.8) });
         }
         if (this.veil > 0) {
           uctx.fillStyle = `rgba(13,11,10,${this.veil})`;
@@ -12842,8 +12857,8 @@
   ];
 
   // ================================================================ JOUR 1 : LA PÊCHE
-  T.d1FishIntro = [
-    'L\'après-midi, Otis m\'attendait au trou de la Barbue, comme promis. Il avait des vers dans une boîte de tabac.',
+  T.d1FishIntro = () => [
+    `L'après-midi, Otis m'attendait au trou de la Barbue${G.flag('otisPromise') ? ', comme promis' : ''}. Il avait des vers dans une boîte de tabac.`,
     ['otis', 'T\'es en retard. Les poissons ont faim, eux aussi.'],
   ];
   T.d1FishTalk = [
@@ -13573,7 +13588,7 @@
     hud('Lundi 17 octobre 1932', 'Pêcher avec Otis', true);
     const res = await playWith(G.Scenes.fishing({
       between: async (e) => { const s = T.d1FishTalk[e.index]; if (s) await G.run(s); },
-    }), T.d1FishIntro);
+    }), T.d1FishIntro());
     const fish = (res && res.fish) || [];
     await G.run(T.d1FishEnd(fish.length));
     let kept = fish.slice().sort((a, b) => b.halves - a.halves);
