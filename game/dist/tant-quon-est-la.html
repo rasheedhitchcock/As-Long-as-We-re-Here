@@ -3912,6 +3912,21 @@
       cx.fillStyle = hg;
       cx.beginPath(); cx.arc(0, 0, 150, 0, TAU); cx.fill();
       cx.restore();
+      // une vieille branche couchée au fond, et des galets dans le haut-fond
+      cx.save();
+      cx.globalAlpha = 0.28;
+      cx.strokeStyle = '#1E2A28'; cx.lineCap = 'round';
+      cx.lineWidth = 11;
+      cx.beginPath(); cx.moveTo(690, 334); cx.quadraticCurveTo(770, 318, 880, 326); cx.stroke();
+      cx.lineWidth = 5;
+      cx.beginPath(); cx.moveTo(760, 322); cx.lineTo(800, 300); cx.moveTo(830, 324); cx.lineTo(872, 344); cx.stroke();
+      cx.restore();
+      const pr = U.rng(19);
+      for (let i = 0; i < 9; i++) {
+        const px = 430 + pr() * 520, py = 300 + pr() * 70, r = 5 + pr() * 9;
+        cx.fillStyle = `rgba(${pr() < 0.5 ? '96,104,88' : '120,112,90'},0.32)`;
+        cx.beginPath(); cx.ellipse(px, py, r, r * 0.45, 0, 0, TAU); cx.fill();
+      }
       // reflets du ciel en bandes
       const rnd = U.rng(3);
       for (let i = 0; i < 90; i++) {
@@ -4094,6 +4109,8 @@
       this.card = null;
       this.ended = null;
       this.snapped = null;
+      this.yank = null;
+      this.noBob = false;
       this.sunNote = false;
       this.hookT = 0;
       this.respawns = [];
@@ -4111,6 +4128,9 @@
       for (let i = 0; i < 34; i++) this.streaks.push({ x: rnd() * 1400 - 60, y: BANK_Y + 10 + Math.pow(rnd(), 0.8) * 370, len: 16 + rnd() * 50, sp: 10 + rnd() * 16, a: 0.05 + rnd() * 0.1 });
       this.leaves = [];
       for (let i = 0; i < 9; i++) this.leaves.push({ x: rnd() * 1300, y: BANK_Y + 30 + rnd() * 330, rot: rnd() * TAU, vr: (rnd() - 0.5) * 0.5, sp: 9 + rnd() * 12, col: P.autumn[i % 5], size: 5 + rnd() * 3 });
+      // oiseaux qui passent au loin
+      this.birds = [];
+      this.nextFlock = 6;
       // Otis
       this.otis = { st: 'idle', t: 0, next: U.rand(15, 20), count: 0, kind: 'crapet' };
     },
@@ -4288,6 +4308,20 @@
         const f = makeShadow(weighted(SPOTS[r.spot].pool), r.spot, p.x, p.y);
         this.shadows.push(f);
       }
+      // un vol d'oiseaux de temps en temps
+      this.nextFlock -= dt;
+      if (this.nextFlock <= 0) {
+        this.nextFlock = U.rand(22, 36);
+        const n = U.randi(3, 6), y0 = U.rand(110, 190), dir = Math.random() < 0.5 ? 1 : -1;
+        for (let i = 0; i < n; i++) {
+          this.birds.push({ x: dir > 0 ? -30 - i * 26 : G.W + 30 + i * 26, y: y0 + (i % 2) * 12 + i * 3, vx: dir * U.rand(46, 56), ph: Math.random() * TAU, s: U.rand(0.8, 1.1) });
+        }
+      }
+      for (let i = this.birds.length - 1; i >= 0; i--) {
+        const b = this.birds[i];
+        b.x += b.vx * dt; b.ph += dt * 9;
+        if (b.x < -120 || b.x > G.W + 120) this.birds.splice(i, 1);
+      }
       this.updateOtis(dt, live);
     },
 
@@ -4380,7 +4414,7 @@
         if (pl.fish) pl.fish.nudge = 1;
         this.ring(this.bob.x, this.bob.y, 14, 0.7, 1.2);
         G.audio.sfx('tick');
-        if (this.tut) this.pop('Ça grignote… attends !', this.bob.x + 20, this.bob.y - 56, { size: 34, life: 1.3, color: P.paper });
+        if (this.tut) this.pop('Ça grignote… attends !', this.bob.x + 20, this.bob.y - 48, { size: 34, life: 1.3, color: P.paper });
       }
       if (this.wt >= pl.biteAt) {
         this.phase = 'bite';
@@ -4619,6 +4653,14 @@
       G.art.glow(ctx, sun.x, sun.y, 70, '#FFF0C8', 0.55);
       ctx.fillStyle = mix('#FFF3D2', '#FFC27A', k);
       ctx.beginPath(); ctx.arc(sun.x, sun.y, 26, 0, TAU); ctx.fill();
+      // oiseaux
+      ctx.save();
+      ctx.strokeStyle = 'rgba(52,42,38,0.7)'; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+      for (const b of this.birds) {
+        const w = 7 * b.s, f = Math.sin(b.ph) * 4 * b.s;
+        ctx.beginPath(); ctx.moveTo(b.x - w, b.y - f); ctx.quadraticCurveTo(b.x - w * 0.4, b.y - 2, b.x, b.y); ctx.quadraticCurveTo(b.x + w * 0.4, b.y - 2, b.x + w, b.y - f); ctx.stroke();
+      }
+      ctx.restore();
       // crête lointaine (brume)
       G.art.ridge(ctx, RIDGE1, mix('#8E9188', '#6E5F72', k), BANK_Y);
       ctx.fillStyle = `rgba(240,200,140,${0.16 + 0.1 * k})`;
@@ -4942,7 +4984,7 @@
         ui.tag(uctx, 'Des poissons', c.x + 4, c.y - 30);
         ui.tag(uctx, 'Le trou d’eau', h.x + 70, h.y - 26);
       }
-      if (tut && !G.blocked && this.phase === 'wait' && this.bob && this.wt < 3.2) ui.tag(uctx, 'Ton bouchon', this.bob.x, this.bob.y - 16);
+      if (tut && !G.blocked && this.phase === 'wait' && this.bob && this.wt < 2.4 && this.plan && this.plan.nibIdx === 0) ui.tag(uctx, 'Ton bouchon', this.bob.x, this.bob.y - 16);
       if (this.phase === 'charge') this.drawPower(uctx);
       if (this.phase === 'fight') this.drawTension(uctx);
       if (this.phase === 'bite' && this.bob) {
@@ -4978,7 +5020,7 @@
     },
 
     drawHud(ctx) {
-      const x = 22, y = 18, w = 282, h = 86;
+      const x = 22, y = 18, w = 282, h = 118;
       ctx.save();
       ctx.fillStyle = 'rgba(20,16,13,0.8)';
       ctx.beginPath(); ctx.roundRect(x, y, w, h, 10); ctx.fill();
@@ -4997,6 +5039,15 @@
         ctx.quadraticCurveTo(wx + 17, wy - 4, wx + 19, wy - 2);
         ctx.stroke();
       }
+      // le jour qui reste
+      ui.caps(ctx, 'Soleil', x + 16, y + 102, { size: 13, color: 'rgba(232,223,204,0.7)' });
+      const left = 1 - U.clamp(this.clock / SESSION, 0, 1);
+      const sx = x + 92, sw = 172, sy = y + 97;
+      ctx.fillStyle = 'rgba(232,223,204,0.12)';
+      ctx.beginPath(); ctx.roundRect(sx, sy - 3, sw, 6, 3); ctx.fill();
+      ctx.fillStyle = left < 0.2 ? P.ember : P.gold;
+      ctx.beginPath(); ctx.roundRect(sx, sy - 3, Math.max(6, sw * left), 6, 3); ctx.fill();
+      ctx.beginPath(); ctx.arc(sx + sw * left, sy, 6, 0, TAU); ctx.fill();
       ctx.restore();
     },
 
@@ -5161,8 +5212,8 @@
       ctx.globalAlpha = a;
       ctx.fillStyle = 'rgba(13,11,10,0.6)';
       ctx.fillRect(0, 0, G.W, G.H);
-      const extra = Math.max(0, this.catches.length - 4) * 38;
-      const w = 660, h = 470 + extra, x = G.W / 2 - w / 2, y = 120 - extra / 2 + (1 - a) * 20;
+      const rows = Math.max(1, this.catches.length);
+      const w = 660, h = Math.max(390, 306 + rows * 38), x = G.W / 2 - w / 2, y = (G.H - h) / 2 - 6 + (1 - a) * 20;
       ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 22; ctx.shadowOffsetY = 6;
       ctx.fillStyle = '#EFE6D2';
       ctx.beginPath(); ctx.roundRect(x, y, w, h, 6); ctx.fill();
@@ -8786,11 +8837,11 @@
   const START_X = 150;
   const CPS = [START_X, 1040, 2340, 3060]; // départ, puis les trois points de passage
   const SAFE_X = 3330;               // au-delà, l'agent ne voit plus Henry
-  const ARRIVE_X = 3392;
-  const HENRY_STOP = 3440;
+  const ARRIVE_X = 3380;
+  const HENRY_STOP = 3420;
   const HANGAR_X = 3492;
-  const LIGE_HOME = 3540, LIGE_MEET = 3486;
-  const SPEED = 66, CROUCH_SPEED = 36;
+  const LIGE_WALL = HANGAR_X + 104, LIGE_MEET = 3468; // Lige attend contre le mur, dans l'ombre
+  const SPEED = 60, CROUCH_SPEED = 33;
   const AG_H = (G.CHARS.revenuer && G.CHARS.revenuer.h) || 166;
   const BEAM_HW = 92;                // demi-largeur de la tache de lumière sur le sentier
   const PF = { far: 0.08, mid: 0.22, trees: 0.5 };
@@ -9759,7 +9810,8 @@
       G.audio.amb(['night', 'wind']);
       if (G.audio.stopSong) G.audio.stopSong(1.2);
       this.state = 'intro';
-      this.introA = 1;
+      this.introA = 0;
+      this.introT = 0;
       this.hx = START_X;
       this.dir = 1;
       this.phase = 0;
@@ -9816,7 +9868,8 @@
       this.animate(dt);
       if (G.blocked) return;
       if (this.state === 'intro') {
-        if (this.t > 0.7 && I.confirm()) {
+        this.introT += dt;
+        if (this.introT > 0.6 && I.confirm()) {
           I.consume();
           this.state = 'play';
           G.audio.sfx('click');
@@ -9831,7 +9884,16 @@
 
     // Animations qui continuent même pendant un dialogue ou un fondu.
     animate(dt) {
-      if (this.state !== 'intro') this.introA = Math.max(0, this.introA - dt * 2.4);
+      // Le carton-consigne attend la fin d'un éventuel dialogue d'ouverture.
+      if (this.state === 'intro' && !G.blocked) this.introA = Math.min(1, this.introA + dt * 3);
+      else this.introA = Math.max(0, this.introA - dt * (this.state === 'intro' ? 6 : 2.4));
+      const ar = this.arr;
+      if (ar && ar.step !== 'walk' && ar.lige > LIGE_MEET) {
+        const st = Math.min(ar.lige - LIGE_MEET, 40 * dt);
+        ar.lige -= st;
+        ar.lph = (ar.lph + st / 150) % 1;
+        ar.lmove = ar.lige > LIGE_MEET + 0.5;
+      } else if (ar) ar.lmove = false;
       this.prevCam = this.cam;
       this.cam = U.lerp(this.cam, camFor(this.viewX), 1 - Math.pow(0.04, dt));
       const dcam = this.cam - this.prevCam;
@@ -10048,7 +10110,7 @@
           a.lift = 0;
           a.t = 0;
           a.aimed = false;
-          this.nextSweep = U.rand(6.5, 10);
+          this.nextSweep = U.rand(5.5, 8.5);
         }
       }
     },
@@ -10269,7 +10331,7 @@
       this.crouch = false;
       this.inFwd = this.inBack = false;
       this.final = { jars: 6 - this.broken, broken: this.broken, caught: this.caught, seconds: Math.round(this.seconds) };
-      this.arr = { t: 0, step: 'walk', lige: LIGE_HOME, lph: 0, lmove: false, k: 0, e: 0 };
+      this.arr = { t: 0, step: 'walk', lige: LIGE_WALL, lph: 0, lmove: false, k: 0, e: 0, hookDone: false };
     },
 
     updateArrive(dt) {
@@ -10285,20 +10347,14 @@
           this.phase = (this.phase + st / 150) % 1;
           this.dir = 1;
         }
-        if (ar.t > 0.6) {
-          const ldx = LIGE_MEET - ar.lige;
-          ar.lmove = Math.abs(ldx) > 0.5;
-          if (ar.lmove) {
-            const st = Math.min(Math.abs(ldx), 42 * dt);
-            ar.lige += Math.sign(ldx) * st;
-            ar.lph = (ar.lph + st / 150) % 1;
-          }
-        }
-        if (!this.moving && !ar.lmove && ar.t > 1.2) { ar.step = 'give'; ar.k = 0; }
+        if (!this.moving && ar.t > 0.9) { ar.step = 'hook'; this.runHook(); }
+      } else if (ar.step === 'hook') {
+        // Lige se détache du mur (voir animate) ; on attend aussi la fin du crochet.
+        if (ar.hookDone && !ar.lmove) { ar.step = 'give'; ar.k = 0; }
       } else if (ar.step === 'give') {
         ar.k += dt / 1.2;
         if (ar.k >= 0.55 && this.hasCrate) { this.hasCrate = false; G.audio.sfx('clink'); }
-        if (ar.k >= 1) { ar.step = 'hook'; this.runHook(); }
+        if (ar.k >= 1) { ar.step = 'end'; ar.e = 0; }
       } else if (ar.step === 'end') {
         ar.e += dt;
         if (ar.e >= 0.5) this.finish(this.final);
@@ -10306,9 +10362,9 @@
     },
 
     runHook() {
-      const done = () => { if (this.arr) this.arr.step = 'end'; };
+      const done = () => { if (this.arr) this.arr.hookDone = true; };
       let p = null;
-      try { p = opts.onArrive ? opts.onArrive(this.final, this) : G.wait(1.2); } catch (e) { console.error(e); }
+      try { p = opts.onArrive ? opts.onArrive(this.final, this) : G.wait(1.6); } catch (e) { console.error(e); }
       Promise.resolve(p).then(done, (e) => { console.error(e); done(); });
     },
 
@@ -10503,10 +10559,10 @@
       }
       // le chien
       if (vis(DOG_X)) drawDog(ctx, this.dog, t);
-      // Lige, l'homme de Dow, dans l'embrasure du hangar
-      if (vis(LIGE_HOME, 300)) {
+      // Lige, l'homme de Dow : d'abord une ombre contre le mur du hangar
+      if (vis(LIGE_WALL, 300)) {
         const ar = this.arr;
-        const lx = ar ? ar.lige : LIGE_HOME;
+        const lx = ar ? ar.lige : LIGE_WALL;
         const has = ar && !this.hasCrate;
         let arms;
         if (has) arms = [0.75, 0.95];
@@ -10596,7 +10652,7 @@
       if (this.dog.alert > 0.5) return 'Le chien dresse l’oreille… Doucement.';
       if (this.noise > 0.75) return 'Les bocaux tintent ! Arrête-toi un instant.';
       if (onLeaves(this.hx) && !this.crouch) return 'Feuilles sèches : baisse-toi pour passer sans bruit.';
-      if (this.leaving) return 'Le vieux hangar de la mine. Lige t’attend.';
+      if (this.leaving) return 'Le vieux hangar du carreau. Encore quelques pas.';
       if (this.playT < 7) return 'Porte la caisse jusqu’au vieux hangar de la mine.';
       return null;
     },
@@ -10756,7 +10812,7 @@
       }
       if (ct > 1.95 && ct < 3.25) {
         const al = Math.min(1, (ct - 1.95) * 4, (3.25 - ct) * 4);
-        ui.text(u, 'Henry détale entre les arbres et attend que la lanterne s’éloigne.', W / 2, H / 2 - 12, { size: 28, italic: true, align: 'center', base: 'middle', alpha: al, maxW: 900 });
+        ui.text(u, 'Tu détales entre les arbres et tu attends que la lanterne s’éloigne.', W / 2, H / 2 - 12, { size: 28, italic: true, align: 'center', base: 'middle', alpha: al, maxW: 900 });
         ui.caps(u, 'Retour au dernier point de passage', W / 2, H / 2 + 36, { size: 14, align: 'center', color: 'rgba(232,223,204,0.55)', alpha: al, spacing: 4 });
       }
     },
@@ -11976,7 +12032,7 @@
 
       // ---------------------------------------------------------------- dessin
       draw(ctx) {
-        if (this.phase === 'print') { this.drawPrint(ctx); A.finish(ctx, { grain: 0.05, vignette: 0.9 }); return; }
+        if (this.phase === 'print') { this.drawPrint(ctx); A.finish(ctx, { grain: 0.05, vignette: 0.6 }); return; }
         if (this.phase === 'glass') { this.drawGlass(ctx); A.finish(ctx, { grain: 0.06 }); return; }
         this.renderBack(ctx);
         if (this.phase === 'compose') this.drawMarkers(ctx);
@@ -12117,8 +12173,15 @@
         if (!this.glassCan) this.glassCan = canvas(Math.round(g.w * s), Math.round(g.h * s));
         const gc = this.glassCan, gx = gc.getContext('2d');
         const k = (g.w / CROP.w) * s;
+        if (!this.glassBase) {
+          this.glassBase = canvas(gc.width, gc.height);
+          const bx = this.glassBase.getContext('2d');
+          bx.setTransform(k, 0, 0, k, -CROP.x * k, -CROP.y * k);
+          this.renderBack(bx);
+        }
+        gx.setTransform(1, 0, 0, 1, 0, 0);
+        gx.drawImage(this.glassBase, 0, 0);
         gx.setTransform(k, 0, 0, k, -CROP.x * k, -CROP.y * k);
-        this.renderBack(gx);
         this.renderFigs(gx, { wiggle: 0.25 });
         gx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.save();
@@ -12177,60 +12240,82 @@
         G.familyPhoto = out;
         this.parts = { paper, a: dv.a, b: dv.b };
       },
+      // Le tirage en cours de développement, recomposé seulement quand il change.
+      printFrame(dev, cap) {
+        const qd = Math.round(dev * 90), qc = Math.round(cap * 120);
+        if (this.printQ && this.printQ[0] === qd && this.printQ[1] === qc) return this.printCan;
+        this.printQ = [qd, qc];
+        if (!this.printCan) this.printCan = canvas(PR.w, PR.h);
+        const o = this.printCan.getContext('2d');
+        o.clearRect(0, 0, PR.w, PR.h);
+        o.drawImage(this.parts.paper, 0, 0);
+        // le bain : les ombres montent d'abord, puis le reste
+        const da = U.smooth(clamp01(dev / 0.6)), db = U.smooth(clamp01((dev - 0.3) / 0.7));
+        o.save();
+        o.globalCompositeOperation = 'multiply';
+        if (da > 0) { o.globalAlpha = da; o.drawImage(this.parts.a, PR.ix, PR.iy); }
+        if (db > 0) { o.globalAlpha = db; o.drawImage(this.parts.b, PR.ix, PR.iy); }
+        o.restore();
+        if (db > 0) wear(o, db);
+        if (cap > 0) drawCaption(o, U.easeInOut(cap));
+        return this.printCan;
+      },
       drawPrint(ctx) {
         const r = this.pr || { dev: 0, cap: 0 };
-        ctx.fillStyle = '#18120E';
-        ctx.fillRect(0, 0, G.W, G.H);
-        const rnd = U.rng(8);
-        ctx.strokeStyle = 'rgba(90,64,42,0.22)';
-        for (let i = 0; i < 40; i++) {
-          ctx.lineWidth = 1 + rnd() * 2;
-          const y = rnd() * G.H;
-          line(ctx, 0, y, G.W, y + (rnd() - 0.5) * 30);
-        }
-        A.glow(ctx, G.W / 2, G.H * 0.42, 620, 'rgba(255,214,150,1)', 0.16);
+        A.blit(ctx, A.cached('photo-table', G.W, G.H, (cx, w, h) => {
+          cx.fillStyle = '#1A130F';
+          cx.fillRect(0, 0, w, h);
+          const rnd = U.rng(8);
+          cx.strokeStyle = 'rgba(96,68,44,0.2)';
+          for (let i = 0; i < 46; i++) {
+            cx.lineWidth = 1 + rnd() * 2.5;
+            const y = rnd() * h;
+            line(cx, 0, y, w, y + (rnd() - 0.5) * 30);
+          }
+          const g = cx.createRadialGradient(w / 2, h * 0.44, 40, w / 2, h * 0.44, 700);
+          g.addColorStop(0, 'rgba(255,214,150,0.2)');
+          g.addColorStop(1, 'rgba(255,214,150,0)');
+          cx.fillStyle = g;
+          cx.fillRect(0, 0, w, h);
+          // ombre portée du tirage, cuite une fois pour toutes
+          cx.save();
+          cx.shadowColor = 'rgba(0,0,0,0.7)';
+          cx.shadowBlur = 28;
+          cx.shadowOffsetY = 12;
+          cx.fillStyle = '#16100c';
+          const s = 0.93;
+          cx.fillRect(w / 2 - (PR.w * s) / 2 + 10, 22 + 10, PR.w * s - 20, PR.h * s - 20);
+          cx.restore();
+        }), 0, 0);
         if (!this.parts) return;
-        const s = 0.93, w = PR.w * s, h = PR.h * s;
+        const s = 0.93, h = PR.h * s;
         ctx.save();
         ctx.translate(G.W / 2, 22 + h / 2);
         ctx.rotate(-0.009);
         ctx.scale(s, s);
         ctx.translate(-PR.w / 2, -PR.h / 2);
-        ctx.save();
-        ctx.shadowColor = 'rgba(0,0,0,0.65)';
-        ctx.shadowBlur = 26;
-        ctx.shadowOffsetY = 10;
-        ctx.drawImage(this.parts.paper, 0, 0);
-        ctx.restore();
-        // le bain : les ombres montent d'abord, puis le reste
-        const da = U.smooth(clamp01(r.dev / 0.6)), db = U.smooth(clamp01((r.dev - 0.3) / 0.7));
-        ctx.save();
-        ctx.globalCompositeOperation = 'multiply';
-        if (da > 0) { ctx.globalAlpha = da; ctx.drawImage(this.parts.a, PR.ix, PR.iy); }
-        if (db > 0) { ctx.globalAlpha = db; ctx.drawImage(this.parts.b, PR.ix, PR.iy); }
-        ctx.restore();
-        if (db > 0) wear(ctx, db);
-        // reflets du liquide, qui s'effacent
-        const wet = 1 - clamp01((r.dev - 0.4) / 0.6);
+        ctx.drawImage(this.printFrame(r.dev, r.cap), 0, 0);
+        // reflets du liquide, larges et lents, qui s'effacent
+        const wet = 1 - clamp01((r.dev - 0.35) / 0.55);
         if (wet > 0) {
-          ctx.save();
           ctx.beginPath();
-          ctx.rect(PR.ix - 20, PR.iy - 20, PR.iw + 40, PR.ih + 40);
+          ctx.rect(PR.ix, PR.iy, PR.iw, PR.ih);
           ctx.clip();
-          ctx.globalAlpha = wet * 0.16;
-          ctx.globalCompositeOperation = 'screen';
-          ctx.strokeStyle = '#fff6e0';
-          for (let i = 0; i < 7; i++) {
-            const y = PR.iy + ((G.time * 22 + i * 83) % (PR.ih + 80)) - 40;
-            ctx.lineWidth = 6 + (i % 3) * 5;
+          for (let i = 0; i < 3; i++) {
+            const y = PR.iy - 120 + ((G.time * 26 + i * 230) % (PR.ih + 240));
+            const g = ctx.createLinearGradient(0, y - 60, 0, y + 60);
+            g.addColorStop(0, 'rgba(255,248,230,0)');
+            g.addColorStop(0.5, `rgba(255,248,230,${0.13 * wet})`);
+            g.addColorStop(1, 'rgba(255,248,230,0)');
+            ctx.fillStyle = g;
             ctx.beginPath();
-            ctx.moveTo(PR.ix - 20, y);
-            for (let x = 0; x <= PR.iw + 40; x += 40) ctx.lineTo(PR.ix - 20 + x, y + Math.sin(x * 0.012 + G.time * 1.3 + i) * 12);
-            ctx.stroke();
+            ctx.moveTo(PR.ix, y - 60);
+            for (let x = 0; x <= PR.iw; x += 60) ctx.lineTo(PR.ix + x, y - 60 + Math.sin(x * 0.008 + G.time * 0.9 + i) * 14);
+            for (let x = PR.iw; x >= 0; x -= 60) ctx.lineTo(PR.ix + x, y + 60 + Math.sin(x * 0.008 + G.time * 0.9 + i + 1) * 14);
+            ctx.closePath();
+            ctx.fill();
           }
-          ctx.restore();
         }
-        if (r.cap > 0) drawCaption(ctx, U.easeInOut(r.cap));
         ctx.restore();
       },
 

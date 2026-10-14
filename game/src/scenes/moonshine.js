@@ -23,11 +23,11 @@
   const START_X = 150;
   const CPS = [START_X, 1040, 2340, 3060]; // départ, puis les trois points de passage
   const SAFE_X = 3330;               // au-delà, l'agent ne voit plus Henry
-  const ARRIVE_X = 3392;
-  const HENRY_STOP = 3440;
+  const ARRIVE_X = 3380;
+  const HENRY_STOP = 3420;
   const HANGAR_X = 3492;
-  const LIGE_HOME = 3540, LIGE_MEET = 3486;
-  const SPEED = 66, CROUCH_SPEED = 36;
+  const LIGE_WALL = HANGAR_X + 104, LIGE_MEET = 3468; // Lige attend contre le mur, dans l'ombre
+  const SPEED = 60, CROUCH_SPEED = 33;
   const AG_H = (G.CHARS.revenuer && G.CHARS.revenuer.h) || 166;
   const BEAM_HW = 92;                // demi-largeur de la tache de lumière sur le sentier
   const PF = { far: 0.08, mid: 0.22, trees: 0.5 };
@@ -996,7 +996,8 @@
       G.audio.amb(['night', 'wind']);
       if (G.audio.stopSong) G.audio.stopSong(1.2);
       this.state = 'intro';
-      this.introA = 1;
+      this.introA = 0;
+      this.introT = 0;
       this.hx = START_X;
       this.dir = 1;
       this.phase = 0;
@@ -1053,7 +1054,8 @@
       this.animate(dt);
       if (G.blocked) return;
       if (this.state === 'intro') {
-        if (this.t > 0.7 && I.confirm()) {
+        this.introT += dt;
+        if (this.introT > 0.6 && I.confirm()) {
           I.consume();
           this.state = 'play';
           G.audio.sfx('click');
@@ -1068,7 +1070,16 @@
 
     // Animations qui continuent même pendant un dialogue ou un fondu.
     animate(dt) {
-      if (this.state !== 'intro') this.introA = Math.max(0, this.introA - dt * 2.4);
+      // Le carton-consigne attend la fin d'un éventuel dialogue d'ouverture.
+      if (this.state === 'intro' && !G.blocked) this.introA = Math.min(1, this.introA + dt * 3);
+      else this.introA = Math.max(0, this.introA - dt * (this.state === 'intro' ? 6 : 2.4));
+      const ar = this.arr;
+      if (ar && ar.step !== 'walk' && ar.lige > LIGE_MEET) {
+        const st = Math.min(ar.lige - LIGE_MEET, 40 * dt);
+        ar.lige -= st;
+        ar.lph = (ar.lph + st / 150) % 1;
+        ar.lmove = ar.lige > LIGE_MEET + 0.5;
+      } else if (ar) ar.lmove = false;
       this.prevCam = this.cam;
       this.cam = U.lerp(this.cam, camFor(this.viewX), 1 - Math.pow(0.04, dt));
       const dcam = this.cam - this.prevCam;
@@ -1285,7 +1296,7 @@
           a.lift = 0;
           a.t = 0;
           a.aimed = false;
-          this.nextSweep = U.rand(6.5, 10);
+          this.nextSweep = U.rand(5.5, 8.5);
         }
       }
     },
@@ -1506,7 +1517,7 @@
       this.crouch = false;
       this.inFwd = this.inBack = false;
       this.final = { jars: 6 - this.broken, broken: this.broken, caught: this.caught, seconds: Math.round(this.seconds) };
-      this.arr = { t: 0, step: 'walk', lige: LIGE_HOME, lph: 0, lmove: false, k: 0, e: 0 };
+      this.arr = { t: 0, step: 'walk', lige: LIGE_WALL, lph: 0, lmove: false, k: 0, e: 0, hookDone: false };
     },
 
     updateArrive(dt) {
@@ -1522,20 +1533,14 @@
           this.phase = (this.phase + st / 150) % 1;
           this.dir = 1;
         }
-        if (ar.t > 0.6) {
-          const ldx = LIGE_MEET - ar.lige;
-          ar.lmove = Math.abs(ldx) > 0.5;
-          if (ar.lmove) {
-            const st = Math.min(Math.abs(ldx), 42 * dt);
-            ar.lige += Math.sign(ldx) * st;
-            ar.lph = (ar.lph + st / 150) % 1;
-          }
-        }
-        if (!this.moving && !ar.lmove && ar.t > 1.2) { ar.step = 'give'; ar.k = 0; }
+        if (!this.moving && ar.t > 0.9) { ar.step = 'hook'; this.runHook(); }
+      } else if (ar.step === 'hook') {
+        // Lige se détache du mur (voir animate) ; on attend aussi la fin du crochet.
+        if (ar.hookDone && !ar.lmove) { ar.step = 'give'; ar.k = 0; }
       } else if (ar.step === 'give') {
         ar.k += dt / 1.2;
         if (ar.k >= 0.55 && this.hasCrate) { this.hasCrate = false; G.audio.sfx('clink'); }
-        if (ar.k >= 1) { ar.step = 'hook'; this.runHook(); }
+        if (ar.k >= 1) { ar.step = 'end'; ar.e = 0; }
       } else if (ar.step === 'end') {
         ar.e += dt;
         if (ar.e >= 0.5) this.finish(this.final);
@@ -1543,9 +1548,9 @@
     },
 
     runHook() {
-      const done = () => { if (this.arr) this.arr.step = 'end'; };
+      const done = () => { if (this.arr) this.arr.hookDone = true; };
       let p = null;
-      try { p = opts.onArrive ? opts.onArrive(this.final, this) : G.wait(1.2); } catch (e) { console.error(e); }
+      try { p = opts.onArrive ? opts.onArrive(this.final, this) : G.wait(1.6); } catch (e) { console.error(e); }
       Promise.resolve(p).then(done, (e) => { console.error(e); done(); });
     },
 
@@ -1740,10 +1745,10 @@
       }
       // le chien
       if (vis(DOG_X)) drawDog(ctx, this.dog, t);
-      // Lige, l'homme de Dow, dans l'embrasure du hangar
-      if (vis(LIGE_HOME, 300)) {
+      // Lige, l'homme de Dow : d'abord une ombre contre le mur du hangar
+      if (vis(LIGE_WALL, 300)) {
         const ar = this.arr;
-        const lx = ar ? ar.lige : LIGE_HOME;
+        const lx = ar ? ar.lige : LIGE_WALL;
         const has = ar && !this.hasCrate;
         let arms;
         if (has) arms = [0.75, 0.95];
@@ -1833,7 +1838,7 @@
       if (this.dog.alert > 0.5) return 'Le chien dresse l’oreille… Doucement.';
       if (this.noise > 0.75) return 'Les bocaux tintent ! Arrête-toi un instant.';
       if (onLeaves(this.hx) && !this.crouch) return 'Feuilles sèches : baisse-toi pour passer sans bruit.';
-      if (this.leaving) return 'Le vieux hangar de la mine. Lige t’attend.';
+      if (this.leaving) return 'Le vieux hangar du carreau. Encore quelques pas.';
       if (this.playT < 7) return 'Porte la caisse jusqu’au vieux hangar de la mine.';
       return null;
     },
@@ -1993,7 +1998,7 @@
       }
       if (ct > 1.95 && ct < 3.25) {
         const al = Math.min(1, (ct - 1.95) * 4, (3.25 - ct) * 4);
-        ui.text(u, 'Henry détale entre les arbres et attend que la lanterne s’éloigne.', W / 2, H / 2 - 12, { size: 28, italic: true, align: 'center', base: 'middle', alpha: al, maxW: 900 });
+        ui.text(u, 'Tu détales entre les arbres et tu attends que la lanterne s’éloigne.', W / 2, H / 2 - 12, { size: 28, italic: true, align: 'center', base: 'middle', alpha: al, maxW: 900 });
         ui.caps(u, 'Retour au dernier point de passage', W / 2, H / 2 + 36, { size: 14, align: 'center', color: 'rgba(232,223,204,0.55)', alpha: al, spacing: 4 });
       }
     },

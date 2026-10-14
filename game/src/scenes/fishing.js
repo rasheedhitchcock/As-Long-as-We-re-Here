@@ -554,6 +554,21 @@
       cx.fillStyle = hg;
       cx.beginPath(); cx.arc(0, 0, 150, 0, TAU); cx.fill();
       cx.restore();
+      // une vieille branche couchée au fond, et des galets dans le haut-fond
+      cx.save();
+      cx.globalAlpha = 0.28;
+      cx.strokeStyle = '#1E2A28'; cx.lineCap = 'round';
+      cx.lineWidth = 11;
+      cx.beginPath(); cx.moveTo(690, 334); cx.quadraticCurveTo(770, 318, 880, 326); cx.stroke();
+      cx.lineWidth = 5;
+      cx.beginPath(); cx.moveTo(760, 322); cx.lineTo(800, 300); cx.moveTo(830, 324); cx.lineTo(872, 344); cx.stroke();
+      cx.restore();
+      const pr = U.rng(19);
+      for (let i = 0; i < 9; i++) {
+        const px = 430 + pr() * 520, py = 300 + pr() * 70, r = 5 + pr() * 9;
+        cx.fillStyle = `rgba(${pr() < 0.5 ? '96,104,88' : '120,112,90'},0.32)`;
+        cx.beginPath(); cx.ellipse(px, py, r, r * 0.45, 0, 0, TAU); cx.fill();
+      }
       // reflets du ciel en bandes
       const rnd = U.rng(3);
       for (let i = 0; i < 90; i++) {
@@ -736,6 +751,8 @@
       this.card = null;
       this.ended = null;
       this.snapped = null;
+      this.yank = null;
+      this.noBob = false;
       this.sunNote = false;
       this.hookT = 0;
       this.respawns = [];
@@ -753,6 +770,9 @@
       for (let i = 0; i < 34; i++) this.streaks.push({ x: rnd() * 1400 - 60, y: BANK_Y + 10 + Math.pow(rnd(), 0.8) * 370, len: 16 + rnd() * 50, sp: 10 + rnd() * 16, a: 0.05 + rnd() * 0.1 });
       this.leaves = [];
       for (let i = 0; i < 9; i++) this.leaves.push({ x: rnd() * 1300, y: BANK_Y + 30 + rnd() * 330, rot: rnd() * TAU, vr: (rnd() - 0.5) * 0.5, sp: 9 + rnd() * 12, col: P.autumn[i % 5], size: 5 + rnd() * 3 });
+      // oiseaux qui passent au loin
+      this.birds = [];
+      this.nextFlock = 6;
       // Otis
       this.otis = { st: 'idle', t: 0, next: U.rand(15, 20), count: 0, kind: 'crapet' };
     },
@@ -930,6 +950,20 @@
         const f = makeShadow(weighted(SPOTS[r.spot].pool), r.spot, p.x, p.y);
         this.shadows.push(f);
       }
+      // un vol d'oiseaux de temps en temps
+      this.nextFlock -= dt;
+      if (this.nextFlock <= 0) {
+        this.nextFlock = U.rand(22, 36);
+        const n = U.randi(3, 6), y0 = U.rand(110, 190), dir = Math.random() < 0.5 ? 1 : -1;
+        for (let i = 0; i < n; i++) {
+          this.birds.push({ x: dir > 0 ? -30 - i * 26 : G.W + 30 + i * 26, y: y0 + (i % 2) * 12 + i * 3, vx: dir * U.rand(46, 56), ph: Math.random() * TAU, s: U.rand(0.8, 1.1) });
+        }
+      }
+      for (let i = this.birds.length - 1; i >= 0; i--) {
+        const b = this.birds[i];
+        b.x += b.vx * dt; b.ph += dt * 9;
+        if (b.x < -120 || b.x > G.W + 120) this.birds.splice(i, 1);
+      }
       this.updateOtis(dt, live);
     },
 
@@ -1022,7 +1056,7 @@
         if (pl.fish) pl.fish.nudge = 1;
         this.ring(this.bob.x, this.bob.y, 14, 0.7, 1.2);
         G.audio.sfx('tick');
-        if (this.tut) this.pop('Ça grignote… attends !', this.bob.x + 20, this.bob.y - 56, { size: 34, life: 1.3, color: P.paper });
+        if (this.tut) this.pop('Ça grignote… attends !', this.bob.x + 20, this.bob.y - 48, { size: 34, life: 1.3, color: P.paper });
       }
       if (this.wt >= pl.biteAt) {
         this.phase = 'bite';
@@ -1261,6 +1295,14 @@
       G.art.glow(ctx, sun.x, sun.y, 70, '#FFF0C8', 0.55);
       ctx.fillStyle = mix('#FFF3D2', '#FFC27A', k);
       ctx.beginPath(); ctx.arc(sun.x, sun.y, 26, 0, TAU); ctx.fill();
+      // oiseaux
+      ctx.save();
+      ctx.strokeStyle = 'rgba(52,42,38,0.7)'; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+      for (const b of this.birds) {
+        const w = 7 * b.s, f = Math.sin(b.ph) * 4 * b.s;
+        ctx.beginPath(); ctx.moveTo(b.x - w, b.y - f); ctx.quadraticCurveTo(b.x - w * 0.4, b.y - 2, b.x, b.y); ctx.quadraticCurveTo(b.x + w * 0.4, b.y - 2, b.x + w, b.y - f); ctx.stroke();
+      }
+      ctx.restore();
       // crête lointaine (brume)
       G.art.ridge(ctx, RIDGE1, mix('#8E9188', '#6E5F72', k), BANK_Y);
       ctx.fillStyle = `rgba(240,200,140,${0.16 + 0.1 * k})`;
@@ -1584,7 +1626,7 @@
         ui.tag(uctx, 'Des poissons', c.x + 4, c.y - 30);
         ui.tag(uctx, 'Le trou d’eau', h.x + 70, h.y - 26);
       }
-      if (tut && !G.blocked && this.phase === 'wait' && this.bob && this.wt < 3.2) ui.tag(uctx, 'Ton bouchon', this.bob.x, this.bob.y - 16);
+      if (tut && !G.blocked && this.phase === 'wait' && this.bob && this.wt < 2.4 && this.plan && this.plan.nibIdx === 0) ui.tag(uctx, 'Ton bouchon', this.bob.x, this.bob.y - 16);
       if (this.phase === 'charge') this.drawPower(uctx);
       if (this.phase === 'fight') this.drawTension(uctx);
       if (this.phase === 'bite' && this.bob) {
@@ -1620,7 +1662,7 @@
     },
 
     drawHud(ctx) {
-      const x = 22, y = 18, w = 282, h = 86;
+      const x = 22, y = 18, w = 282, h = 118;
       ctx.save();
       ctx.fillStyle = 'rgba(20,16,13,0.8)';
       ctx.beginPath(); ctx.roundRect(x, y, w, h, 10); ctx.fill();
@@ -1639,6 +1681,15 @@
         ctx.quadraticCurveTo(wx + 17, wy - 4, wx + 19, wy - 2);
         ctx.stroke();
       }
+      // le jour qui reste
+      ui.caps(ctx, 'Soleil', x + 16, y + 102, { size: 13, color: 'rgba(232,223,204,0.7)' });
+      const left = 1 - U.clamp(this.clock / SESSION, 0, 1);
+      const sx = x + 92, sw = 172, sy = y + 97;
+      ctx.fillStyle = 'rgba(232,223,204,0.12)';
+      ctx.beginPath(); ctx.roundRect(sx, sy - 3, sw, 6, 3); ctx.fill();
+      ctx.fillStyle = left < 0.2 ? P.ember : P.gold;
+      ctx.beginPath(); ctx.roundRect(sx, sy - 3, Math.max(6, sw * left), 6, 3); ctx.fill();
+      ctx.beginPath(); ctx.arc(sx + sw * left, sy, 6, 0, TAU); ctx.fill();
       ctx.restore();
     },
 
@@ -1803,8 +1854,8 @@
       ctx.globalAlpha = a;
       ctx.fillStyle = 'rgba(13,11,10,0.6)';
       ctx.fillRect(0, 0, G.W, G.H);
-      const extra = Math.max(0, this.catches.length - 4) * 38;
-      const w = 660, h = 470 + extra, x = G.W / 2 - w / 2, y = 120 - extra / 2 + (1 - a) * 20;
+      const rows = Math.max(1, this.catches.length);
+      const w = 660, h = Math.max(390, 306 + rows * 38), x = G.W / 2 - w / 2, y = (G.H - h) / 2 - 6 + (1 - a) * 20;
       ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 22; ctx.shadowOffsetY = 6;
       ctx.fillStyle = '#EFE6D2';
       ctx.beginPath(); ctx.roundRect(x, y, w, h, 6); ctx.fill();

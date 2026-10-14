@@ -1175,7 +1175,7 @@
 
       // ---------------------------------------------------------------- dessin
       draw(ctx) {
-        if (this.phase === 'print') { this.drawPrint(ctx); A.finish(ctx, { grain: 0.05, vignette: 0.9 }); return; }
+        if (this.phase === 'print') { this.drawPrint(ctx); A.finish(ctx, { grain: 0.05, vignette: 0.6 }); return; }
         if (this.phase === 'glass') { this.drawGlass(ctx); A.finish(ctx, { grain: 0.06 }); return; }
         this.renderBack(ctx);
         if (this.phase === 'compose') this.drawMarkers(ctx);
@@ -1316,8 +1316,15 @@
         if (!this.glassCan) this.glassCan = canvas(Math.round(g.w * s), Math.round(g.h * s));
         const gc = this.glassCan, gx = gc.getContext('2d');
         const k = (g.w / CROP.w) * s;
+        if (!this.glassBase) {
+          this.glassBase = canvas(gc.width, gc.height);
+          const bx = this.glassBase.getContext('2d');
+          bx.setTransform(k, 0, 0, k, -CROP.x * k, -CROP.y * k);
+          this.renderBack(bx);
+        }
+        gx.setTransform(1, 0, 0, 1, 0, 0);
+        gx.drawImage(this.glassBase, 0, 0);
         gx.setTransform(k, 0, 0, k, -CROP.x * k, -CROP.y * k);
-        this.renderBack(gx);
         this.renderFigs(gx, { wiggle: 0.25 });
         gx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.save();
@@ -1376,60 +1383,82 @@
         G.familyPhoto = out;
         this.parts = { paper, a: dv.a, b: dv.b };
       },
+      // Le tirage en cours de développement, recomposé seulement quand il change.
+      printFrame(dev, cap) {
+        const qd = Math.round(dev * 90), qc = Math.round(cap * 120);
+        if (this.printQ && this.printQ[0] === qd && this.printQ[1] === qc) return this.printCan;
+        this.printQ = [qd, qc];
+        if (!this.printCan) this.printCan = canvas(PR.w, PR.h);
+        const o = this.printCan.getContext('2d');
+        o.clearRect(0, 0, PR.w, PR.h);
+        o.drawImage(this.parts.paper, 0, 0);
+        // le bain : les ombres montent d'abord, puis le reste
+        const da = U.smooth(clamp01(dev / 0.6)), db = U.smooth(clamp01((dev - 0.3) / 0.7));
+        o.save();
+        o.globalCompositeOperation = 'multiply';
+        if (da > 0) { o.globalAlpha = da; o.drawImage(this.parts.a, PR.ix, PR.iy); }
+        if (db > 0) { o.globalAlpha = db; o.drawImage(this.parts.b, PR.ix, PR.iy); }
+        o.restore();
+        if (db > 0) wear(o, db);
+        if (cap > 0) drawCaption(o, U.easeInOut(cap));
+        return this.printCan;
+      },
       drawPrint(ctx) {
         const r = this.pr || { dev: 0, cap: 0 };
-        ctx.fillStyle = '#18120E';
-        ctx.fillRect(0, 0, G.W, G.H);
-        const rnd = U.rng(8);
-        ctx.strokeStyle = 'rgba(90,64,42,0.22)';
-        for (let i = 0; i < 40; i++) {
-          ctx.lineWidth = 1 + rnd() * 2;
-          const y = rnd() * G.H;
-          line(ctx, 0, y, G.W, y + (rnd() - 0.5) * 30);
-        }
-        A.glow(ctx, G.W / 2, G.H * 0.42, 620, 'rgba(255,214,150,1)', 0.16);
+        A.blit(ctx, A.cached('photo-table', G.W, G.H, (cx, w, h) => {
+          cx.fillStyle = '#1A130F';
+          cx.fillRect(0, 0, w, h);
+          const rnd = U.rng(8);
+          cx.strokeStyle = 'rgba(96,68,44,0.2)';
+          for (let i = 0; i < 46; i++) {
+            cx.lineWidth = 1 + rnd() * 2.5;
+            const y = rnd() * h;
+            line(cx, 0, y, w, y + (rnd() - 0.5) * 30);
+          }
+          const g = cx.createRadialGradient(w / 2, h * 0.44, 40, w / 2, h * 0.44, 700);
+          g.addColorStop(0, 'rgba(255,214,150,0.2)');
+          g.addColorStop(1, 'rgba(255,214,150,0)');
+          cx.fillStyle = g;
+          cx.fillRect(0, 0, w, h);
+          // ombre portée du tirage, cuite une fois pour toutes
+          cx.save();
+          cx.shadowColor = 'rgba(0,0,0,0.7)';
+          cx.shadowBlur = 28;
+          cx.shadowOffsetY = 12;
+          cx.fillStyle = '#16100c';
+          const s = 0.93;
+          cx.fillRect(w / 2 - (PR.w * s) / 2 + 10, 22 + 10, PR.w * s - 20, PR.h * s - 20);
+          cx.restore();
+        }), 0, 0);
         if (!this.parts) return;
-        const s = 0.93, w = PR.w * s, h = PR.h * s;
+        const s = 0.93, h = PR.h * s;
         ctx.save();
         ctx.translate(G.W / 2, 22 + h / 2);
         ctx.rotate(-0.009);
         ctx.scale(s, s);
         ctx.translate(-PR.w / 2, -PR.h / 2);
-        ctx.save();
-        ctx.shadowColor = 'rgba(0,0,0,0.65)';
-        ctx.shadowBlur = 26;
-        ctx.shadowOffsetY = 10;
-        ctx.drawImage(this.parts.paper, 0, 0);
-        ctx.restore();
-        // le bain : les ombres montent d'abord, puis le reste
-        const da = U.smooth(clamp01(r.dev / 0.6)), db = U.smooth(clamp01((r.dev - 0.3) / 0.7));
-        ctx.save();
-        ctx.globalCompositeOperation = 'multiply';
-        if (da > 0) { ctx.globalAlpha = da; ctx.drawImage(this.parts.a, PR.ix, PR.iy); }
-        if (db > 0) { ctx.globalAlpha = db; ctx.drawImage(this.parts.b, PR.ix, PR.iy); }
-        ctx.restore();
-        if (db > 0) wear(ctx, db);
-        // reflets du liquide, qui s'effacent
-        const wet = 1 - clamp01((r.dev - 0.4) / 0.6);
+        ctx.drawImage(this.printFrame(r.dev, r.cap), 0, 0);
+        // reflets du liquide, larges et lents, qui s'effacent
+        const wet = 1 - clamp01((r.dev - 0.35) / 0.55);
         if (wet > 0) {
-          ctx.save();
           ctx.beginPath();
-          ctx.rect(PR.ix - 20, PR.iy - 20, PR.iw + 40, PR.ih + 40);
+          ctx.rect(PR.ix, PR.iy, PR.iw, PR.ih);
           ctx.clip();
-          ctx.globalAlpha = wet * 0.16;
-          ctx.globalCompositeOperation = 'screen';
-          ctx.strokeStyle = '#fff6e0';
-          for (let i = 0; i < 7; i++) {
-            const y = PR.iy + ((G.time * 22 + i * 83) % (PR.ih + 80)) - 40;
-            ctx.lineWidth = 6 + (i % 3) * 5;
+          for (let i = 0; i < 3; i++) {
+            const y = PR.iy - 120 + ((G.time * 26 + i * 230) % (PR.ih + 240));
+            const g = ctx.createLinearGradient(0, y - 60, 0, y + 60);
+            g.addColorStop(0, 'rgba(255,248,230,0)');
+            g.addColorStop(0.5, `rgba(255,248,230,${0.13 * wet})`);
+            g.addColorStop(1, 'rgba(255,248,230,0)');
+            ctx.fillStyle = g;
             ctx.beginPath();
-            ctx.moveTo(PR.ix - 20, y);
-            for (let x = 0; x <= PR.iw + 40; x += 40) ctx.lineTo(PR.ix - 20 + x, y + Math.sin(x * 0.012 + G.time * 1.3 + i) * 12);
-            ctx.stroke();
+            ctx.moveTo(PR.ix, y - 60);
+            for (let x = 0; x <= PR.iw; x += 60) ctx.lineTo(PR.ix + x, y - 60 + Math.sin(x * 0.008 + G.time * 0.9 + i) * 14);
+            for (let x = PR.iw; x >= 0; x -= 60) ctx.lineTo(PR.ix + x, y + 60 + Math.sin(x * 0.008 + G.time * 0.9 + i + 1) * 14);
+            ctx.closePath();
+            ctx.fill();
           }
-          ctx.restore();
         }
-        if (r.cap > 0) drawCaption(ctx, U.easeInOut(r.cap));
         ctx.restore();
       },
 
