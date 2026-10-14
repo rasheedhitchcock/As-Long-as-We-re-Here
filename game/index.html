@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tant qu'on est là</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap">
+<style>
+  /* Écran unique, sombre : le jeu se dessine dans deux canvas superposés. */
+  :root { --bg: #0d0b0a; --fg: #e8dfcc; --muted: #9b917f; color-scheme: dark; }
+  html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); overflow: hidden; }
+  body { font-family: 'EB Garamond', Georgia, serif; }
+  canvas { position: absolute; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+  #rotate { position: fixed; left: 16px; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); padding: 10px 14px;
+    background: rgba(31, 26, 23, 0.92); color: var(--fg); font-style: italic; font-size: 17px; text-align: center; border-radius: 8px; pointer-events: none; display: none; }
+  @media (orientation: portrait) and (max-width: 760px) { #rotate { display: block; } }
+</style>
+</head>
+<body>
+<canvas id="scene" aria-label="Tant qu'on est là, épisode 1"></canvas>
+<canvas id="ui"></canvas>
+<p id="rotate">Tourne ton téléphone à l'horizontale pour jouer en grand.</p>
+<script src="src/core.js"></script>
+<script src="src/state.js"></script>
+<script src="src/art.js"></script>
+<script src="src/ui.js"></script>
+<script src="src/dialog.js"></script>
+<script src="src/audio.js"></script>
+<script src="src/walk.js"></script>
+<script src="src/scenes/places.js"></script>
+<script src="src/scenes/title.js"></script>
+<script src="src/scenes/footbridge.js"></script>
+<script src="src/scenes/store.js"></script>
+<script src="src/scenes/fishing.js"></script>
+<script src="src/scenes/table.js"></script>
+<script src="src/scenes/ginseng.js"></script>
+<script src="src/scenes/haggle.js"></script>
+<script src="src/scenes/applebutter.js"></script>
+<script src="src/scenes/moonshine.js"></script>
+<script src="src/scenes/photo.js"></script>
+<script src="src/scenes/summary.js"></script>
+<script src="src/story/ep1_text.js"></script>
+<script src="src/episode1.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>

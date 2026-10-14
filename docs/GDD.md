@@ -1,5 +1,5 @@
 # As Long as We're Here
-### *Tant qu'on est là* · Document de conception de jeu (GDD), v0.1
+### *Tant qu'on est là* · Document de conception de jeu (GDD), v0.2
 
 > « Huit bols sur la table. De quoi en remplir cinq. Tu as quatorze ans. »
 
@@ -14,16 +14,17 @@
 4. [Le cadre : Hollis, Kentucky, 1932-1933](#4-le-cadre--hollis-kentucky-1932-1933)
 5. [La famille Caudill](#5-la-famille-caudill)
 6. [Les mécaniques](#6-les-mécaniques)
-7. [Structure de la partie et fins](#7-structure-de-la-partie-et-fins)
-8. [Écriture et dialogues](#8-écriture-et-dialogues)
-9. [Exemples d'événements](#9-exemples-dévénements)
-10. [Direction artistique](#10-direction-artistique)
-11. [Son et musique](#11-son-et-musique)
-12. [Technique](#12-technique)
-13. [Rigueur historique et représentation](#13-rigueur-historique-et-représentation)
-14. [Production : prochaines étapes](#14-production--prochaines-étapes)
-15. [Références](#15-références)
-16. [Annexe : ordres de grandeur économiques (1932)](#annexe--ordres-de-grandeur-économiques-1932)
+7. [Structure en épisodes et fins](#7-structure-en-épisodes-et-fins)
+8. [L'épisode 1 en détail](#8-lépisode-1-en-détail)
+9. [Écriture et dialogues](#9-écriture-et-dialogues)
+10. [Exemples d'événements](#10-exemples-dévénements)
+11. [Direction artistique](#11-direction-artistique)
+12. [Son et musique](#12-son-et-musique)
+13. [Technique](#13-technique)
+14. [Rigueur historique et représentation](#14-rigueur-historique-et-représentation)
+15. [Production : prochaines étapes](#15-production--prochaines-étapes)
+16. [Références](#16-références)
+17. [Annexe : ordres de grandeur économiques (1932)](#annexe--ordres-de-grandeur-économiques-1932)
 
 ---
 
@@ -32,13 +33,13 @@
 | | |
 |---|---|
 | **Titre de travail** | *As Long as We're Here* (VF : *Tant qu'on est là*) |
-| **Genre** | Survie narrative et gestion familiale, en personnage incarné |
+| **Genre** | Aventure narrative en épisodes, avec gestion familiale et mini-jeux d'adresse (les « gestes ») |
 | **Point de vue** | 2D de profil : la maison vue **en coupe** (comme une maison de poupée) et la vallée en défilement latéral |
 | **On incarne** | Henry Caudill, 14 ans, troisième de cinq enfants |
 | **Cadre** | Hollis, ville-compagnie fictive de l'est du Kentucky (Appalaches), d'octobre 1932 à septembre 1933 |
-| **Durée** | 8 à 12 h par partie, rejouable (événements et issues variables) |
-| **Plateformes** | PC (Steam) d'abord, puis Switch et consoles |
-| **Moteur** | Godot 4 (.NET / C#) + Ink pour l'écriture |
+| **Format** | 4 épisodes de 25 à 40 minutes (épisode 1 jouable), choix reportés d'un épisode à l'autre |
+| **Plateformes** | Navigateur (ordinateur, tablette, téléphone à l'horizontale), puis PC (Steam) |
+| **Technique** | JavaScript sans dépendance, Canvas 2D, son synthétisé en Web Audio (voir §13) |
 | **Public** | Adolescents et adultes. PEGI 12 à 16 visé (faim, mort, travail des enfants, alcool ; aucune violence graphique) |
 | **Comparables** | *This War of Mine* (dilemmes de survie), *Night in the Woods* (petite ville, vue de profil), *Gris* (la couleur comme émotion), *Valiant Hearts* (drame historique en 2D, archives à débloquer) |
 
@@ -52,7 +53,7 @@
 
 **Le joueur incarne Henry.** Le jour, il parcourt la vallée pour rapporter quelque chose : du poisson, du charbon tombé des wagons, quelques cents gagnés à écorcer le tabac, une cruche de moonshine livrée pour le distillateur du coin. Le soir, il rentre et pose ce qu'il a trouvé sur la table. Il y a huit bols.
 
-Au début, c'est Papa qui sert. Au fil des mois, à mesure que le père s'effondre, c'est vers Henry qu'on se tourne quand la marmite n'est pas assez pleine. Le jeu raconte comment on devient « l'homme de la maison » à quatorze ans, et ce que ça coûte.
+Le jeu se joue en **épisodes d'une demi-heure**. Chacun couvre quelques jours de l'année 1932-1933, avec ses repas, ses gestes et ses choix, et ce que fait le joueur suit la famille d'un épisode à l'autre.
 
 ---
 
@@ -61,7 +62,7 @@ Au début, c'est Papa qui sert. Au fil des mois, à mesure que le père s'effond
 Chaque mécanique, chaque écran et chaque dialogue doit servir au moins un de ces piliers. Ce qui n'en sert aucun est coupé.
 
 1. **Huit bouches, une marmite.** La pauvreté se joue d'abord à table. Toute décision est une décision de partage : qui mange, qui se chauffe, qui part.
-2. **Grandir trop vite.** Le joueur gagne du pouvoir sur la famille exactement au rythme où le personnage perd son enfance. Son envie naturelle de tout contrôler et de tout optimiser devient le sujet du jeu.
+2. **Chaque geste raconte.** Les mécaniques sont les gestes du quotidien de 1932 : porter, pêcher, creuser, touiller, se cacher, partager. Chacun est court, différent des autres, et dit quelque chose de la vie de la famille.
 3. **La dignité ou le pain.** Accepter la charité, voler, briser une grève, mentir à l'enquêtrice : survivre a un prix moral, et chaque membre de la famille ne le paie pas de la même façon.
 4. **Rester ou partir.** *Qu'elle était verte ma vallée* contre *Les Raisins de la colère* : l'attachement à la terre et à la communauté face à la route. La partie se termine sur ce choix.
 
@@ -71,23 +72,22 @@ Chaque mécanique, chaque écran et chaque dialogue doit servir au moins un de c
 
 ## 3. Genre et point de vue : pourquoi ces choix
 
-### Le genre : survie narrative en personnage incarné
+### Le genre : aventure narrative en épisodes
 
-Dans *This War of Mine*, on dirige un groupe depuis l'extérieur. Ici, on **est** l'un des enfants de la famille, pas son gestionnaire. Le jeu superpose donc deux couches :
+Dans *This War of Mine*, on dirige un groupe depuis l'extérieur. Ici, on **est** l'un des enfants de la famille, pas son gestionnaire. Chaque épisode alterne trois choses :
 
-- **Le jour, l'aventure.** On contrôle directement Henry dans la vallée : exploration, petits boulots, glanage, infiltration légère.
-- **Le soir, la gestion.** On rentre, on partage, on décide, mais seulement dans la limite de ce qu'un garçon de 14 ans a le droit de décider (voir [*Grandir trop vite*](#65-grandir-trop-vite--la-voix-et-lenfance-mécanique-signature)).
+- **Explorer et parler.** On contrôle Henry dans la maison, le camp, la montagne ou le bourg. On parle à sa famille et aux voisins ; les choix de dialogue ont des conséquences.
+- **Les gestes.** Chaque activité est un mini-jeu court et différent : garder l'équilibre sur une passerelle, pêcher, identifier le ginseng, marchander, touiller en rythme, se cacher de nuit. Des QTE ponctuent les moments de tension.
+- **La table.** Le soir, on partage la marmite entre huit bols. C'est la gestion du jeu, à hauteur de famille.
 
-Ce mélange découle du sujet : la gestion n'est pas une interface neutre, c'est une place à table qu'on gagne et qu'on paie.
-
-**Ce que le jeu n'est pas :** pas de combat, pas d'arbre de compétences, pas d'artisanat à grande échelle. Les activités ne sont pas des mini-jeux d'arcade mais des **gestes** : pêcher, ramasser, se cacher. Ils sont courts, lents, et résolus automatiquement une fois qu'on les a faits.
+**Ce que le jeu n'est pas :** pas de combat, pas d'arbre de compétences, pas d'artisanat. Les gestes ne sont jamais punitifs : un échec coûte un peu de nourriture ou d'argent, jamais la partie.
 
 ### Le point de vue : 2D de profil, maison en coupe
 
 | Option | Verdict |
 |---|---|
 | **2D de profil, maison en coupe** ✅ | On voit les huit membres de la famille en même temps, dans leurs gestes quotidiens, et c'est le cœur émotionnel du jeu. Le cadrage frontal rappelle les photographies de l'époque. Les vallées encaissées de l'est du Kentucky se prêtent aux compositions verticales en plans successifs. La production 2D reste à la portée d'une petite équipe. |
-| Isométrique | Excellent pour la gestion, mais place le joueur en position de « dieu » au-dessus de la famille, à l'opposé du pilier 2. |
+| Isométrique | Excellent pour la gestion, mais place le joueur en position de « dieu » au-dessus de la famille, alors qu'on est l'un de ses enfants. |
 | Première personne | Intime, mais on perd la vue d'ensemble de la famille et la lisibilité de son état. Coûteux en 3D. |
 | Vue de dessus | Lisible mais froide : on perd les silhouettes, les postures et la verticalité des montagnes. |
 
@@ -126,7 +126,7 @@ On les trouve sur la carte qu'Henry dessine dans son cahier d'écolier ; un lieu
 
 | Personnage | Rôle |
 |---|---|
-| **Les Sizemore** | Voisins de palier : six enfants et une vache. Encore plus pauvres que les Caudill, et pourtant prêteurs de lait. |
+| **Les Napier** | Voisins de palier : Mrs. Napier (Nora), Abner, et une ribambelle d'enfants dont Jimmy, qui court partout. Encore plus pauvres que les Caudill, et pourtant prêteurs de haricots. |
 | **Otis Hairston** | 14 ans, fils d'un mineur noir de la n° 4 venu d'Alabama. Il pêche avec Henry depuis toujours, ce que la vallée voit d'un mauvais œil. |
 | **Mr. Pruitt** | Gérant du magasin de la compagnie, il tient l'ardoise. Ni bon ni méchant : il a des ordres. |
 | **Miss Adair** | L'institutrice. Elle prête des livres, sert la soupe de midi et peut écrire une lettre de recommandation. |
@@ -144,7 +144,7 @@ On les trouve sur la carte qu'Henry dessine dans son cahier d'écolier ; un lieu
 | Été 1932 | Fermeture de l'usine (prologue) | Tout commence |
 | 8 nov. 1932 | Élection de Roosevelt | Débat à table. L'Espoir monte ou baisse selon Papa |
 | 1932-1933 | La Croix-Rouge distribue la farine des surplus fédéraux de blé | Une aide sous conditions : l'enquêtrice |
-| Hiver 1932-1933 | Le creux de la crise (un actif sur quatre au chômage en 1933) | Le chapitre le plus dur |
+| Hiver 1932-1933 | Le creux de la crise (un actif sur quatre au chômage en 1933) | L'épisode le plus dur |
 | 4 mars 1933 | Investiture : « la seule chose que nous devons craindre, c'est la peur elle-même », à la radio du magasin | Espoir en hausse |
 | 6-13 mars 1933 | Fermeture des banques | Le scrip et le troc reprennent de la valeur |
 | Avril 1933 | Civilian Conservation Corps : 30 $ par mois, dont 25 envoyés à la famille | Wes peut partir… s'il a 18 ans et si la famille est inscrite à l'assistance |
@@ -165,7 +165,7 @@ Huit personnes, huit bols. Chacun a un **trait** qui modifie ses réactions dans
 | **Granny Hattie** | 76 | **Enracinée** : elle refusera de quitter la montagne. **Guérisseuse** : remèdes de plantes | Remèdes, histoires (Espoir), garder Pearl, apprendre le ginseng à Henry | Refuser de manger pour les petits, « remonter » seule à la vieille ferme |
 | **Clay** | 20 | **Colérique** | Mine, travaux de force | Briseur de grève ou syndicaliste, partir en train de marchandises, prison |
 | **Wes** | 17 | **Musicien** : son violon soutient l'Espoir de toute la maison | Bois, petits boulots | Le CCC (en mentant sur son âge), vendre son violon |
-| **Henry** | 14 | Le joueur | Tout ce qui se fait dans la vallée | Grandir |
+| **Henry** | 14 | Le joueur | Tout ce qui se fait dans la vallée | Tenir sa promesse à Ruth, garder l'amitié d'Otis, porter ce qu'on ne devrait pas porter à 14 ans |
 | **Ruth** | 11 | **Studieuse** : l'école est son espoir | Garder Pearl, couture, école | Partir chez une tante à Lexington, obtenir une bourse pour une école de mission (inspirée de la Hindman Settlement School, Knott County) |
 | **Pearl** | 4 | **Fragile** : a besoin de lait, tombe malade vite | Rire (fait monter l'Espoir) | Fièvre, pellagre. En plein hiver, le comté propose l'orphelinat |
 
@@ -175,38 +175,36 @@ Huit personnes, huit bols. Chacun a un **trait** qui modifie ses réactions dans
 
 ## 6. Les mécaniques
 
-Cinq mécaniques principales et deux systèmes transversaux, chacun relié à un pilier.
+Quatre mécaniques principales et deux systèmes transversaux, chacun relié à un pilier.
 
 | | Mécanique | Pilier |
 |---|---|---|
 | 6.1 | **La Table** : partager la marmite | Huit bouches |
-| 6.2 | **La Journée** : la lumière comme ressource | Huit bouches, grandir |
+| 6.2 | **Les gestes** : un mini-jeu par activité | Chaque geste raconte |
 | 6.3 | **La Maison** : huit vies sous un toit | Huit bouches, dignité |
 | 6.4 | **L'Ardoise** : dette, loyer et objets de famille | Dignité, rester ou partir |
-| 6.5 | **Grandir trop vite** : la Voix et l'Enfance *(signature)* | Grandir |
-| 6.6 | *L'Espoir* : la vallée qui perd ses couleurs | Tous |
-| 6.7 | *L'Entraide* : la mémoire du camp | Dignité, rester |
+| 6.5 | *L'Espoir* : la vallée qui perd ses couleurs | Tous |
+| 6.6 | *L'Entraide* : la mémoire du camp | Dignité, rester |
 
-### 6.0 La boucle de jeu
+### 6.0 La boucle d'un épisode
 
 ```mermaid
 flowchart LR
-    A["Aube<br/>la maison"] --> B["Jour<br/>la vallée"]
-    B --> C["Soir<br/>la table"]
-    C --> D["Veillée<br/>une conversation"]
-    D --> E["Nuit<br/>conséquences et événements"]
+    A["Matin<br/>la maison"] --> B["Jour<br/>explorer, parler"]
+    B --> C["Un geste<br/>mini-jeu"]
+    C --> D["Soir<br/>la table"]
+    D --> E["Veillée<br/>une conversation"]
     E --> A
-    E -. fin de chapitre .-> F["Intersaison<br/>grandes décisions"]
-    F --> A
+    E -. fin d'épisode .-> F["Récapitulatif<br/>des choix"]
 ```
 
 | Phase | Durée | Ce qui s'y passe |
 |---|---|---|
-| **Aube** | ~1 min | On voit l'état de la maison d'un coup d'œil. Henry choisit ce qu'il emporte (sac, ligne, lance-pierre, la carabine .22 de Papa si on la lui confie). |
-| **Jour** | 8 à 12 min | Exploration libre de la vallée. La lumière du jour est la ressource principale. |
-| **Soir : la Table** | 2 à 3 min | Ce qu'Henry rapporte est posé sur la table, chacun raconte sa journée, et on partage. |
-| **Veillée** | 1 à 2 min | Une seule conversation par soir, avec la personne de son choix. |
-| **Nuit** | Résolution | Faim, froid, maladie, puis les événements (on frappe à la porte…). |
+| **Matin** | 1 à 3 min | La maison en coupe. On parle à qui on veut ; quelqu'un donne la mission du jour. |
+| **Jour** | 3 à 6 min | Un lieu à parcourir (camp, montagne, bourg), des rencontres, un choix ou deux. |
+| **Le geste** | 2 à 4 min | Le mini-jeu de la journée. Les dialogues s'y glissent entre deux prises, deux racines, deux couplets. |
+| **Soir : la Table** | 2 à 3 min | On partage la marmite. Les tensions de la famille éclatent à table. |
+| **Veillée** | 1 à 2 min | Une seule conversation par soir, avec la personne de son choix. Puis on dort. |
 
 ### 6.1 La Table : partager la marmite
 
@@ -214,40 +212,38 @@ flowchart LR
 
 **Règles**
 - Chaque membre a besoin d'**un bol par jour**. Pearl, d'un demi. Un adulte qui a fait un travail de force, d'un et demi.
-- Le joueur verse les louches dans les bols en les faisant glisser. Un bol vide reste posé sur la table, et il se voit.
+- Le joueur verse les louches dans les bols d'un clic (une louche = un demi-bol) et peut en reprendre. Un bol vide reste posé sur la table, et il se voit.
 - La **Faim** de chacun suit cinq crans : *Rassasié → Faim → Affamé → Épuisé → Mourant*. Un bol plein la fait descendre d'un cran, un demi-bol la laisse stable, un bol vide la fait monter d'un cran.
 - **La variété et la pellagre.** Chaque aliment porte une étiquette : *Grain*, *Gras*, *Haricots*, *Verdure*, *Viande et poisson*, *Lait et œufs*. Quelqu'un qui ne mange que du Grain et du Gras pendant plus de six jours accumule un risque de pellagre : fatigue, peau brûlée, confusion. C'était une vraie maladie des régimes à base de maïs dans le Sud des années 1930. La levure de bière, le lait, la viande et la verdure la font reculer. Rapporter de l'argent pour acheter du maïs ne suffit donc pas : il faut aussi pêcher, chasser et cueillir.
-- **Ce qu'on ne dit pas.** Quand la marmite est trop petite, Ida se prive en secret (« je me servirai après »), et Granny refuse son bol « pour la petite ». Le jeu ne l'affiche nulle part. Il faut le remarquer : une silhouette qui maigrit, une remarque de Ruth, une question posée à la veillée. Une fois qu'il l'a découvert, Henry peut agir, si sa Voix le lui permet.
-- **Qui sert ?** Selon la Voix d'Henry (6.5), c'est Papa, M'man ou Henry qui remplit les bols. Tant que ce n'est pas lui, Henry ne contrôle que son propre bol, mais il peut toujours le partager.
+- **Ce qu'on ne dit pas.** Quand la marmite est trop petite, Ida se prive en secret (« j'ai goûté en cuisinant »), et Granny refuse son bol « pour la petite ». Le jeu ne l'affiche nulle part. Il faut le remarquer : un bol propre, un geste discret quand tout le monde a le nez dans son assiette, une question posée à la veillée. Une fois qu'il en a parlé à Ida, elle mange.
+- **Qui sert ?** L'histoire le décide. Le premier soir, c'est Papa : le joueur regarde, et ne contrôle que son propre bol, qu'il peut partager. Quand Papa n'est pas là, M'man tend la louche à Henry : « Sers, toi. Moi, j'ai plus le cœur à compter. »
 
 **Ce que ça fait ressentir :** compter. Chaque soir, le joueur compte les bols à voix basse, comme Ida.
 
-### 6.2 La Journée : la lumière comme ressource
+### 6.2 Les gestes : un mini-jeu par activité
 
-**Principe.** Henry a une journée de lumière à dépenser. Chaque trajet et chaque activité en consomme.
+**Principe.** Chaque activité d'Henry est un geste du quotidien de 1932, joué comme un court mini-jeu. Aucun ne se répète dans un même épisode.
 
-**Règles**
-- **La durée du jour suit les saisons** : environ 9 h 30 de lumière en décembre et 14 h 30 en juin, calculées pour la latitude de l'est du Kentucky. L'hiver cumule tout : moins d'heures, plus de froid, plus de besoins.
-- **Ce qu'Henry mange compte.** S'il s'est couché affamé, il perd des heures utiles le lendemain (1 h s'il a faim, 2 h s'il est affamé, 4 h s'il est épuisé), et les gestes deviennent plus difficiles. Donner son bol à Pearl, c'est raccourcir sa propre journée.
-- **Rentrer après la nuit tombée** reste possible, mais M'man s'inquiète (son Moral baisse), et la nuit, la montagne et la voie ferrée sont dangereuses.
-- **L'école**, du lundi au vendredi, prend toute la matinée. Elle apporte une soupe à midi, qui n'est pas prise sur la marmite (inspirée des cantines organisées par les Quakers dans les bassins houillers en 1931-1932). Elle fait aussi monter l'Enfance et l'Instruction et donne accès à Miss Adair. Sécher l'école libère des heures, mais un jour, l'institutrice vient frapper à la porte.
+**Règles communes**
+- **Court** : 1 à 4 minutes, avec une consigne claire et un essai quand c'est nécessaire.
+- **Jouable partout** : souris, doigt ou clavier. Rien ne dépend du survol.
+- **Jamais bloquant** : un échec coûte une gamelle, un poisson ou quelques cents, jamais la partie. Après plusieurs échecs, le jeu laisse passer.
+- **Habité** : les dialogues se glissent dans le geste (Otis parle entre deux prises, Granny commente chaque racine, les voisins bavardent entre deux couplets).
+- **Des QTE aux moments de tension** : s'accrocher au câble quand la passerelle rebondit, ferrer quand le bouchon s'enfonce, rattraper un bocal qui glisse.
 
-**Les activités**
+**Les gestes de l'épisode 1**
 
-| Catégorie | Exemples | Rapporte | Risque | Coût en Enfance |
-|---|---|---|---|---|
-| **Glaner** | Pêcher, cueillir (noix, mûres, ail des bois, *poke sallet*), ramasser le charbon tombé le long des voies, le bois mort, poser des collets | Nourriture, combustible | Faible | Aucun |
-| **Petits boulots** | Écorcer le tabac, cirer des chaussures, porter l'eau, livrer pour le magasin, déterrer et vendre le ginseng | Des cents, du troc | Faible | Léger |
-| **Zone grise** | Grimper sur les wagons pour faire tomber le charbon, livrer le moonshine de Dow Slone, braconner sur les terres de la compagnie | Beaucoup | Arrestation, coups, blessure | Moyen |
-| **Voler** | Jardins, poulaillers, magasin de la compagnie, réserve de charbon du directeur | Beaucoup | Réputation, prison, honte | Fort |
-| **Demander** | La file de la Croix-Rouge, l'église, les voisins | Nourriture | Le Moral des membres fiers | Variable |
-
-**Les gestes** (chacun dure moins de deux minutes et se résout automatiquement, avec un rendement moyen, une fois qu'on l'a fait une première fois) :
-- **Pêcher** : lire le courant, attendre. Un geste de patience.
-- **Le charbon des wagons** : le train ralentit dans la côte. Il faut grimper au bon moment, faire tomber les blocs et sauter avant le pont, pendant que le bull fait sa ronde (infiltration légère, champs de vision).
-- **Le ginseng** : observer le sous-bois et repérer les feuilles à cinq folioles et les baies rouges d'automne. Granny apprend à Henry à les reconnaître.
-- **Le moonshine** : choisir un itinéraire dans la montagne pour éviter l'agent fédéral et l'adjoint du shérif. Une cruche cassée, c'est une dette envers Dow.
-- **Le magasin** : marchander, troquer, demander du crédit, en dialogue.
+| Geste | Mécanique | Ce qu'il raconte |
+|---|---|---|
+| **La passerelle** | Équilibre (pendule inversé, rafales, QTE) | Porter le repas des hommes, le dernier jour de l'usine |
+| **La liste de M'man** | Budget : 40 ¢, une liste, la tentation du crédit | Chaque cent compte, et le magasin de la compagnie le sait |
+| **La pêche avec Otis** | Lancer dosé, ferrer au bon moment, tension de ligne | L'amitié par-dessus la ligne de couleur du camp |
+| **La Table** | Partage des louches entre huit bols | Qui mange, qui se prive |
+| **Le sang (ginseng)** | Observation (vrais et faux plants), puis fouille délicate de la racine | Le savoir de Granny, la terre qu'on respecte |
+| **Le marchand de racines** | Pousser sa chance face à un acheteur qui s'agace | La valeur des choses quand on est pauvre |
+| **Le beurre de pommes** | Rythme sur le reel joué par Wes, trois tempos | La joie qui existe encore, et la communauté |
+| **La livraison** | Infiltration de nuit : bruit des bocaux, lanterne de l'agent, chien, gué | Ce qu'on accepte de faire pour payer le loyer |
+| **La photo des huit** | Composer la photo (glisser-déposer), puis « Ne bougez plus » : ne rien toucher | Le seul souvenir que la famille gardera |
 
 ### 6.3 La Maison : huit vies sous un toit
 
@@ -255,7 +251,7 @@ flowchart LR
 
 **Une lecture diégétique.** On ne lit pas des chiffres, on regarde la maison : les silhouettes maigrissent (trois stades par personnage), les postures s'affaissent, on entend une toux dans la nuit, et un jour Papa ne rentre plus du perron. Le cahier d'Henry donne la version écrite de tout cela pour qui en a besoin (accessibilité).
 
-**Les tâches.** Chaque soir, dans la limite de la Voix d'Henry, on décide de ce que chacun fera le lendemain : chercher du travail, couper du bois, faire la lessive pour le bourg, garder Pearl, aller à l'école, s'occuper du potager (au printemps), préparer des remèdes, se reposer.
+**Ce que fait chacun.** Les autres membres de la famille vivent leur vie entre les scènes : Papa et Clay cherchent du travail à Hazard, Wes scie du bois pour Pruitt, Ida fait la lessive du docteur, Ruth va à l'école. Ce qu'ils rapportent, et ce qu'ils ont fait pour le rapporter, se découvre à table et le samedi, au moment de payer le loyer.
 
 **L'autonomie.** Un membre au Moral bas peut refuser une tâche, ou agir de lui-même : Clay file à la réunion syndicale, Papa boit les derniers cents.
 
@@ -298,79 +294,43 @@ flowchart LR
 | La carabine .22 | La chasse | Personne, mais plus de viande |
 | La Bible familiale | Les naissances y sont inscrites | Invendable : personne ne l'achèterait |
 
-### 6.5 Grandir trop vite : la Voix et l'Enfance (mécanique signature)
-
-Deux valeurs propres à Henry, qui tirent en sens contraire.
-
-#### La Voix : sa place à table, au sens propre
-
-Le siège d'Henry se rapproche de celui de Papa à mesure que sa Voix grandit.
-
-| Niveau | Nom | Ce qu'Henry contrôle |
-|---|---|---|
-| 0 | *Le gamin* | Son propre bol et ce qu'il rapporte. Papa sert, Papa décide. |
-| 1 | *On t'écoute* | Une proposition par soir (« Donne ma part à Pearl », « Clay devrait aller à la mine »), acceptée ou non selon l'humeur des parents et ce qu'Henry a rapporté. |
-| 2 | *Ton avis compte* | Il partage la marmite avec M'man, assigne les tâches de Ruth et de Pearl, propose celles des grands. |
-| 3 | *L'homme de la maison* | Tout : partage, tâches, ventes, grandes décisions. Le siège de Papa. |
-
-La Voix monte avec ce qu'Henry rapporte (et que la famille voit), avec les bonnes décisions et avec l'arc du père (le jour où Papa ne se lève plus, le jour où il part). Elle peut aussi redescendre, si Papa se relève ou revient.
-
-**Effet de bord voulu : la progression sert de tutoriel.** Au début, le joueur n'a que la vallée à apprendre. La gestion familiale s'ouvre à lui au moment où l'histoire la lui impose.
-
-#### L'Enfance : ce qui reste de ses quatorze ans
-
-- **Elle baisse** quand Henry sèche l'école, fait un travail d'homme, vole, voit ou commet des violences, se couche affamé, et à chaque niveau de Voix gagné.
-- **Elle remonte lentement** quand il joue avec Pearl, se baigne, va à l'école, lit, écoute Wes jouer ou pêche avec Otis.
-- **Elle ne revient jamais entièrement :** elle ne peut pas remonter au-dessus de son niveau du début du chapitre.
-
-**Ses effets en jeu**
-- **Enfance haute :** Henry a accès aux *moments d'enfant* (une partie de billes avec Ruth, une chanson apprise à Pearl, un concours de ricochets). Ils prennent du temps, mais font remonter le Moral de toute la famille. Les rires d'enfant sont une ressource.
-- **Enfance basse :** ces options s'éteignent dans l'interface : « Tu n'en as plus envie. » En contrepartie, Henry est **endurci** : voler ou mentir ne lui coûte plus de Moral, les adultes le prennent au sérieux (meilleures négociations) et il a accès aux travaux d'homme (la mine, le piquet de grève).
-
-**On ne peut pas avoir les deux.** Le joueur qui veut tout contrôler et tout optimiser fabrique, mécaniquement, un enfant qui n'en est plus un. Le joueur qui protège l'enfance d'Henry laisse M'man décider, avec prudence, et parfois mal.
-
-### 6.6 L'Espoir : la vallée qui perd ses couleurs
+### 6.5 L'Espoir : la vallée qui perd ses couleurs
 
 - L'**Espoir** est la moyenne du Moral de la famille, et c'est la valeur la plus visible du jeu : **il règle la saturation de l'image**. Espoir haut : les rouilles et les ocres de l'automne appalachien, le vert tendre du printemps. Espoir bas : la vallée glisse vers le sépia des photographies d'époque. *Qu'elle était verte ma vallée*, au sens littéral.
 - Il règle aussi **la musique** : les couches instrumentales disparaissent une à une (le banjo, puis le violon, jusqu'à ce qu'il ne reste qu'une voix), ainsi que la probabilité de certains événements (boisson, disputes, départs).
-- **Ce qui le nourrit :** les soirées de musique (si le violon n'est pas vendu), le culte du dimanche, les lettres de ceux qui sont partis, un repas complet, un anniversaire, la radio du magasin le 4 mars 1933, les premières verdures du printemps, les moments d'enfant.
+- **Ce qui le nourrit :** les soirées de musique (si le violon n'est pas vendu), le culte du dimanche, les lettres de ceux qui sont partis, un repas complet, un anniversaire, la radio du magasin le 4 mars 1933, les premières verdures du printemps, une histoire racontée à Pearl.
 - **Accessibilité :** l'information n'est jamais portée par la seule couleur. Postures, musique et cahier la redoublent.
 
 ![L'Espoir règle la couleur du monde](img/espoir.svg)
 
-### 6.7 L'Entraide : la mémoire du camp
+### 6.6 L'Entraide : la mémoire du camp
 
 > Si t'as des ennuis, va voir les pauvres gens : y a qu'eux qui t'aideront.
 > — d'après Ma Joad, *Les Raisins de la colère*
 
 - Chaque foyer du camp garde une **mémoire des services** : ce que les Caudill lui ont donné, et ce qu'ils lui ont pris.
-- **Donner quand on n'a presque rien** coûte cher tout de suite et rapporte plus tard, au moment où on en a le plus besoin : les Sizemore apportent du lait pendant la fièvre de Pearl, les voisins se massent devant la maison le jour où l'adjoint vient expulser, les hobos préviennent Henry que le bull a changé d'horaire.
+- **Donner quand on n'a presque rien** coûte cher tout de suite et rapporte plus tard, au moment où on en a le plus besoin : les Napier rapportent un bol de haricots le lendemain des cinq cents donnés au magasin (épisode 1), du lait pendant la fièvre de Pearl, les voisins se massent devant la maison le jour où l'adjoint vient expulser, les hobos préviennent Henry que le bull a changé d'horaire.
 - **La trahison laisse des traces** : briser la grève, dénoncer un voleur, voler un voisin.
 
 ---
 
-## 7. Structure de la partie et fins
+## 7. Structure en épisodes et fins
 
-### Les chapitres
+### Les épisodes
 
-| | Période | Jours joués | Ce qui pèse | Moments forts |
+| | Période | Durée visée | Ce qui pèse | Moments forts |
 |---|---|---|---|---|
-| **Prologue** | Août 1932 | 1 | — | Henry porte les gamelles à l'usine, le dernier coup de sifflet, les chaînes sur les grilles |
-| **I. Les noix et le ginseng** | Octobre 1932 | ~12 | L'argent, la dette | Le photographe et la photo de famille, la fin de la saison du ginseng, le beurre de pommes qu'on touille toute la nuit chez les Sizemore, le premier refus de Papa |
-| *Intersaison* | Novembre | — | — | L'élection. Papa part-il chercher du travail au Nord ? |
-| **II. Le charbon des voies** | Décembre 1932 | ~12 | Le froid, la faim, la maladie | Les jours les plus courts de l'année, un Noël sans oranges, l'enquêtrice, le retour d'Oncle Hiram |
-| *Intersaison* | Janvier-février | — | — | Le creux de l'hiver |
-| **III. La verdure** | Mars-avril 1933 | ~12 | La dignité, les premiers choix | Le 4 mars à la radio, la fermeture des banques, les premières verdures, le CCC, la crue de printemps |
-| *Intersaison* | Mai-juin | — | — | La NIRA. Les organisateurs syndicaux arrivent |
-| **IV. Les lucioles** | Juillet-août 1933 | ~12 | Le conflit, le choix final | La grève de la n° 4, le *revival* sous la tente, l'eau du ruisseau, la décision : rester, remonter ou partir |
-| **Épilogue** | Septembre 1933 | — | — | La deuxième photo |
+| **1. Le dernier sifflet** | Août et octobre 1932 | 25 à 35 min | L'argent, le loyer, la dignité | La fermeture de l'usine, le ginseng avec Granny, le beurre de pommes, la livraison de nuit, la photo des huit (détail au §8) |
+| **2. Le charbon des voies** | Décembre 1932 | 30 à 40 min | Le froid, la faim, la maladie | Le charbon tombé des trains, un Noël sans oranges, l'enquêtrice de la Croix-Rouge, le retour d'Oncle Hiram, la fièvre de Pearl |
+| **3. La verdure** | Mars-avril 1933 | 30 à 40 min | La dignité, les premiers choix | Le 4 mars à la radio, la fermeture des banques, les premières verdures, le CCC pour Wes, la crue de printemps |
+| **4. Les lucioles** | Juillet-août 1933, puis septembre | 30 à 40 min | Le conflit, le choix final | La grève de la n° 4, le *revival* sous la tente, la décision (rester, remonter ou partir), la deuxième photo |
 
 ### Le temps
 
-- Une journée jouée dure de 10 à 15 minutes.
-- Entre deux journées jouées, 0 à 2 jours « ordinaires » peuvent passer. Ils sont résolus par la **routine** : les dernières tâches assignées et le niveau de rationnement (*plein*, *serré* ou *maigre*).
-- Entre deux chapitres, une **intersaison** : un montage narré (photographies, voix du vieil Henry) résout plusieurs semaines à partir de deux ou trois grandes décisions familiales. Par exemple : « Papa part-il au Nord ? », « Vend-on le violon pour passer janvier ? », « Rationnement serré ou maigre ? »
-- **Règle : personne ne meurt pendant une intersaison.** Elle peut aggraver un état, mais la conséquence se joue toujours au chapitre suivant.
+- Un épisode couvre quelques jours. Chaque journée jouée dure de 5 à 10 minutes ; les jours sans événement sont racontés en une ligne (« Le mercredi, il plut toute la journée »).
+- Entre deux épisodes, plusieurs semaines passent. Le début de l'épisode suivant dit ce qu'elles ont fait à la famille, en fonction des choix de l'épisode précédent (loyer payé ou non, Clay briseur de grève ou non, Dow Slone, Otis…).
+- **Règle : personne ne meurt entre deux épisodes.** L'entre-deux peut aggraver un état, mais la conséquence se joue toujours à l'écran.
+- Fin d'épisode : un **récapitulatif des choix** (à la manière des jeux narratifs à épisodes), avec la photo de famille.
 
 ### Les trois routes
 
@@ -382,12 +342,11 @@ Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 
 ### La photo finale
 
-**Au chapitre I**, le photographe de presse veut photographier la famille pour son reportage. Papa refuse d'être « montré comme un pauvre ». Ida accepte, à condition qu'on lui envoie un tirage. Ce sera la seule photo des huit.
+**À la fin de l'épisode 1**, le photographe de presse photographie la famille. Papa refuse d'être « montré comme un pauvre » : selon ce que dit Henry, il cède, ou il reste derrière la porte, et la photo n'a que sept personnes. Ce sera la seule photo de la famille.
 
 **À l'épilogue**, il revient en septembre 1933 et reprend le même cadrage. Le jeu se termine sur cette deuxième photo, composée par la simulation :
 - **Le lieu** : le perron de Hollis, la vieille ferme ou un trottoir de Detroit.
 - **Les présents** : ceux qui sont encore là. Les absents vivants sont représentés par une lettre dans la main d'Ida ; les morts, par une place que personne n'a comblée.
-- **Henry** : au milieu des enfants (Enfance préservée), ou debout à côté d'Ida, là où se tenait Papa (Voix 3).
 - Puis le vieil Henry dit, en quelques lignes, ce que chacun est devenu.
 
 **Trois exemples de fins**
@@ -395,24 +354,55 @@ Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 - **La vieille ferme.** Huit sur la photo, Henry pieds nus au milieu des petits. *« On a eu faim encore longtemps. Mais on a eu faim ensemble. »*
 - **Un trottoir de Detroit.** Cinq sur la photo : Granny est restée sur sa montagne, Clay est en prison à Harlan, Pearl repose au cimetière de Hollis. *« Je n'ai jamais revu la vallée verte. Je ne suis pas sûr qu'elle l'ait jamais été. »*
 
-**Philosophie de difficulté : la partie ne se gagne pas, elle se traverse.** La fin parfaite (huit sur la photo, Henry encore un enfant) existe, mais elle doit rester rare. Un **mode récit**, moins exigeant, est proposé à ceux qui viennent surtout pour l'histoire.
+**Philosophie de difficulté : la partie ne se gagne pas, elle se traverse.** La fin parfaite (huit sur la photo, personne n'a faim, aucune compromission) existe, mais elle doit rester rare. Un **mode récit**, moins exigeant, est proposé à ceux qui viennent surtout pour l'histoire.
 
 ---
 
-## 8. Écriture et dialogues
+## 8. L'épisode 1 en détail
+
+**« Le dernier sifflet »** · août et octobre 1932 · environ 30 minutes · jouable (dossier `game/`).
+
+| # | Scène | Ce qu'on fait | Mécanique | Choix qui comptent |
+|---|---|---|---|---|
+| 1 | **Ouverture** | La voix du vieil Henry : « On était huit, cet été-là. » | Narration | — |
+| 2 | **Prologue : la maison** (12 août 1932, midi) | M'man confie les trois gamelles ; Granny, Ruth et Pearl (« Hier je suis arrivée jusqu'à onze ! ») | Exploration de la maison en coupe | — |
+| 3 | **Le camp** | Traverser le camp en été : Mrs. Napier, le petit Jimmy, Pruitt, Otis | Exploration de profil | Promettre la pêche à Otis |
+| 4 | **La passerelle** | Traverser le pont suspendu sans perdre de gamelle | Équilibre + QTE « Accroche-toi au câble ! » | Les gamelles perdues changent les répliques à l'usine |
+| 5 | **La scierie** | Donner les gamelles à Papa, Clay et Wes ; l'annonce de la fermeture ; le dernier sifflet, très long | Exploration, dialogues, choix minuté | Prendre la main de Papa, regarder Clay, ne rien faire |
+| 6 | **Deux mois plus tard** (lundi 17 octobre) | Six heures : le silence à l'heure du sifflet. M'man donne 40 ¢ et annonce le loyer de samedi : 8 $ | Exploration, 7 conversations | Promettre à Ruth qu'elle restera à l'école ; imiter le sifflet pour Pearl |
+| 7 | **Le magasin de la compagnie** | Mrs. Napier se voit refuser le crédit devant Henry. Puis les courses | Budget, crédit | Donner 5 ¢ à Mrs. Napier ; acheter du pétrole, du café, un sucre d'orge ; prendre à crédit malgré M'man |
+| 8 | **La pêche avec Otis** | Pêcher au trou de la Barbue en parlant de la grève et du camp d'en haut | Lancer, ferrer, tension de ligne | Partager le plus beau poisson avec Otis |
+| 9 | **La première table** | Papa sert. S'il manque, il se sert une demi-louche, et le bol de M'man reste propre. Clay et Papa se disputent sur la Black Mountain | La Table (regarder), choix minuté | Donner la moitié de son bol ; remarquer le bol de M'man ; soutenir Clay, Papa ou se taire |
+| 10 | **La veillée** | Une conversation au choix parmi sept (Wes joue « Shady Grove » sur trois cordes, une histoire pour Pearl…) | Exploration de nuit | Confronter M'man ; consoler Papa |
+| 11 | **La montagne** (mardi) | Monter avec Granny, qui raconte la vieille ferme | Marche et conversations | — |
+| 12 | **Le sang** | Trouver le ginseng parmi les leurres, puis dégager la racine sans la casser | Observation + fouille délicate | Replanter les baies |
+| 13 | **Dow Slone** | L'alambic, et la proposition : six bocaux à livrer vendredi pour 2 $ | Dialogue | Accepter, refuser, ou laisser Granny répondre |
+| 14 | **La deuxième table** | Papa et Clay sont à Hazard. « Sers, toi. » Les Napier rapportent des haricots si on les a aidés | La Table (servir) | Insister pour que Granny mange ; voir ou non M'man verser son bol dans celui de Pearl |
+| 15 | **La veillée** | Granny et la source qui « demande jamais de loyer », Wes et son violon à vendre… | Exploration de nuit | Parler de la vieille ferme ; pousser Wes à vendre son violon |
+| 16 | **Le bourg** (jeudi) | Vendre les racines ; rencontrer M. Whitcomb, le photographe | Marchandage + dialogue | Ce qu'on dit au journaliste : « On s'en sort », « On a faim », ou rien |
+| 17 | **Le beurre de pommes** | Toute la nuit chez les Napier, Wes au violon. Otis regarde le feu depuis la clôture | Rythme (3 tempos) | Porter une cuillère à Otis |
+| 18 | **Vendredi soir** | M'man compte : il manque de l'argent | Choix | Aller au gros sycomore… ou laisser Clay y aller |
+| 19 | **La livraison** | Traverser les bois de nuit avec six bocaux | Infiltration + QTE | — |
+| 20 | **Samedi : le loyer** | Chacun pose ce qu'il a sur la table ; Papa demande d'où vient l'argent ; M. Farris passe | Dialogue | Mentir à Papa ou dire la vérité ; délai ou ardoise |
+| 21 | **La photo des huit** | Convaincre Papa ou non, composer la photo, puis « Ne bougez plus » | Glisser-déposer + ne rien toucher | Huit ou sept sur la photo |
+| 22 | **Fin** | Le vieil Henry, puis le récapitulatif des choix et la photo | Récapitulatif | — |
+
+**Ce qui passe à l'épisode 2 :** le loyer (payé, ardoise, avertissement), la faim de chacun, l'Espoir, et les décisions marquantes (Mrs. Napier, Otis, Dow Slone, Clay et la Black Mountain, la vérité dite à Papa, les baies replantées, la photo).
+
+## 9. Écriture et dialogues
 
 - **Peu de texte, beaucoup de gestes.** Des dialogues courts et secs, avec un humour pudique. Personne ne fait de discours sur la crise : on parle de bols, de charbon et de chaussures.
-- **Un narrateur : le vieil Henry**, des décennies plus tard, comme dans *Qu'elle était verte ma vallée*. Il n'intervient qu'à l'ouverture des chapitres, pendant les intersaisons et à la fin.
+- **Un narrateur : le vieil Henry**, des décennies plus tard, comme dans *Qu'elle était verte ma vallée*. Il n'intervient qu'à l'ouverture et à la fin des épisodes, et pendant les ellipses.
 - **Le registre** : un français oral et rural, sans caricature (« Pap' », « M'man », « Granny »). Pas de patois inventé, pas d'orthographe phonétique. En anglais, le parler appalachien sera documenté et relu par des locuteurs.
-- **Les choix de dialogue ont des conséquences mécaniques** (Voix, Moral, Entraide), suggérées par le ton plutôt que par des icônes.
+- **Les choix de dialogue ont des conséquences** (Moral, Entraide, suite des épisodes), suggérées par le ton plutôt que par des icônes. Certains choix sont **minutés** : se taire est aussi une réponse.
 
 ### Extraits
 
-**Ouverture du chapitre I (le vieil Henry)**
+**Ouverture de l'épisode 1 (le vieil Henry)**
 > On était huit, cet automne-là. Je le sais parce que M'man comptait les bols tous les soirs, à voix basse, comme on compte ses enfants sur un quai de gare. Huit. Elle disait : tant qu'on est là, tous les huit, il peut rien nous arriver.
 > Elle se trompait, bien sûr. Mais pas sur tout.
 
-**La première table (Voix 0 : Papa sert)**
+**La première table (Papa sert)**
 > *Papa remplit les bols. Arrivé au sien, il n'y verse qu'une demi-louche.*
 > **RUTH** — T'en as presque pas, Pap'.
 > **PAPA** — J'ai pas travaillé aujourd'hui. Un homme qui travaille pas a pas besoin de manger comme un homme qui travaille.
@@ -426,7 +416,7 @@ Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 >
 > *(Si Henry l'a observée pendant le repas)* → « Je t'ai regardée. T'as rien goûté du tout. »
 > **IDA** — … Les petits d'abord, Henry. Ça a toujours été comme ça.
-> *(Henry peut désormais réserver le bol de M'man, s'il a la Voix pour le faire.)*
+> *(Le lendemain soir, M'man mange vraiment.)*
 
 **Clay et Papa**
 > **CLAY** — La Black Mountain embauche. Un dollar cinquante la journée, payé comptant.
@@ -445,15 +435,15 @@ Toute l'année, le joueur prépare (ou subit) l'une de ces trois issues :
 
 ---
 
-## 9. Exemples d'événements
+## 10. Exemples d'événements
 
-Les événements sont écrits en données (conditions, poids, effets) et en Ink (texte). En voici six, pour donner le ton.
+Les événements sont écrits comme des scripts de dialogue avec conditions et effets (voir `game/src/story/`). En voici six, pour les épisodes à venir.
 
 **L'orange de Noël** *(hiver)*
 Chaque année, la compagnie offrait une orange et un sachet de bonbons à chaque enfant du camp. Pas cette année. Pearl a quatre ans, et elle s'en souvient quand même.
-- Échanger le couteau d'Henry au magasin contre une orange : Enfance en baisse, Pearl et l'Espoir en hausse.
-- Voler une orange dans la caisse livrée chez le directeur : risqué, Enfance en baisse, l'Espoir monte fortement si ça marche.
-- Sculpter un jouet en bois : deux heures de lumière en moins le 24 décembre, Enfance et Espoir en hausse.
+- Échanger le couteau d'Henry au magasin contre une orange : Pearl et l'Espoir en hausse, Henry perd son couteau (et le collet qui va avec).
+- Voler une orange dans la caisse livrée chez le directeur : risqué, l'Espoir monte fortement si ça marche, et la honte d'Ida si ça se sait.
+- Sculpter un jouet en bois : un geste de plus le 24 décembre, l'Espoir en hausse.
 - Ne rien faire. Pearl ne demande rien, et c'est pire.
 
 **L'enquêtrice** *(hiver)*
@@ -465,7 +455,7 @@ Avant de distribuer la farine, la Croix-Rouge envoie une enquêtrice. Le violon 
 
 **Le train de 6 h 12** *(hiver)*
 Le train de charbon ralentit dans la côte de Lick Branch. Il y a un nouveau bull, et on dit qu'il cogne.
-- Grimper sur le wagon (geste d'infiltration) : trois jours de charbon. Si Henry est pris : des coups, la Santé et l'Enfance baissent.
+- Grimper sur le wagon (geste d'infiltration) : trois jours de charbon. Si Henry est pris : des coups, la Santé baisse.
 - Ramasser le long des voies : une demi-journée de charbon, sans risque.
 - Demander aux hobos l'horaire de ronde du bull (si l'Entraide le permet).
 
@@ -477,27 +467,27 @@ Pearl brûle depuis la nuit.
 - Prier au culte avec M'man : l'Espoir monte, rien de plus.
 
 **Les poules** *(automne)*
-Deux poules ont disparu. Au matin, Henry trouve des plumes devant la porte des Sizemore, dont les six enfants n'ont pas mangé depuis deux jours.
-- Aller réclamer : l'Entraide avec les Sizemore s'effondre, une poule peut-être récupérée.
+Deux poules ont disparu. Au matin, Henry trouve des plumes devant la porte des Napier, dont les six enfants n'ont pas mangé depuis deux jours.
+- Aller réclamer : l'Entraide avec les Napier s'effondre, une poule peut-être récupérée.
 - Le dire à Papa : il ira, et ça finira mal.
-- Ne rien dire : les Sizemore savent que tu sais.
+- Ne rien dire : les Napier savent que tu sais.
 - Leur apporter les œufs de la dernière poule : l'Entraide monte fortement, la marmite baisse.
 
 **Un dollar cinquante la journée** *(été)*
 La n° 4 est en grève. La Black Mountain embauche des remplaçants, payés comptant et pas en scrip. Clay tient le piquet de grève.
 - Wes y va : beaucoup d'argent, mais le camp ne pardonne pas, et Clay et Wes ne se parlent plus.
-- Henry y va. Il a 14 ans, c'est interdit, mais pendant une grève personne ne vérifie : de l'argent, l'Enfance s'effondre, c'est dangereux.
+- Henry y va. Il a 14 ans, c'est interdit, mais pendant une grève personne ne vérifie : de l'argent, le mépris du camp, c'est dangereux.
 - Personne n'y va : le Moral de Clay monte, la marmite attend.
 - Henry porte à manger au piquet : l'Entraide monte, et la confiance de Clay aussi.
 
 ---
 
-## 10. Direction artistique
+## 11. Direction artistique
 
 ### Intention : « une photographie de 1932 qui se souvient d'avoir été en couleurs »
 
 - **Technique** : 2D peinte (gouache et fusain), texture de papier, grain photographique léger, vignettage. Les personnages sont animés en 2D squelettique (découpage) avec des visages simples : l'émotion passe par la posture.
-- **La couleur, c'est l'Espoir** (voir 6.6). Chaque saison a sa palette, et toutes tendent vers le même sépia.
+- **La couleur, c'est l'Espoir** (voir 6.5). Chaque saison a sa palette, et toutes tendent vers le même sépia.
 - **La lumière** : les nuits d'hiver, la seule couleur chaude de l'écran est la lueur du poêle et de la lampe à pétrole. Le foyer, au sens propre.
 - **La maison s'use.** Les objets vendus laissent leur marque sur le mur, les chaises brûlées sont remplacées par des caisses, les vêtements se couvrent de pièces au fil des mois. Les robes sont taillées dans des sacs de farine imprimés, comme à l'époque, où les minoteries imprimaient leurs sacs de motifs pour cette raison.
 - **Les personnages** doivent être reconnaissables en ombre chinoise : on doit identifier chaque membre de la famille en noir pur. Chacun a trois stades de maigreur.
@@ -523,51 +513,56 @@ La n° 4 est en grève. La Black Mountain embauche des remplaçants, payés comp
 
 ---
 
-## 11. Son et musique
+## 12. Son et musique
 
 - **La musique traditionnelle des Appalaches** : banjo *clawhammer*, violon, dulcimer des Appalaches, chant a cappella. On puise dans le répertoire traditionnel du domaine public (les ballades anglo-écossaises conservées dans les montagnes, *Barbara Allen*, *Wayfaring Stranger*, *Shady Grove*, *Man of Constant Sorrow*), complété par des compositions originales.
-- **Une musique dynamique** réglée par l'Espoir (voir 6.6).
+- **Une musique dynamique** réglée par l'Espoir (voir 6.5).
 - **La musique dans le monde du jeu** : Wes au violon (s'il le vend, la maison se tait), Granny qui chante en cousant, les cantiques « lignés » des Old Regular Baptists à l'église (le prédicateur dit la ligne, l'assemblée la reprend lentement), les chants syndicaux à la mine. *Which Side Are You On?* a été écrite en 1931 dans le comté de Harlan ; ses droits sont à vérifier, et on écrira une chanson originale si nécessaire.
-- **Le son du silence.** Pendant vingt ans, le sifflet de l'usine a rythmé la vallée. Le premier matin du chapitre I, à l'heure où il sonnait, on n'entend rien. Le joueur ne le remarque peut-être pas. Papa, si : il est debout sur le perron, à l'heure.
+- **Le son du silence.** Pendant vingt ans, le sifflet de l'usine a rythmé la vallée. Le premier matin de l'épisode 1, à l'heure où il sonnait, on n'entend rien. Le joueur ne le remarque peut-être pas. Papa, si : il est debout sur le perron, à l'heure.
 - **Les ambiances** : le ruisseau, les trains de charbon, l'engoulevent bois-pourri la nuit, la toux dans la chambre d'à côté, le poêle qui craque.
 
 ---
 
-## 12. Technique
+## 13. Technique
 
 ### Choix
 
+Pour livrer des épisodes jouables tout de suite, sur n'importe quel appareil, le jeu est une **page web autonome**.
+
 | Besoin | Choix | Pourquoi |
 |---|---|---|
-| Moteur | **Godot 4 (.NET)** | 2D natif, léger, open source, sans redevance |
-| Langage | **C#** | La simulation est une bibliothèque testable |
-| Narration | **Ink** (inkle), via le module GodotInk | Langage narratif éprouvé (*80 Days*, *Heaven's Vault*) ; les scripts lisent et modifient l'état de la simulation |
-| Animation | Squelettes 2D (Skeleton2D ou Spine) | Trois stades de maigreur par personnage sans tout redessiner |
+| Plateforme | **Navigateur** | Jouable sans installation, par un simple lien ; un emballage bureau (Electron ou Tauri) reste possible pour Steam |
+| Langage | **JavaScript sans dépendance** (scripts classiques) | Aucun outil de compilation obligatoire ; le jeu s'ouvre même depuis un fichier local |
+| Rendu | **Canvas 2D**, résolution logique 1280 × 720 | Silhouettes et décors dessinés par le code ; les décors statiques sont mis en cache |
+| Son | **Web Audio**, entièrement synthétisé | Banjo et dulcimer par synthèse de cordes pincées (Karplus-Strong), violon, sifflet à vapeur, ambiances (ruisseau, vent, grillons, feu) |
+| Écriture | Scripts de dialogue en données (`game/src/story/`) | Répliques, choix (minutés ou non), conditions et effets, faciles à relire et à traduire |
 
-### Architecture
+### Architecture (`game/`)
 
 ```
-Simulation/    Bibliothèque C# pure, sans dépendance à Godot : famille, membres,
-               marmite, ardoise, calendrier, événements. Déterministe (graine
-               aléatoire) et couverte par des tests unitaires.
-Presentation/  Scènes Godot, animation, shaders, interface. Lit l'état de la
-               simulation et lui envoie des commandes, sans jamais la modifier
-               directement.
-Content/       Événements en données (conditions, poids, effets), textes Ink,
-               tables d'équilibrage (CSV/JSON) modifiables sans programmer.
+src/core.js      boucle, entrées (souris, toucher, clavier), scènes asynchrones, fondus
+src/state.js     famille, faim, moral, argent, garde-manger, choix ; sauvegarde locale
+src/art.js       silhouettes animées (marche, assis, accroupi, parole), décors, grain
+src/ui.js        texte, boutons, carnet d'Henry, notifications
+src/dialog.js    répliques, narration, cartons, choix, interprète de scripts
+src/audio.js     ambiances, musiques, bruitages
+src/walk.js      scène d'exploration de profil (marcher, parler, interagir)
+src/scenes/      décors partagés et un fichier par mini-jeu
+src/story/       textes de l'épisode
+src/episode1.js  le déroulé de l'épisode, avec points de sauvegarde
+tools/build.mjs  génère index.html, dev.html (chaque scène seule) et dist/ (un seul fichier)
+tools/shot.mjs   pilote Chromium pour les captures et les tests
 ```
 
 ### Points techniques notables
 
-- **Équilibrer par la simulation.** La simulation tourne sans affichage. On joue 10 000 années avec des stratégies automatiques (« l'égoïste », « le saint », « le voleur », « l'écolier ») pour vérifier qu'aucune ne domine et que la fin parfaite reste rare sans être impossible. Ces tests tournent en intégration continue.
-- **Le shader de l'Espoir.** Un post-traitement plein écran mélange la table de couleurs (LUT) de la saison et la LUT sépia selon l'Espoir, puis ajoute le grain de papier et le vignettage. Les transitions sont lentes : jamais de saut visible d'un soir à l'autre.
-- **La lumière du jour.** Les heures de lever et de coucher du soleil sont calculées pour 37,3° N (est du Kentucky) à chaque date du calendrier.
-- **La sauvegarde.** Automatique chaque soir, une seule par partie : les choix sont définitifs, comme dans *This War of Mine*. Le mode récit permet de recommencer une journée.
-- **La localisation** en français et en anglais dès le premier jour (Ink et tables de chaînes).
+- **Deux canvas superposés.** Le décor reçoit le filtre de l'Espoir (saturation, sépia) ; l'interface reste nette.
+- **Scènes asynchrones.** Le déroulé d'un épisode s'écrit comme un récit (`await G.play(scène)`, `await G.run(dialogue)`), ce qui garde l'épisode lisible d'un bout à l'autre.
+- **Tests automatiques.** `autotest.html` joue l'épisode entier tout seul avec des choix aléatoires, journalise chaque réplique et chaque erreur ; chaque mini-jeu se teste seul dans `dev.html#nom`.
+- **Sauvegarde** automatique à chaque point de passage (stockage local du navigateur), reprise depuis l'écran titre.
+- **Animation** : cycle de marche, respiration, poses, et animation de parole (tête et gestes) pour celui qui parle.
 
----
-
-## 13. Rigueur historique et représentation
+## 14. Rigueur historique et représentation
 
 - **Les Archives.** Comme dans *Valiant Hearts*, des notes historiques se débloquent en jouant, liées aux mécaniques (le scrip, la pellagre, le CCC, la farine de la Croix-Rouge, les robes en sacs de farine), illustrées de photographies du domaine public. La collection FSA/OWI de la Bibliothèque du Congrès date de quelques années après le jeu, mais documente les mêmes communautés.
 - **Des relectures de sensibilité** sur trois sujets : la représentation des Appalaches, la place des mineurs noirs et la ségrégation dans les camps, et le travail des enfants. On consultera des historiens spécialistes des Appalaches, par exemple au Loyal Jones Appalachian Center du Berea College.
@@ -576,23 +571,22 @@ Content/       Événements en données (conditions, poids, effets), textes Ink,
 
 ---
 
-## 14. Production : prochaines étapes
+## 15. Production : prochaines étapes
 
-| Étape | Durée indicative | Contenu | Question à trancher |
-|---|---|---|---|
-| **1. Prototype papier et tableur** | 2 semaines | L'économie de la marmite et de l'ardoise sur 30 jours | Compte-t-on les bols avec angoisse ? |
-| **2. Prototype jouable en gris** | 6 semaines | Maison en coupe, 3 lieux, la Table, la Voix | Ressent-on la place à table ? |
-| **3. Tranche verticale** | 3 à 4 mois | « Une semaine de décembre » : le chapitre II réduit, la direction artistique finale, le shader de l'Espoir, 12 événements, 3 gestes (charbon, pêche, magasin) | Le jeu tient-il ses promesses ? (version à présenter aux éditeurs et financeurs) |
-| **4. Production** | — | Les quatre chapitres | — |
+| Étape | État | Contenu |
+|---|---|---|
+| **Épisode 1 : Le dernier sifflet** | Jouable | 22 scènes, 9 gestes, environ 30 minutes |
+| **Relecture et réglages de l'épisode 1** | À faire | Équilibrage des gestes et du loyer, relecture des dialogues, retours de joueurs |
+| **Épisode 2 : Le charbon des voies** | À écrire | Charbon des trains (infiltration et timing), Noël, l'enquêtrice, la fièvre de Pearl, Oncle Hiram |
+| **Épisodes 3 et 4** | À écrire | Printemps et été 1933, le choix final et la deuxième photo |
+| **Version anglaise** | À prévoir | Les textes sont regroupés par épisode pour faciliter la traduction |
 
 **Risques identifiés**
-- **Répétitivité** : la parer par des gestes courts résolus automatiquement, des chapitres resserrés et des intersaisons.
-- **Misérabilisme** : la parer par les moments d'enfant, l'humour pudique et la musique.
-- **Gestion trop lourde** : la parer par l'ouverture progressive des contrôles avec la Voix.
+- **Répétitivité** : la parer en ne réutilisant jamais un geste dans un même épisode, et en faisant évoluer ceux qui reviennent (le charbon de décembre n'est pas la pêche d'octobre).
+- **Misérabilisme** : la parer par la musique, l'humour pudique et les moments de joie (le beurre de pommes, l'histoire racontée à Pearl).
+- **Longueur des épisodes** : viser 30 minutes, avec des scènes courtes et des ellipses franches.
 
----
-
-## 15. Références
+## 16. Références
 
 **Littérature**
 - John Steinbeck, *Les Raisins de la colère* (1939)
