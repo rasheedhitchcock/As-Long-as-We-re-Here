@@ -6087,7 +6087,7 @@
     ['#6B7A3A', '#B8963E', '#8A6A35'], ['#4E6634', '#5A7038', '#7A8A44'], ['#B07A3A', '#C9963E', '#8A5A2E'],
   ];
   function fernSprite(v) {
-    return A.cached('gs-fern-' + v, 220, 120, (cx, w, h) => {
+    return A.cached('ginseng-fern-' + v, 220, 120, (cx, w, h) => {
       const rnd = U.rng(500 + v * 17);
       const pal = FERN_PAL[v % FERN_PAL.length];
       const n = 5 + Math.floor(rnd() * 4);
@@ -6529,7 +6529,7 @@
       if (opts.intro !== false) this.act(async () => { await G.wait(0.6); await G.say('hattie', LINES.intro); });
     },
     exit() {
-      A.clearCache('gs-');
+      A.clearCache('ginseng-');
       for (const p of this.plants || []) p.spr = null;
     },
 
@@ -6537,6 +6537,10 @@
     async act(fn) {
       this.busyN++;
       try { await fn(); } finally { this.busyN--; }
+    },
+    // Crochet de l'appelant : une erreur ne doit jamais bloquer la scène.
+    async hook(fn, arg) {
+      try { await fn(arg); } catch (e) { console.error(e); }
     },
     paused() { return G.blocked || this.busyN > 0 || !!this.xf || !!this._done || !!this.ending; },
     say2(text, life) { this.caption = { text, t: 0, life: life || Math.max(3.5, text.length / 14) }; },
@@ -6599,11 +6603,11 @@
       const farW = Math.ceil(G.W + (WW - G.W) * PF), midW = Math.ceil(G.W + (WW - G.W) * PM), foreW = Math.ceil(G.W + (WW - G.W) * PFG);
       this.L = {
         seed: s,
-        sky: A.cached('gs-sky', G.W, G.H, paintSky, 1),
-        far: A.cached('gs-far-' + s, farW, G.H, (cx, w, h) => paintFar(cx, w, h, s), 1),
-        mid: A.cached('gs-mid-' + s, midW, G.H, (cx, w, h) => paintMid(cx, w, h, s), 1),
-        ground: A.cached('gs-ground-' + s, WW, G.H, (cx, w, h) => paintGround(cx, w, h, s, this.plants), res),
-        fore: A.cached('gs-fore-' + s, foreW, FORE_H, (cx, w, h) => paintFore(cx, w, h, s), res),
+        sky: A.cached('ginseng-sky', G.W, G.H, paintSky, 1),
+        far: A.cached('ginseng-far-' + s, farW, G.H, (cx, w, h) => paintFar(cx, w, h, s), 1),
+        mid: A.cached('ginseng-mid-' + s, midW, G.H, (cx, w, h) => paintMid(cx, w, h, s), 1),
+        ground: A.cached('ginseng-ground-' + s, WW, G.H, (cx, w, h) => paintGround(cx, w, h, s, this.plants), res),
+        fore: A.cached('ginseng-fore-' + s, foreW, FORE_H, (cx, w, h) => paintFore(cx, w, h, s), res),
       };
       return this.L;
     },
@@ -6825,7 +6829,7 @@
         this.light = Math.max(0.02, this.light - PENALTY / this.dur);
         if (kind === 'ivy') this.itchy = true;
         G.audio.sfx('fail');
-        if (opts.onMistake) await opts.onMistake({ kind });
+        if (opts.onMistake) await this.hook(opts.onMistake, { kind });
         else await G.say('hattie', LINES.mistake[kind]);
       });
     },
@@ -6990,7 +6994,6 @@
       if (d.pull) return;
       if (I.hit('Digit1') || I.hit('Numpad1') || I.hit('KeyB')) this.setTool('stick');
       if (I.hit('Digit2') || I.hit('Numpad2') || I.hit('KeyF')) this.setTool('fingers');
-      if (I.hit('Tab')) this.setTool(d.tool === 'stick' ? 'fingers' : 'stick');
       if (I.hit('KeyT') || (d.ready && I.hit('Enter'))) { this.pull(); return; }
       if (I.pressed) {
         if (U.inRect(I, DIGUI.stick)) this.setTool('stick');
@@ -7083,7 +7086,7 @@
         this.roots.push({ quality: q });
         const index = this.roots.length - 1;
         await G.wait(0.7);
-        if (opts.onRoot) await opts.onRoot({ index, quality: q });
+        if (opts.onRoot) await this.hook(opts.onRoot, { index, quality: q });
         else await G.say('hattie', broken ? LINES.root.broken : q >= 0.86 ? LINES.root.whole : LINES.root.hurt);
         d.result.canGo = true;
       });
@@ -7203,7 +7206,7 @@
     digLayers() {
       const s = this.seed;
       return {
-        top: A.cached('gs-dtop-' + s, G.W, SY + 14, (cx, w, h) => {
+        top: A.cached('ginseng-dtop-' + s, G.W, SY + 14, (cx, w, h) => {
           const rnd = U.rng(s + 51);
           A.sky(cx, w, h, [[0, '#C9A060'], [0.7, '#8E6A42'], [1, '#5A4028']]);
           for (let i = 0; i < 18; i++) { const x = rnd() * w, tw = 6 + rnd() * 12; cx.fillStyle = rgba('#9A8462', 0.5 + rnd() * 0.3); cx.fillRect(x, 0, tw, h); }
@@ -7218,7 +7221,7 @@
           cx.fillRect(0, SY - 14, w, h - SY + 14);
           A.texture(cx, w, h, 0.18);
         }),
-        hole: A.cached('gs-dhole', G.W, G.H - SY, (cx, w, h) => {
+        hole: A.cached('ginseng-dhole', G.W, G.H - SY, (cx, w, h) => {
           const g = cx.createLinearGradient(0, 0, 0, h);
           g.addColorStop(0, '#22160D'); g.addColorStop(1, '#140D07');
           cx.fillStyle = g;
@@ -7227,7 +7230,7 @@
           for (let i = 0; i < 2500; i++) { cx.fillStyle = rnd() < 0.5 ? 'rgba(0,0,0,0.4)' : 'rgba(80,58,36,0.3)'; cx.fillRect(rnd() * w, rnd() * h, 1.5, 1.5); }
           A.texture(cx, w, h, 0.2);
         }),
-        lip: A.cached('gs-dlip', G.W, 30, (cx, w, h) => {
+        lip: A.cached('ginseng-dlip', G.W, 30, (cx, w, h) => {
           const rnd = U.rng(78);
           for (let i = 0; i < 900; i++) {
             cx.globalAlpha = 0.6 + rnd() * 0.4;
@@ -7435,7 +7438,7 @@
       const F = R.frame, Z = ZOOM[p.type];
       uctx.save();
       rrect(uctx, F, 8); uctx.clip();
-      A.blit(uctx, A.cached('gs-cardbg', F.w, F.h, paintCardBg), F.x, F.y);
+      A.blit(uctx, A.cached('ginseng-cardbg', F.w, F.h, paintCardBg), F.x, F.y);
       uctx.translate(F.x + F.w / 2, F.y + F.h - Z.by);
       uctx.scale(Z.s, Z.s);
       if (p.type === 'creeper') drawTrunk(uctx, 0, 0, p.q.tw, p.seed, -300);
