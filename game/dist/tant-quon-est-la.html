@@ -13863,7 +13863,7 @@
     const money = G.state.money;
     await stage((ctx) => PL.house(ctx, { time: 'dusk', lamp: G.flag('lamp') }), T.d5Farris({ paid: money >= 800, money }), {
       x: 300, things: [fam('ida', 230, { dir: -1 }), fam('hattie', 262, { pose: 'sit', seatH: 37, carry: 'pipe' }), { id: 'f', char: 'farris', x: 140, o: { dir: 1 } }],
-      cfg: { amb: ['wind'] },
+      cfg: { amb: ['wind', 'fire'], song: null },
     });
     if (money >= 800) { G.setFlag('rentPaid'); G.state.money -= 800; G.mood({ all: 0.25 }); }
     else if (G.flag('rentOnCredit')) { G.state.ardoise += 800 - money; G.state.money = 0; G.mood({ all: -0.1 }); }
