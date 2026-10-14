@@ -8840,6 +8840,9 @@
 //
 //   G.Scenes.moonshine({ onArrive: async (résultat, scène) => {} })
 //   → promesse résolue par { jars, broken, caught, seconds }
+// onArrive est attendu quand Henry s'arrête devant le hangar : pendant ce crochet,
+// Lige se détache du mur et vient à lui ; ensuite il prend la caisse, puis la scène finit.
+// Le carton-consigne n'apparaît qu'après un éventuel dialogue d'ouverture.
 //
 // Commandes : → ou D avancer, ← ou Q reculer, ↓, S ou Maj se baisser (maintenu),
 // Espace, clic ou toucher pour rattraper un bocal et sauter de pierre en pierre.
@@ -8864,7 +8867,8 @@
   const SPEED = 54, CROUCH_SPEED = 30;
   const AG_H = (G.CHARS.revenuer && G.CHARS.revenuer.h) || 166;
   const BEAM_HW = 92;                // demi-largeur de la tache de lumière sur le sentier
-  const PF = { far: 0.08, mid: 0.22, trees: 0.5 };
+  const PF = { ridges: 0.14, trees: 0.5 };
+  const BACK_H = 420; // hauteur utile des calques lointains (cachés plus bas par la pente)
 
   const CREEK = { x0: 1950, x1: 2290, mid: 2120 };
   const STONES = [
@@ -8882,7 +8886,7 @@
     { x: 1835, w: 100 }, { x: 2620, w: 92 }, { x: 2995, w: 96 },
   ];
   const ROCKS = [{ x: 1600, w: 150, h: 146 }, { x: 3145, w: 146, h: 142 }];
-  const FERNS = [[222, 332], [730, 862], [1348, 1472], [2356, 2470], [2832, 2932], [3282, 3352]];
+  const FERNS = [[212, 342], [722, 870], [1340, 1480], [2350, 2478], [2826, 2940], [3276, 3356]];
   const LEAVES = [[530, 612], [1180, 1320], [1665, 1785], [2668, 2752], [3195, 3268]];
   const STICKS = [400, 1500, 1730, 2712, 3240];
   const DOG_X = 2790, DOG_R = 430;
@@ -9025,9 +9029,9 @@
     }
   }
 
-  function drawFarRidge(cx, w) {
+  function drawRidges(cx, w) {
     const r = G.art.makeRidge(11, w, 226, 32, 130);
-    G.art.ridge(cx, r, '#1a2742', H);
+    G.art.ridge(cx, r, '#1a2742', BACK_H);
     cx.save();
     cx.beginPath();
     cx.moveTo(r[0][0], r[0][1]);
@@ -9043,17 +9047,14 @@
     g.addColorStop(1, 'rgba(70,90,124,0.4)');
     cx.fillStyle = g;
     cx.fillRect(0, 240, w, 100);
-  }
-
-  function drawMidRidge(cx, w) {
-    const r = G.art.makeRidge(23, w, 274, 24, 110);
-    G.art.ridge(cx, r, '#131d32', H);
-    G.art.dots(cx, 7, Math.round(w / 2.4), 0, w, (x) => { const y = G.art.ridgeY(r, x); return [y - 6, y + 30]; },
+    const r2 = G.art.makeRidge(23, w, 274, 24, 110);
+    G.art.ridge(cx, r2, '#131d32', BACK_H);
+    G.art.dots(cx, 7, Math.round(w / 2.4), 0, w, (x) => { const y = G.art.ridgeY(r2, x); return [y - 6, y + 30]; },
       ['#152036', '#111b2f', '#18253e'], 3, 7, 0.8, 1);
-    const g = cx.createLinearGradient(0, 290, 0, 360);
-    g.addColorStop(0, 'rgba(60,80,112,0)');
-    g.addColorStop(1, 'rgba(60,80,112,0.35)');
-    cx.fillStyle = g;
+    const g2 = cx.createLinearGradient(0, 290, 0, 360);
+    g2.addColorStop(0, 'rgba(60,80,112,0)');
+    g2.addColorStop(1, 'rgba(60,80,112,0.35)');
+    cx.fillStyle = g2;
     cx.fillRect(0, 290, w, 80);
   }
 
@@ -9584,7 +9585,7 @@
     cx.moveTo(a - 12, trailY(a) + 24);
     for (let x = a - 12; x <= b + 12; x += 5) {
       const k = Math.sin(Math.PI * U.clamp((x - a + 12) / (len + 24), 0, 1));
-      const hgt = 36 + 72 * Math.pow(k, 0.5) + Math.sin(x * 0.7) * 5 + Math.sin(x * 0.23) * 4;
+      const hgt = 40 + 84 * Math.pow(k, 0.5) + Math.sin(x * 0.7) * 5 + Math.sin(x * 0.23) * 4;
       cx.lineTo(x, trailY(x) + 18 - hgt);
     }
     cx.lineTo(b + 12, trailY(b) + 24);
@@ -9596,7 +9597,7 @@
     for (let i = 0; i < n; i++) {
       const x = a - 6 + rnd() * (len + 12);
       const k = Math.sin(Math.PI * U.clamp((x - a) / len, 0, 1));
-      fronds.push({ x, hgt: (58 + 66 * Math.pow(k, 0.5)) * (0.78 + rnd() * 0.32), lean: (rnd() - 0.5) * 1.3, lit: rnd(), w: 1.3 + rnd() * 1.1 });
+      fronds.push({ x, hgt: (62 + 74 * Math.pow(k, 0.5)) * (0.78 + rnd() * 0.32), lean: (rnd() - 0.5) * 1.3, lit: rnd(), w: 1.3 + rnd() * 1.1 });
     }
     fronds.sort((p, q) => p.lit - q.lit);
     cx.lineCap = 'round';
@@ -9655,9 +9656,8 @@
     const lw = (p) => Math.ceil(W + (WORLD - W) * p) + 4;
     LY = {
       sky: A.cached('ms-sky', W, H, drawSky),
-      far: A.cached('ms-far', lw(PF.far), H, drawFarRidge, 1),
-      mid: A.cached('ms-mid', lw(PF.mid), H, drawMidRidge, 1),
-      trees: A.cached('ms-trees', lw(PF.trees), H, drawFarTrees, 1),
+      ridges: A.cached('ms-ridges', lw(PF.ridges), BACK_H, drawRidges, 1),
+      trees: A.cached('ms-trees', lw(PF.trees), BACK_H, drawFarTrees, 1),
       mist: A.cached('ms-mist', 600, 160, drawMistSprite, 1),
       night: A.cached('ms-night', W, H, drawNight, 0.5),
       main: [],
@@ -9826,7 +9826,7 @@
   // ================================================================== la scène
   G.Scenes.moonshine = (opts = {}) => G.makeScene({
     enter() {
-      const __t0 = performance.now(); layers(); console.log('LAYERS_MS', Math.round(performance.now() - __t0));
+      layers();
       G.audio.amb(['night', 'wind']);
       if (G.audio.stopSong) G.audio.stopSong(1.2);
       this.state = 'intro';
@@ -10418,7 +10418,7 @@
         if (!this.hasCrate) o.arms = [0.05, 0.25];
       } else if (this.crouch) {
         o.pose = 'crouch';
-        o.arms = [1.25, 1.5];
+        o.arms = [0.9, 1.1];
         if (this.moving) o.y -= Math.abs(Math.sin(this.phase * TAU)) * 2.5;
       } else if (this.moving) {
         o.pose = 'walk';
@@ -10444,8 +10444,7 @@
         ctx.beginPath(); ctx.arc((i * 181 + 40) % W, 30 + ((i * 97) % 200), 1.3, 0, TAU); ctx.fill();
       }
       ctx.globalAlpha = 1;
-      G.art.blit(ctx, L.far, -cam * PF.far, 0);
-      G.art.blit(ctx, L.mid, -cam * PF.mid, 0);
+      G.art.blit(ctx, L.ridges, -cam * PF.ridges, 0);
       G.art.blit(ctx, L.trees, -cam * PF.trees, 0);
       this.drawMist(ctx, L, cam, 352, 0.65, 0.12);
       for (let i = 0; i < NCHUNK; i++) {
@@ -10478,8 +10477,8 @@
       ctx.save();
       ctx.globalAlpha = alpha;
       const span = W + 700;
-      for (let i = 0; i < 5; i++) {
-        const x = (((i * 430 - cam * par + this.t * (6 + i * 2)) % span) + span) % span - 350;
+      for (let i = 0; i < 4; i++) {
+        const x = (((i * 500 - cam * par + this.t * (6 + i * 2)) % span) + span) % span - 350;
         ctx.drawImage(L.mist.c, x, y - 80 + Math.sin(i * 1.9) * 18, 620, 160);
       }
       ctx.restore();
